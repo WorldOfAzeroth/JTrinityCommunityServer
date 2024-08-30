@@ -4,7 +4,7 @@
 
 plugins {
     // Apply the common convention plugin for shared build configuration between library and application projects.
-    id 'pandaria-common-conventions'
+    id 'common-conventions'
 
 }
 
@@ -25,3 +25,4 @@ dependencies {
     testImplementation libs.h2database
 
 }
+

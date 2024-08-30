@@ -1,5 +1,6 @@
 [versions]
 
+slf4j = "2.0.13"
 netty = "4.1.112.Final"
 springBoot = "3.3.2"
 mapdb = "3.1.0"
@@ -12,6 +13,7 @@ h2database = "2.3.232"
 
 [libraries]
 
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 netty-handler = { group = "io.netty", name = "netty-handler", version.ref = "netty" }
 netty-codec-http = { group = "io.netty", name = "netty-codec-http", version.ref = "netty" }
 netty-transport-native-epoll = { group = "io.netty", name = "netty-transport-native-epoll", version.ref = "netty" }

@@ -6,9 +6,8 @@ import bgs.protocol.account.v1.AccountServiceProto;
 import bnet.protocol.RpcProto;
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
-import com.pandaria.auth.repository.BattlenetAccountRepository;
 import com.pandaria.common.RpcErrorCode;
-import com.pandaria.portal.rpc.NettyRpcController;
+import com.pandaria.portal.rpc.DefaultRpcController;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,28 +16,28 @@ public class AccountService implements AccountServiceProto.AccountService.Interf
 
     @Override
     public void resolveAccount(RpcController controller, AccountServiceProto.ResolveAccountRequest request, RpcCallback<AccountServiceProto.ResolveAccountResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.ResolveAccountResponse.getDefaultInstance());
     }
 
     @Override
     public void subscribe(RpcController controller, AccountServiceProto.SubscriptionUpdateRequest request, RpcCallback<AccountServiceProto.SubscriptionUpdateResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.SubscriptionUpdateResponse.getDefaultInstance());
     }
 
     @Override
     public void unsubscribe(RpcController controller, AccountServiceProto.SubscriptionUpdateRequest request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NoData.getDefaultInstance());
     }
 
     @Override
     public void getAccountState(RpcController controller, AccountServiceProto.GetAccountStateRequest request, RpcCallback<AccountServiceProto.GetAccountStateResponse> done) {
-        NettyRpcController rpcController = (NettyRpcController) controller;
+        DefaultRpcController rpcController = (DefaultRpcController) controller;
         if (!rpcController.getRpcSession().isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(AccountServiceProto.GetAccountStateResponse.getDefaultInstance());
@@ -57,7 +56,7 @@ public class AccountService implements AccountServiceProto.AccountService.Interf
 
     @Override
     public void getGameAccountState(RpcController controller, AccountServiceProto.GetGameAccountStateRequest request, RpcCallback<AccountServiceProto.GetGameAccountStateResponse> done) {
-        NettyRpcController rpcController = (NettyRpcController) controller;
+        DefaultRpcController rpcController = (DefaultRpcController) controller;
         if (!rpcController.getRpcSession().isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(AccountServiceProto.GetGameAccountStateResponse.getDefaultInstance());
@@ -94,42 +93,42 @@ public class AccountService implements AccountServiceProto.AccountService.Interf
 
     @Override
     public void getLicenses(RpcController controller, AccountServiceProto.GetLicensesRequest request, RpcCallback<AccountServiceProto.GetLicensesResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.GetLicensesResponse.getDefaultInstance());
     }
 
     @Override
     public void getGameTimeRemainingInfo(RpcController controller, AccountServiceProto.GetGameTimeRemainingInfoRequest request, RpcCallback<AccountServiceProto.GetGameTimeRemainingInfoResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.GetGameTimeRemainingInfoResponse.getDefaultInstance());
     }
 
     @Override
     public void getGameSessionInfo(RpcController controller, AccountServiceProto.GetGameSessionInfoRequest request, RpcCallback<AccountServiceProto.GetGameSessionInfoResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.GetGameSessionInfoResponse.getDefaultInstance());
     }
 
     @Override
     public void getCAISInfo(RpcController controller, AccountServiceProto.GetCAISInfoRequest request, RpcCallback<AccountServiceProto.GetCAISInfoResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.GetCAISInfoResponse.getDefaultInstance());
     }
 
     @Override
     public void getAuthorizedData(RpcController controller, AccountServiceProto.GetAuthorizedDataRequest request, RpcCallback<AccountServiceProto.GetAuthorizedDataResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.GetAuthorizedDataResponse.getDefaultInstance());
     }
 
     @Override
     public void getSignedAccountState(RpcController controller, AccountServiceProto.GetSignedAccountStateRequest request, RpcCallback<AccountServiceProto.GetSignedAccountStateResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AccountServiceProto.GetSignedAccountStateResponse.getDefaultInstance());
     }

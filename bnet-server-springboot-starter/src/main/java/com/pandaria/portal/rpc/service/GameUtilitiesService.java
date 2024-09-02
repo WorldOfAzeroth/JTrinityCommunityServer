@@ -11,7 +11,7 @@ import com.pandaria.portal.utils.JsonUtil;
 import com.pandaria.portal.utils.LocaleConstant;
 import com.pandaria.common.RpcErrorCode;
 
-import com.pandaria.portal.rpc.NettyRpcController;
+import com.pandaria.portal.rpc.DefaultRpcController;
 import com.pandaria.portal.rpc.RpcSession;
 import com.pandaria.service.auth.AuthService;
 import com.pandaria.service.auth.domain.*;
@@ -47,7 +47,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     @Override
     public void processClientRequest(RpcController controller, GameUtilitiesServiceProto.ClientRequest request,
                                      RpcCallback<GameUtilitiesServiceProto.ClientResponse> done) {
-        NettyRpcController rpcController = (NettyRpcController) controller;
+        DefaultRpcController rpcController = (DefaultRpcController) controller;
         if (!rpcController.getRpcSession().isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
@@ -90,7 +90,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     public void presenceChannelCreated(RpcController controller,
                                        GameUtilitiesServiceProto.PresenceChannelCreatedRequest request,
                                        RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NoData.getDefaultInstance());
     }
@@ -99,7 +99,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     public void processServerRequest(RpcController controller,
                                      GameUtilitiesServiceProto.ServerRequest request,
                                      RpcCallback<GameUtilitiesServiceProto.ServerResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(GameUtilitiesServiceProto.ServerResponse.getDefaultInstance());
     }
@@ -108,7 +108,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     public void onGameAccountOnline(RpcController controller,
                                     GameUtilitiesServiceProto.GameAccountOnlineNotification request,
                                     RpcCallback<RpcProto.NO_RESPONSE> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NO_RESPONSE.getDefaultInstance());
     }
@@ -117,7 +117,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     public void onGameAccountOffline(RpcController controller,
                                      GameUtilitiesServiceProto.GameAccountOfflineNotification request,
                                      RpcCallback<RpcProto.NO_RESPONSE> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NO_RESPONSE.getDefaultInstance());
     }
@@ -126,7 +126,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     public void getAllValuesForAttribute(RpcController controller,
                                          GameUtilitiesServiceProto.GetAllValuesForAttributeRequest request,
                                          RpcCallback<GameUtilitiesServiceProto.GetAllValuesForAttributeResponse> done) {
-        NettyRpcController rpcController = (NettyRpcController) controller;
+        DefaultRpcController rpcController = (DefaultRpcController) controller;
         if (!rpcController.getRpcSession().isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(GameUtilitiesServiceProto.GetAllValuesForAttributeResponse.getDefaultInstance());
@@ -149,7 +149,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     public void registerUtilities(RpcController controller,
                                   GameUtilitiesServiceProto.RegisterUtilitiesRequest request,
                                   RpcCallback<GameUtilitiesServiceProto.RegisterUtilitiesResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(GameUtilitiesServiceProto.RegisterUtilitiesResponse.getDefaultInstance());
     }
@@ -158,13 +158,13 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
     public void unregisterUtilities(RpcController controller,
                                     GameUtilitiesServiceProto.UnregisterUtilitiesRequest request,
                                     RpcCallback<RpcProto.NO_RESPONSE> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NO_RESPONSE.getDefaultInstance());
     }
 
 
-    private void processRealmJoinRequest(NettyRpcController controller,
+    private void processRealmJoinRequest(DefaultRpcController controller,
                                          GameUtilitiesServiceProto.ClientRequest request,
                                          RpcCallback<GameUtilitiesServiceProto.ClientResponse> done) {
 
@@ -238,7 +238,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
 
     }
 
-    private void processRealmListRequest(NettyRpcController controller,
+    private void processRealmListRequest(DefaultRpcController controller,
                                          GameUtilitiesServiceProto.ClientRequest request,
                                          RpcCallback<GameUtilitiesServiceProto.ClientResponse> done) {
 
@@ -327,7 +327,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         return compressedValue;
     }
 
-    private void processLastCharPlayedRequest(NettyRpcController controller,
+    private void processLastCharPlayedRequest(DefaultRpcController controller,
                                               GameUtilitiesServiceProto.ClientRequest request,
                                               RpcCallback<GameUtilitiesServiceProto.ClientResponse> done) {
         Map<String, AttributeProto.Attribute> attributeMap = request.getAttributeList().stream()
@@ -428,7 +428,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         return entry;
     }
 
-    private void processRealmListTicketRequest(NettyRpcController controller,
+    private void processRealmListTicketRequest(DefaultRpcController controller,
                                                GameUtilitiesServiceProto.ClientRequest request,
                                                RpcCallback<GameUtilitiesServiceProto.ClientResponse> done) {
         Map<String, AttributeProto.Attribute> attributeMap = request.getAttributeList().stream()

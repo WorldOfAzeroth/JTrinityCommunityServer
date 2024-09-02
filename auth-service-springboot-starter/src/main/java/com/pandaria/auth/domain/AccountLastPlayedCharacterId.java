@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import java.io.Serializable;
@@ -11,9 +12,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class AccountLastPlayedCharacterId implements Serializable {
-    private static final long serialVersionUID = -1959825078085237816L;
+    private static final long serialVersionUID = -8195625801326111292L;
     @Column(name = "accountId", columnDefinition = "int UNSIGNED not null")
     private Long accountId;
 

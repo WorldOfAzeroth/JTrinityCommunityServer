@@ -1,37 +1,22 @@
 package com.pandaria.utils;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class SettingsBase {
+public class Settings {
 
-    private final HashMap<String, String> settings;
+    private final Map<String, Object> settings;
 
-    protected SettingsBase(HashMap<String, String> s) {
+
+    protected Settings(Map<String, Object> s) {
         this.settings = s;
     }
 
-    /**
-     * Get the setting for the given key.
-     *
-     * @param key the key
-     * @param defaultValue the default value
-     * @return the setting
-     */
-    protected boolean get(String key, boolean defaultValue) {
+
+    protected <T> boolean get(String key, boolean defaultValue) {
         String s = get(key, Boolean.toString(defaultValue));
         return Utils.parseBoolean(s, defaultValue, true);
     }
 
-    /**
-     * Set an entry in the key-value pair.
-     *
-     * @param key the key
-     * @param value the value
-     */
-    void set(String key, boolean value) {
-        settings.put(key, Boolean.toString(value));
-    }
 
     /**
      * Get the setting for the given key.
@@ -53,9 +38,9 @@ public class SettingsBase {
      * @return the setting
      */
     protected String get(String key, String defaultValue) {
-        String v = settings.get(key);
+        Object v = settings.get(key);
         if (v != null) {
-            return v;
+            return v.toString();
         }
         StringBuilder buff = new StringBuilder("h2.");
         boolean nextUpper = false;
@@ -72,7 +57,7 @@ public class SettingsBase {
         String sysProperty = buff.toString();
         v = Utils.getProperty(sysProperty, defaultValue);
         settings.put(key, v);
-        return v;
+        return v.toString();
     }
 
     /**
@@ -85,14 +70,7 @@ public class SettingsBase {
         return settings.containsKey(k);
     }
 
-    /**
-     * Get all settings.
-     *
-     * @return the settings
-     */
-    public HashMap<String, String> getSettings() {
-        return settings;
-    }
+
 
 
 }

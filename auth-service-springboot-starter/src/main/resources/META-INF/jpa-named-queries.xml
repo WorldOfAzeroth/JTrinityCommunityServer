@@ -4,7 +4,6 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd ">
 
-    <!--find all books ordered by pages descending-->
     <named-query name="BattlenetAccount.queryByLoginTicket">
         <query>
             SELECT ba,  bab, a, ab, aa, rc, r, lpc

@@ -6,9 +6,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "build_info")
 public class BuildInfo {
@@ -27,20 +29,5 @@ public class BuildInfo {
 
     @Column(name = "hotfixVersion", length = 3)
     private String hotfixVersion;
-
-    @Column(name = "winAuthSeed", length = 32)
-    private String winAuthSeed;
-
-    @Column(name = "win64AuthSeed", length = 32)
-    private String win64AuthSeed;
-
-    @Column(name = "mac64AuthSeed", length = 32)
-    private String mac64AuthSeed;
-
-    @Column(name = "winChecksumSeed", length = 40)
-    private String winChecksumSeed;
-
-    @Column(name = "macChecksumSeed", length = 40)
-    private String macChecksumSeed;
 
 }

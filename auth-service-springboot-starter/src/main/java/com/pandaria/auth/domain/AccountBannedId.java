@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class AccountBannedId implements Serializable {
-    private static final long serialVersionUID = 937894471405896740L;
+    private static final long serialVersionUID = 5664659037576830318L;
     @ColumnDefault("'0'")
     @Column(name = "id", columnDefinition = "int UNSIGNED not null")
     private Long id;

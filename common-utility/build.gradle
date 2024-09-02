@@ -14,6 +14,5 @@ dependencies {
     implementation libs.springboot
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.17.2'
-
 }
 

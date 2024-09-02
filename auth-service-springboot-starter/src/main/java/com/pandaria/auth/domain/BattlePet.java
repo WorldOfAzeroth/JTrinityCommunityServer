@@ -1,17 +1,21 @@
 package com.pandaria.auth.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "battle_pets")
 public class BattlePet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "guid", nullable = false)
     private Long id;
 

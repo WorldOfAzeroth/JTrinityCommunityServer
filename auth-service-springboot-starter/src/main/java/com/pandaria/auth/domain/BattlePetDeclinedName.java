@@ -3,15 +3,16 @@ package com.pandaria.auth.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "battle_pet_declinedname")
-public class BattlePetDeclinedname {
+public class BattlePetDeclinedName {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "guid", nullable = false)
     private Long id;
 

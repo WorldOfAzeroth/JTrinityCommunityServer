@@ -3,10 +3,12 @@ package com.pandaria.auth.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "realmlist", uniqueConstraints = {
         @UniqueConstraint(name = "idx_name", columnNames = {"name"})
@@ -53,6 +55,10 @@ public class Realmlist {
     @Column(name = "allowedSecurityLevel", columnDefinition = "tinyint UNSIGNED not null")
     private Short allowedSecurityLevel;
 
+    @ColumnDefault("'0'")
+    @Column(name = "population", nullable = false)
+    private Float population;
+
     @ColumnDefault("'56014'")
     @Column(name = "gamebuild", columnDefinition = "int UNSIGNED not null")
     private Long gamebuild;
@@ -60,11 +66,9 @@ public class Realmlist {
     @ColumnDefault("'1'")
     @Column(name = "Region", columnDefinition = "tinyint UNSIGNED not null")
     private Short region;
+
     @ColumnDefault("'1'")
     @Column(name = "Battlegroup", columnDefinition = "tinyint UNSIGNED not null")
     private Short battlegroup;
 
-    @ColumnDefault("'0'")
-    @Column(name = "population", columnDefinition = "float not null")
-    private Float population;
 }

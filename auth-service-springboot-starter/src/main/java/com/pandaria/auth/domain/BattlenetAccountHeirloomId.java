@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class BattlenetAccountHeirloomId implements Serializable {
-    private static final long serialVersionUID = -2352786312456136232L;
+    private static final long serialVersionUID = 7583030926231375247L;
     @Column(name = "accountId", columnDefinition = "int UNSIGNED not null")
     private Long accountId;
 

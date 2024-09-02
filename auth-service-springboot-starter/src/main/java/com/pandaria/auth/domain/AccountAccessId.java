@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class AccountAccessId implements Serializable {
-    private static final long serialVersionUID = 3805707612014341857L;
+    private static final long serialVersionUID = -3619276521483898419L;
     @Column(name = "AccountID", columnDefinition = "int UNSIGNED not null")
     private Long accountID;
 

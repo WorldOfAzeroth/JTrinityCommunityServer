@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class RbacDefaultPermissionId implements Serializable {
-    private static final long serialVersionUID = -7608766670313866720L;
+    private static final long serialVersionUID = -6452935551696130759L;
     @Column(name = "secId", columnDefinition = "int UNSIGNED not null")
     private Long secId;
 

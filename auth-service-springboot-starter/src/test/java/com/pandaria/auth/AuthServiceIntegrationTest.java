@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @TestPropertySource( locations = "classpath:bnetserver.conf")
@@ -179,6 +177,34 @@ public class AuthServiceIntegrationTest {
         Assertions.assertEquals(realmcharacter.getId(), o6.getId());
         Assertions.assertEquals(realmlist.getId(), o7.getId());
         Assertions.assertNull(o8);
+
+        account = new Account();
+        account.setBattlenetAccount(battlenetAccount);
+        account.setEmail("test2@test");
+        account.setJoindate(Instant.now());
+        account.setLastIp("127.0.0.1");
+        account.setOs("");
+        account.setSalt("00");
+        account.setLockCountry("00");
+        account.setVerifier("test");
+        account.setLocale((short) 0);
+        account.setLocked((short) 0);
+        account.setOnline((short) 0);
+        account.setFailedLogins(0L);
+        account.setLastAttemptIp("127.0.0.1");
+        account.setMuteby("test");
+        account.setMutereason("test");
+        account.setMutetime(10L);
+        account.setRegMail("test@test");
+        account.setTimezoneOffset((short)0);
+        account.setUsername("test2");
+        account.setExpansion((short)4);
+        account.setClientBuild(1L);
+        account.setRecruiter(1L);
+        accountRepository.save(account);
+
+        objects = repository.queryByLoginTicket("123456");
+        Assertions.assertEquals(2, objects.length);
 
     }
 

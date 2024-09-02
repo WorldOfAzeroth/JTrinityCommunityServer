@@ -1,0 +1,3 @@
+# Auto Configure
+com.pandaria.config.ConfigurationSourceLoader
+com.pandaria.config.ConfigurationRefreshProcessor

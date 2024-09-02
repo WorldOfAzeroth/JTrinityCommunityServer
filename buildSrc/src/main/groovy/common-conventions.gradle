@@ -18,11 +18,15 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
 
-    implementation libs.slf4j.api
+    implementation libs.lombok
+    annotationProcessor libs.lombok
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
 
     testImplementation libs.test.junit.api
     testImplementation libs.test.junit.params
     testImplementation libs.test.junit.engine
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

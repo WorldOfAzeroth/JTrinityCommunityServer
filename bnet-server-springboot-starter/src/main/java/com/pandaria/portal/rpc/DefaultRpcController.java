@@ -23,24 +23,35 @@ package com.pandaria.portal.rpc;
 
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
+import com.pandaria.net.Connection;
 import com.pandaria.portal.proto.RpcPacket;
 import com.pandaria.common.RpcErrorCode;
-import lombok.RequiredArgsConstructor;
+import io.netty.util.AttributeKey;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-public class NettyRpcController implements RpcController {
+public class DefaultRpcController implements RpcController {
+
+
+	private static final AttributeKey<RpcSession> SESSION_KEY = AttributeKey.valueOf("$RPC_SESSION");
 
 	private String reason;
 	private boolean failed;
 	private boolean canceled;
-	private int status;
-
-	private List<RpcPacket> listenerPackets = new ArrayList<>(2);
+	private int status = RpcErrorCode.STATUS_OK;
 	@SuppressWarnings("unused")
 	private RpcCallback<Object> callback;
 
-	public String errorText() {
+
+	private final Connection connection;
+
+    public DefaultRpcController(Connection connection) {
+        this.connection = connection;
+    }
+
+    public String errorText() {
 		return reason;
 	}
 
@@ -52,9 +63,6 @@ public class NettyRpcController implements RpcController {
 		return status;
 	}
 
-	public boolean isCanceled() {
-		return canceled;
-	}
 
 	public void notifyOnCancel(RpcCallback<Object> callback) {
 		this.callback = callback;
@@ -72,6 +80,11 @@ public class NettyRpcController implements RpcController {
 		this.status = RpcErrorCode.ERROR_RPC_SERVER_ERROR;
 		this.reason = reason;
 		this.failed = true;
+	}
+
+	@Override
+	public boolean isCanceled() {
+		return canceled;
 	}
 
 	public void setFailed(int status) {
@@ -95,8 +108,19 @@ public class NettyRpcController implements RpcController {
 		listenerPackets.add(listenerPacket);
 	}
 
-	public List<RpcPacket> getListenerPackets() {
-		return listenerPackets;
+
+	//connect methods
+
+	public InetSocketAddress remoteAddress() {
+        return ((InetSocketAddress) connection.remoteAddress());
 	}
 
+	public RpcSession getRpcSession() {
+		RpcSession rpcSession = connection.channel().attr(SESSION_KEY).get();
+		if (rpcSession == null) {
+			rpcSession = new RpcSession();
+			connection.channel().attr(SESSION_KEY).set(rpcSession);
+		}
+		return rpcSession;
+	}
 }

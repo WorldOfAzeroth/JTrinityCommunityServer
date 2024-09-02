@@ -15,6 +15,7 @@ dependencies {
     implementation libs.netty.handler
     implementation libs.netty.codec.http
     implementation libs.netty.transport.native.epoll
+    implementation project(':common-utility')
     implementation project(':common-netty')
     implementation project(':auth-service-springboot-starter')
 }

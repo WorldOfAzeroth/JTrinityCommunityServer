@@ -20,44 +20,32 @@ import com.pandaria.utils.SysProperties;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.ChannelOption;
-import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class PortalServerConfiguration {
+@ComponentScan("com.pandaria.portal")
+@EnableConfigurationProperties(PortalConfigurationProperties.class)
+public class PortalServerAutoConfiguration {
 
 
-    @Value("bnetserver.BindIP")
-    private String bindIP;
+    @Autowired
+    private PortalRpcHandler rpcHandler;
 
-    @Value("bnetserver.BattlenetPort")
-    private int battlenetPort;
-
-
-    @Value("bnetserver.LoginREST.Port")
-    private int loginResTPort;
-
-
-    @Value("bnetserver.CertificatesFile")
-    private String certificatesFile;
-
-
-    @Value("bnetserver.PrivateKeyFile")
-    private String privateKeyFile;
-
+    private PortalConfigurationProperties properties;
 
 
     @Bean
-    public PortalRpcHandler portalHandler(PortalProperties portalProperties, AuthService authService, RealmManager realmManager) {
+    public PortalRpcHandler portalHandler() {
         PortalRpcHandler portalRpcHandler = new PortalRpcHandler();
         portalRpcHandler.register(ConnectionServiceProto.ConnectionService.newReflectiveService(new ConnectionService()));
         portalRpcHandler.register(AuthenticationServiceProto.AuthenticationService.newReflectiveService(new AuthenticationService(portalProperties, authService)));
@@ -68,7 +56,7 @@ public class PortalServerConfiguration {
 
 
     @Bean(destroyMethod = "disposeNow")
-    public DisposableServer bNetPortalRpcServer(@Autowired PortalRpcHandler rpcHandler) {
+    public DisposableServer bNetPortalRpcServer() {
         return BNetPortalRpcServer.create()
                 .option(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
                 .option(ChannelOption.SO_RCVBUF, SysProperties.PORTAL_SERVER_IO_SO_RCVBUF)
@@ -80,13 +68,16 @@ public class PortalServerConfiguration {
                 .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .secure(sslContextSpec -> {
-                    sslContextSpec.sslContext(TcpSslContextSpec.forServer(new File(certificatesFile), new File(privateKeyFile)));
+                    sslContextSpec.sslContext(TcpSslContextSpec.forServer(new File(properties), new File(privateKeyFile)));
                 }).doOnChannelInit((observer, channel, address) -> {
                     channel.pipeline().addFirst("rpc.IdleHandler", new IdleStateHandler(0, 0, 30, TimeUnit.MINUTES));
                     channel.pipeline().addBefore(NettyPipeline.ReactiveBridge, "rpc.RpcDecoder", new RpcProtocolDecoder());
                     channel.pipeline().addLast("rpc.RpcEncoder", new RpcProtocolEncoder());
-                }).handle(rpcHandler)
-                .bindAddress(() -> new InetSocketAddress(bindIP, battlenetPort))
+                }).route(router -> {
+
+                    router.service()
+
+                }).bindAddress(() -> new InetSocketAddress(bindIP, battlenetPort))
                 .runOn(LoopResources.create(SysProperties.PORTAL_SERVER_IO_BOSS_THREAD_NAME,
                                 SysProperties.PORTAL_SERVER_IO_SELECT_COUNT, SysProperties.PORTAL_SERVER_IO_WORKER_COUNT, true),
                         SysProperties.PORTAL_SERVER_IO_PREFERNATIVE)

@@ -17,7 +17,7 @@ public class SysProperties {
             Utils.getProperty("portal.loginTicketLength", 32);
 
     public static final int PORTAL_SESSION_KEY_LENGTH =
-            Utils.getProperty("portal.sessionKeyLength", 40);
+            Utils.getProperty("portal.sessionKeyLength", 64);
 
     public static final int PORTAL_CLIENT_SECRET_LENGTH =
             Utils.getProperty("portal.clientSecretLength", 32);

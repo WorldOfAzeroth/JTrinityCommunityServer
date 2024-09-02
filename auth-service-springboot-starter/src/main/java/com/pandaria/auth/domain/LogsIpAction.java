@@ -3,12 +3,14 @@ package com.pandaria.auth.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "logs_ip_actions")
 public class LogsIpAction {

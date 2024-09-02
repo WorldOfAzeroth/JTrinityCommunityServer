@@ -5,14 +5,14 @@ import bnet.protocol.connection.v1.ConnectionServiceProto;
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
 import com.pandaria.common.RpcErrorCode;
-import com.pandaria.portal.rpc.NettyRpcChannel;
-import com.pandaria.portal.rpc.NettyRpcController;
+import com.pandaria.portal.rpc.DefaultRpcChannel;
+import com.pandaria.portal.rpc.DefaultRpcController;
 
 import java.time.Instant;
 
 public class ConnectionService implements ConnectionServiceProto.ConnectionService.Interface {
 
-    private ConnectionServiceProto.ConnectionService.Interface clientNotification = ConnectionServiceProto.ConnectionService.newStub(new NettyRpcChannel());
+    private ConnectionServiceProto.ConnectionService.Interface clientNotification = ConnectionServiceProto.ConnectionService.newStub(new DefaultRpcChannel());
 
 
     @Override
@@ -35,7 +35,7 @@ public class ConnectionService implements ConnectionServiceProto.ConnectionServi
     @Override
     @Deprecated
     public void bind(RpcController controller, ConnectionServiceProto.BindRequest request, RpcCallback<ConnectionServiceProto.BindResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(ConnectionServiceProto.BindResponse.getDefaultInstance());
 
@@ -43,14 +43,14 @@ public class ConnectionService implements ConnectionServiceProto.ConnectionServi
 
     @Override
     public void echo(RpcController controller, ConnectionServiceProto.EchoRequest request, RpcCallback<ConnectionServiceProto.EchoResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(ConnectionServiceProto.EchoResponse.getDefaultInstance());
     }
 
     @Override
     public void forceDisconnect(RpcController controller, ConnectionServiceProto.DisconnectNotification request, RpcCallback<RpcProto.NO_RESPONSE> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NO_RESPONSE.getDefaultInstance());
     }
@@ -62,7 +62,7 @@ public class ConnectionService implements ConnectionServiceProto.ConnectionServi
 
     @Override
     public void encrypt(RpcController controller, ConnectionServiceProto.EncryptRequest request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NoData.getDefaultInstance());
     }

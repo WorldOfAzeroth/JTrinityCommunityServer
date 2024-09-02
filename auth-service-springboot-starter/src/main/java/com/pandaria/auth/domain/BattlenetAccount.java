@@ -3,12 +3,16 @@ package com.pandaria.auth.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "battlenet_accounts")
 public class BattlenetAccount {
@@ -74,5 +78,17 @@ public class BattlenetAccount {
 
     @Column(name = "LoginTicketExpiry", columnDefinition = "int UNSIGNED")
     private Long loginTicketExpiry;
+
+    @OneToMany(mappedBy = "battlenetAccount")
+    private Set<Account> accounts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "battlenetAccount")
+    private Set<BattlenetAccountTransmogIllusion> battlenetAccountTransmogIllusions = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "battlenetAccount")
+    private Set<BattlenetItemAppearance> battlenetItemAppearances = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "battlenetAccount")
+    private Set<BattlenetItemFavoriteAppearance> battlenetItemFavoriteAppearances = new LinkedHashSet<>();
 
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class RealmcharacterId implements Serializable {
-    private static final long serialVersionUID = 8452818513618361621L;
+    private static final long serialVersionUID = 1855754097410790206L;
     @ColumnDefault("'0'")
     @Column(name = "realmid", columnDefinition = "int UNSIGNED not null")
     private Long realmid;

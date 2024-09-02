@@ -10,17 +10,12 @@ plugins {
 
 dependencies {
 
-    implementation libs.lombok
-    annotationProcessor libs.lombok
+
+
+
     implementation libs.springboot
     implementation libs.springboot.data.jpa
 
-    testCompileOnly libs.lombok
-    testAnnotationProcessor libs.lombok
-    // Use JUnit Jupiter for testing.
-    testImplementation libs.test.junit.api
-    testImplementation libs.test.junit.engine
-    testImplementation libs.test.junit.params
     testImplementation libs.springboot.test
     testImplementation libs.h2database
 

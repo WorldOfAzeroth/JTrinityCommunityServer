@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class IpBannedId implements Serializable {
-    private static final long serialVersionUID = 644060284738947623L;
+    private static final long serialVersionUID = 9066620029437644538L;
     @ColumnDefault("'127.0.0.1'")
     @Column(name = "ip", nullable = false, length = 15)
     private String ip;

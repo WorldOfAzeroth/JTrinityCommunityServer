@@ -12,13 +12,14 @@ import com.pandaria.net.NettyOutbound;
 import com.pandaria.portal.exception.MethodNotFoundException;
 import com.pandaria.portal.exception.ServiceNotFoundException;
 import com.pandaria.portal.proto.RpcPacket;
-import com.pandaria.portal.rpc.NettyRpcController;
+import com.pandaria.portal.rpc.DefaultRpcController;
 import com.pandaria.portal.rpc.ServiceMetadata;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 @Slf4j
@@ -33,7 +34,10 @@ public class PortalRpcHandler implements BiConsumer<NettyInbound, NettyOutbound>
     @Override
     public void accept(NettyInbound in, NettyOutbound out) {
         RpcPacket packet = in.receiveObject();
-        final NettyRpcController controller = new NettyRpcController();
+        AtomicReference<DefaultRpcController> controller = new AtomicReference<>();
+        in.withConnection(connection -> {
+            controller.set(new DefaultRpcController(connection));
+        });
         try {
 
             ServiceMetadata serviceMeta = registeredService.get(packet.getHeader().getServiceHash());
@@ -49,10 +53,9 @@ public class PortalRpcHandler implements BiConsumer<NettyInbound, NettyOutbound>
             Message prototype = service.getRequestPrototype(methodDescriptor);
             Message request = prototype.newBuilderForType().mergeFrom(packet.getProtoData()).build();
 
-            service.callMethod(methodDescriptor, controller, request, message -> {
-                RpcPacket rpcPacket = buildResponseRpcPacket(packet, controller, message);
+            service.callMethod(methodDescriptor, controller.get(), request, message -> {
+                RpcPacket rpcPacket = buildResponseRpcPacket(packet, controller.get(), message);
                 out.sendObject(rpcPacket);
-                controller.getListenerPackets().forEach(out::sendObject);
             });
 
         } catch (Exception e) {
@@ -73,7 +76,7 @@ public class PortalRpcHandler implements BiConsumer<NettyInbound, NettyOutbound>
         }
     }
 
-    private RpcPacket buildResponseRpcPacket(RpcPacket packet, NettyRpcController controller, Message result) {
+    private RpcPacket buildResponseRpcPacket(RpcPacket packet, DefaultRpcController controller, Message result) {
         RpcPacket response;
         RpcProto.Header.Builder builder = RpcProto.Header.newBuilder()
                 .setToken(packet.getHeader().getToken())

@@ -7,37 +7,44 @@ import bnet.protocol.RpcProto;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
+import com.pandaria.auth.domain.*;
 import com.pandaria.auth.repository.BattlenetAccountRepository;
 import com.pandaria.common.RpcErrorCode;
-import com.pandaria.portal.rpc.NettyRpcChannel;
-import com.pandaria.portal.rpc.NettyRpcController;
+import com.pandaria.portal.rpc.DefaultRpcChannel;
+import com.pandaria.portal.rpc.DefaultRpcController;
 import com.pandaria.portal.rpc.RpcSession;
 import com.pandaria.portal.utils.LocaleConstant;
+import com.pandaria.utils.SecureUtils;
 import com.pandaria.utils.SysProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.Instant;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class AuthenticationService implements AuthenticationServiceProto.AuthenticationService.Interface {
 
+    @Value("bnetserver.LoginREST.Port")
+    private String externalAddress;
 
-    private AuthenticationServiceProto.AuthenticationListener.Interface authenticationListener = AuthenticationServiceProto.AuthenticationListener.newStub(new NettyRpcChannel());
-    private ChallengeServiceProto.ChallengeListener.Interface challengeListener = ChallengeServiceProto.ChallengeListener.newStub(new NettyRpcChannel());
+    private final AuthenticationServiceProto.AuthenticationListener.Interface authenticationListener = AuthenticationServiceProto.AuthenticationListener.newStub(new DefaultRpcChannel());
+    private final ChallengeServiceProto.ChallengeListener.Interface challengeListener = ChallengeServiceProto.ChallengeListener.newStub(new DefaultRpcChannel());
 
-    @Autowired
-    private BattlenetAccountRepository repository;
+    private final BattlenetAccountRepository repository;
 
+    public AuthenticationService(BattlenetAccountRepository repository) {
+        this.repository = repository;
+    }
 
 
     @Override
     public void logon(RpcController controller, AuthenticationServiceProto.LogonRequest request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController statusController = (NettyRpcController) controller;
+        DefaultRpcController statusController = (DefaultRpcController) controller;
         if (!SysProperties.PORTAL_WOW_PROGRAM_NAME.equals(request.getProgram())) {
             log.info("Attempted to log in with game other than WoW (using {})!", request.getProgram());
             statusController.setFailed(RpcErrorCode.ERROR_BAD_PROGRAM);
@@ -65,13 +72,12 @@ public class AuthenticationService implements AuthenticationServiceProto.Authent
         rpcSession.setBuild(request.getApplicationVersion());
 
         if (request.hasCachedWebCredentials()) {
-            AuthenticationServiceProto.VerifyWebCredentialsRequest parameter = AuthenticationServiceProto.VerifyWebCredentialsRequest.newBuilder()
-                    .setWebCredentials(request.getCachedWebCredentials()).build();
+            AuthenticationServiceProto.VerifyWebCredentialsRequest parameter = AuthenticationServiceProto.VerifyWebCredentialsRequest.newBuilder().setWebCredentials(request.getCachedWebCredentials()).build();
             this.verifyWebCredentials(controller, parameter, done);
         } else {
-            ChallengeServiceProto.ChallengeExternalRequest challengeExternalRequest = ChallengeServiceProto.ChallengeExternalRequest.newBuilder()
-                    .setPayloadType("web_auth_url")
-                    .setPayload(ByteString.copyFromUtf8(getWebAuthUrl())).build();
+
+            "https://%s:%d/bnetserver/login/".formatted(host, port)
+            ChallengeServiceProto.ChallengeExternalRequest challengeExternalRequest = ChallengeServiceProto.ChallengeExternalRequest.newBuilder().setPayloadType("web_auth_url").setPayload(ByteString.copyFromUtf8(webAuthUrl())).build();
             challengeListener.onExternalChallenge(statusController, challengeExternalRequest, null);
             done.run(RpcProto.NoData.getDefaultInstance());
         }
@@ -80,113 +86,121 @@ public class AuthenticationService implements AuthenticationServiceProto.Authent
 
     @Override
     public void moduleNotify(RpcController controller, AuthenticationServiceProto.ModuleNotification request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NoData.getDefaultInstance());
     }
 
     @Override
     public void moduleMessage(RpcController controller, AuthenticationServiceProto.ModuleMessageRequest request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NoData.getDefaultInstance());
     }
 
     @Override
     public void selectGameAccountDEPRECATED(RpcController controller, EntityProto.EntityId request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NoData.getDefaultInstance());
     }
 
     @Override
     public void generateSSOToken(RpcController controller, AuthenticationServiceProto.GenerateSSOTokenRequest request, RpcCallback<AuthenticationServiceProto.GenerateSSOTokenResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AuthenticationServiceProto.GenerateSSOTokenResponse.getDefaultInstance());
     }
 
     @Override
     public void selectGameAccount(RpcController controller, AuthenticationServiceProto.SelectGameAccountRequest request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(RpcProto.NoData.getDefaultInstance());
     }
 
     @Override
     public void verifyWebCredentials(RpcController controller, AuthenticationServiceProto.VerifyWebCredentialsRequest request, RpcCallback<RpcProto.NoData> done) {
-        NettyRpcController statusController = (NettyRpcController) controller;
+        DefaultRpcController statusController = (DefaultRpcController) controller;
         if (request.getWebCredentials().isEmpty()) {
             statusController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(RpcProto.NoData.newBuilder().build());
             return;
         }
         String loginTicket = request.getWebCredentials().toStringUtf8();
-
-        Object[] results = repository.queryBattleNetAccount(loginTicket);
-        BattlenetAccount battleNetAccount = (BattlenetAccount) objects[0];
-
-        if (results == null || results.length != 1) {
+        Object[][] results = repository.queryByLoginTicket(loginTicket);
+        if (results.length < 1) {
             statusController.setFailed(RpcErrorCode.ERROR_DENIED);
-        } else if (Optional.ofNullable(expiry).map(e -> Instant.now().isAfter(Instant.ofEpochMilli(e))).orElse(false)) {
-            statusController.setFailed(RpcErrorCode.ERROR_TIMED_OUT);
-        } else if (banded) {
-            statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_SUSPENDED);
-        } else if (permanentBanned) {
-            statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
-
-        } else {
-            AuthenticationServiceProto.LogonResult.Builder resultBuilder = AuthenticationServiceProto.LogonResult.newBuilder()
-                    .setErrorCode(RpcErrorCode.STATUS_OK)
-                    .setAccountId(EntityProto.EntityId.newBuilder()
-                            .setLow(battleNetAccount.getId())
-                            .setHigh(0x100000000000000L).build())
-                    .setSessionKey(ByteString.copyFrom(SecureUtils.generateRandomBytes(SysProperties.PORTAL_SESSION_KEY_LENGTH)));
-
-            battleNetAccount.getGameAccounts().forEach(account -> {
-                resultBuilder.addGameAccountId(EntityProto.EntityId.newBuilder()
-                        .setLow(account.getId())
-                        .setHigh(0x200000200576F57L).build());
-            });
-            if (StringUtils.hasText(battleNetAccount.getLockCountry())) {
-                resultBuilder.setGeoipCountry(battleNetAccount.getLockCountry());
-            }
-            authenticationListener.onLogonComplete(statusController, resultBuilder.build(), response -> {
-            });
-            statusController.getRpcSession().setAuthorized(true);
-            //Maybe remove to the cache service.
-            statusController.getRpcSession().setAttachment(RpcSession.AUTHORIZED_USER, battleNetAccount);
-            done.run(RpcProto.NoData.getDefaultInstance());
+            done.run(RpcProto.NoData.newBuilder().build());
+            return;
         }
 
+        BattlenetAccount o1 = (BattlenetAccount) results[0][0];
+        BattlenetAccountBan o2 = (BattlenetAccountBan) results[0][1];
 
-        service.queryBattleNetAccountByLoginTicket(loginTicket)
-                .switchIfEmpty(Mono.just(new BattlenetAccount()))
-                .subscribe(battleNetAccount -> {
+        if (System.currentTimeMillis() - o1.getLoginTicketExpiry() < 0) {
+            statusController.setFailed(RpcErrorCode.ERROR_TIMED_OUT);
+            done.run(RpcProto.NoData.newBuilder().build());
+            return;
+        }
+
+        // If the IP is 'locked', check that the player comes indeed from the correct IP address
+        if (!Objects.equals(o1.getLocked(), 0)) {
+            log.debug("[Session::HandleVerifyWebCredentials] Account '{}' is locked to IP - '{}' is logging in from '{}'", o1.getEmail(), o1.getLastIp(), statusController.remoteAddress().getHostName());
+            statusController.setFailed(RpcErrorCode.ERROR_RISK_ACCOUNT_LOCKED);
+            done.run(RpcProto.NoData.newBuilder().build());
+            return;
+        }
+
+        Boolean banded = Optional.ofNullable(o2).map(e -> e.getId().getBandate() > System.currentTimeMillis()).orElse(false);
+        Boolean permanentlyBanned = Optional.ofNullable(o2).map(e -> Objects.equals(e.getUnbandate(), e.getId().getBandate())).orElse(false);
+
+        if (permanentlyBanned) {
+            log.info("[Session::HandleVerifyWebCredentials] Banned account {} tried to login!", o1.getEmail());
+            statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
+            done.run(RpcProto.NoData.newBuilder().build());
+            return;
+        } else if (banded) {
+            log.info("[Session::HandleVerifyWebCredentials] Temporarily banned account {} tried to login!", o1.getEmail());
+            statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
+            done.run(RpcProto.NoData.newBuilder().build());
+            return;
+        }
+        done.run(RpcProto.NoData.getDefaultInstance());
+        AuthenticationServiceProto.LogonResult.Builder resultBuilder = AuthenticationServiceProto.LogonResult.newBuilder()
+                .setErrorCode(RpcErrorCode.STATUS_OK)
+                .setAccountId(EntityProto.EntityId.newBuilder().setLow(o1.getId()).setHigh(0x100000000000000L).build())
+                .setSessionKey(ByteString.copyFrom(SecureUtils.generateRandomBytes(SysProperties.PORTAL_SESSION_KEY_LENGTH)));
+
+        Arrays.stream(results).forEach(objects -> {
+            Account account = (Account) objects[2];
+            resultBuilder.addGameAccountId(EntityProto.EntityId.newBuilder().setLow(account.getId()).setHigh(0x200000200576F57L).build());
+        });
+
+        if (StringUtils.hasText(o1.getLockCountry())) {
+            resultBuilder.setGeoipCountry(o1.getLockCountry());
+        }
+
+        RpcSession rpcSession = statusController.getRpcSession();
+        rpcSession.setAuthorized(true);
 
 
-                }, throwable -> {
-                    log.error("Call loginTicketForBattleNetAccount error", throwable);
-                    statusController.setFailed(RpcErrorCode.ERROR_DENIED);
-                    done.run(RpcProto.NoData.getDefaultInstance());
-                });
 
+        authenticationListener.onLogonComplete(statusController, resultBuilder.build(), response -> {
+        });
     }
 
 
     @Override
     public void generateWebCredentials(RpcController controller, AuthenticationServiceProto.GenerateWebCredentialsRequest request, RpcCallback<AuthenticationServiceProto.GenerateWebCredentialsResponse> done) {
-        NettyRpcController nettyRpcController = (NettyRpcController) controller;
+        DefaultRpcController nettyRpcController = (DefaultRpcController) controller;
         nettyRpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
         done.run(AuthenticationServiceProto.GenerateWebCredentialsResponse.getDefaultInstance());
     }
 
-    private String getWebAuthUrl() {
-        StringBuilder portalUrl = new StringBuilder(portalProperties.getPortalUrl());
-        while (portalUrl.charAt(portalUrl.length() - 1) == '/') {
-            portalUrl.deleteCharAt(portalUrl.length() - 1);
-        }
-        return portalUrl.append("/bnetserver/login/").toString();
+    private String webAuthUrl(boolean ssl, String host, int port) {
+
+        return "http%s://%s:%d/bnetserver/login/".formatted(ssl ? "s" : "", host, port);
     }
 
 

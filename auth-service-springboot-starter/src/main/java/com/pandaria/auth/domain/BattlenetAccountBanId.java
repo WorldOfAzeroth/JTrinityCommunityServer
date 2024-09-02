@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Embeddable
 public class BattlenetAccountBanId implements Serializable {
-    private static final long serialVersionUID = -2391823948157325259L;
+    private static final long serialVersionUID = -5898169458943764031L;
     @ColumnDefault("'0'")
     @Column(name = "id", columnDefinition = "int UNSIGNED not null")
     private Long id;

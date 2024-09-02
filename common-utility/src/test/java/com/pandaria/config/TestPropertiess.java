@@ -1,8 +1,8 @@
 package com.pandaria.config;
 
+import com.pandaria.config.RefreshableValue;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @ConfigurationProperties("bnetserver")

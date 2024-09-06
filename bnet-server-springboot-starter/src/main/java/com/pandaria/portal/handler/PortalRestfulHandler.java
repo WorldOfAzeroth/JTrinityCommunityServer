@@ -14,30 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PortalRestfulHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        // Handle a bad request.
-        if (!request.decoderResult().isSuccess()) {
-            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST));
-            return;
-        }
-        final String uri = request.uri();
-        // request URI parameters
-        QueryStringDecoder queryStringDecoder = new QueryStringDecoder(uri);
-        HttpMethod method = request.method();
-        if(nettyRequest.method() != HttpMethod.GET && !"application/octet-stream".equals(nettyRequest.headers().get("Content-Type"))){
-            HttpPostRequestDecoder decoder = null;
-            try {
-                decoder = new HttpPostRequestDecoder(HTTP_DATA_FACTORY, request);
-                this.putParams(decoder);
-            } finally {
-                if(null != decoder){
-                    decoder.destroy();
-                    decoder = null;
-                }
-            }
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
 
-        // IP
-        this.putIp(ctx);
     }
 }

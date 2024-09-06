@@ -26,13 +26,15 @@ import com.google.protobuf.RpcController;
 import com.pandaria.net.CommonNetty;
 import com.pandaria.net.Connection;
 import com.pandaria.common.RpcErrorCode;
+import com.pandaria.portal.proto.RpcPacket;
 import io.netty.util.AttributeKey;
 
 import java.net.InetSocketAddress;
+import java.util.LinkedList;
 
 public class DefaultRpcController implements RpcController {
 
-
+	private final LinkedList<RpcPacket> packets = new LinkedList<>();
 	private static final AttributeKey<RpcSession> SESSION_KEY = AttributeKey.valueOf("$RPC_SESSION");
 
 	private String reason;
@@ -120,5 +122,9 @@ public class DefaultRpcController implements RpcController {
 
 	public String format(String msg) {
 		return CommonNetty.format(connection.channel(), msg);
+	}
+
+	public void offer(RpcPacket packet) {
+		this.packets.offer(packet);
 	}
 }

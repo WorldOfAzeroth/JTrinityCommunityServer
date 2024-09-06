@@ -6,7 +6,7 @@ springBoot = "3.3.2"
 mapdb = "3.1.0"
 junit = "5.10.2"
 lombok = "1.18.34"
-protobuf = "3.25.4"
+protobuf = "4.28.0"
 iouring = "0.0.21.Final"
 h2database = "2.3.232"
 
@@ -26,6 +26,7 @@ springboot-validation = { group = "org.springframework.boot", name = "spring-boo
 springboot-websocket = { group = "org.springframework.boot", name = "spring-boot-starter-websocket", version.ref = "springBoot" }
 springboot-cache = { group = "org.springframework.boot", name = "spring-boot-starter-cache", version.ref = "springBoot" }
 protobuf = { group = "com.google.protobuf", name = "protobuf-java", version.ref = "protobuf" }
+protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf"}
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 
 

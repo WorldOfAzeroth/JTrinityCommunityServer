@@ -33,7 +33,7 @@ public class DefaultRpcChannel implements RpcChannel {
                 .setSize(messageBody.length)
                 .setToken(token++).build();
         RpcPacket packet = new RpcPacket(header, messageBody);
-        rpcController.addListenerPacket(packet);
+        rpcController.offer(packet);
         if(log.isInfoEnabled()) {
             String logMsg = " <--" + " service: " + Integer.toHexString(serviceHash) + "-" + serviceOptions.getDescriptorName() + "." + method.getName() +
                     " token: " + header.getToken() +

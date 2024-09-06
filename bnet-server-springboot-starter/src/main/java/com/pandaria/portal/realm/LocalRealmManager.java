@@ -18,13 +18,13 @@ import org.springframework.util.StringUtils;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,14 +37,14 @@ public class LocalRealmManager implements RealmManager, InitializingBean {
     private final PortalProperties portalProperties;
     private final BuildInfoRepository buildInfoRepo;
     private final RealmlistRepository realmlistRepo;
-    private final Map<Integer, ClientBuild> buildInfoMap;
+    private Map<Integer, ClientBuild> clientBuildMap;
 
     private final ConcurrentHashMap<RealmKey, Realm> realmMap = new ConcurrentHashMap<>(5, .1f);
 
 
     @Override
     public ClientBuild getBuildInfo(int build) {
-        return buildInfoMap.get(build);
+        return clientBuildMap.get(build);
     }
 
     @Override
@@ -58,47 +58,46 @@ public class LocalRealmManager implements RealmManager, InitializingBean {
     }
 
     public void loadBuildInfo() {
-        this.buildInfoMap = buildInfoRepo.stream().collect(
-                Collectors.groupingBy(e -> e.buildInfo().getId(), Collectors.collectingAndThen(Collectors.toList(), list -> {
-                    BuildInfo buildInfo = list.getFirst().buildInfo();
-                    ClientBuild clientBuild = new ClientBuild();
-                    clientBuild.setBuild(buildInfo.getId());
-                    clientBuild.setBugfixVersion(buildInfo.getBugfixVersion());
-                    clientBuild.setMinorVersion(buildInfo.getMinorVersion());
-                    clientBuild.setMajorVersion(buildInfo.getMajorVersion());
-                    char[] hotfixVersion = new char[ClientBuild.HOTFIX_VERSION_LENGTH];
-                    String vHotfixVersion = buildInfo.getHotfixVersion();
-                    if (StringUtils.hasText(vHotfixVersion)) {
-                        char[] chars = vHotfixVersion.toCharArray();
-                        System.arraycopy(chars, 0, hotfixVersion, 0, Math.min(chars.length, hotfixVersion.length));
-                    }
-                    clientBuild.setHotfixVersion(hotfixVersion);
-                    List<ClientBuild.AuthKey> authKeys = list.stream().filter(view -> {
-                        BuildAuthKey buildAuthKey = view.authKey();
-                        boolean result = true;
-                        if (!ClientBuild.PLATFORM_TYPE.contains(buildAuthKey.getId().getPlatform())) {
-                            Logs.sql.error("ClientBuild::LoadBuildInfo: Invalid platform {} for `build` {} in `build_auth_key`, skipped.", buildAuthKey.getId().getPlatform(), buildInfo.getId());
-                            result = false;
-                        }
-                        if (!ClientBuild.ARCH.contains(buildAuthKey.getId().getArch())) {
-                            Logs.sql.error("ClientBuild::LoadBuildInfo: Invalid `arch` {} for `build` {} in `build_auth_key`, skipped.", buildAuthKey.getId().getArch(), buildInfo.getId());
-                            result = false;
-                        }
+        this.clientBuildMap = buildInfoRepo.stream().filter(item -> {
+            BuildInfo buildInfo = item.buildInfo();
+            BuildAuthKey buildAuthKey = item.authKey();
+            boolean result = true;
+            if (!ClientBuild.PLATFORM_TYPE.contains(buildAuthKey.getId().getPlatform())) {
+                Logs.sql.error("ClientBuild::LoadBuildInfo: Invalid platform {} for `build` {} in `build_auth_key`, skipped.", buildAuthKey.getId().getPlatform(), buildInfo.getId());
+                result = false;
+            }
+            if (!ClientBuild.ARCH.contains(buildAuthKey.getId().getArch())) {
+                Logs.sql.error("ClientBuild::LoadBuildInfo: Invalid `arch` {} for `build` {} in `build_auth_key`, skipped.", buildAuthKey.getId().getArch(), buildInfo.getId());
+                result = false;
+            }
 
-                        if (!ClientBuild.TYPE.contains(buildAuthKey.getId().getType())) {
-                            Logs.sql.error("ClientBuild::LoadBuildInfo: Invalid `type` {} for `build` {} in `build_auth_key`, skipped.", buildAuthKey.getId().getType(), buildInfo.getId());
-                            result = false;
-                        }
-                        return result;
-                    }).map(view -> {
-                        BuildAuthKey buildAuthKey = view.authKey();
-                        BuildAuthKeyId keyId = buildAuthKey.getId();
-                        return new ClientBuild.AuthKey(new ClientBuild.VariantId(keyId.getPlatform(), keyId.getArch(), keyId.getType()), SecureUtils.hexStringToByteArray(buildAuthKey.getKey()));
-                    }).toList();
-                    clientBuild.setAuthKeys(authKeys);
-                    return buildInfo;
-                }))
-        );
+            if (!ClientBuild.TYPE.contains(buildAuthKey.getId().getType())) {
+                Logs.sql.error("ClientBuild::LoadBuildInfo: Invalid `type` {} for `build` {} in `build_auth_key`, skipped.", buildAuthKey.getId().getType(), buildInfo.getId());
+                result = false;
+            }
+            return result;
+        }).collect(Collectors.groupingBy(item -> item.buildInfo().getId(), Collectors.collectingAndThen(Collectors.toList(), list -> {
+            BuildInfo buildInfo = list.getFirst().buildInfo();
+            ClientBuild clientBuild = new ClientBuild();
+            clientBuild.setBuild(buildInfo.getId());
+            clientBuild.setBugfixVersion(buildInfo.getBugfixVersion());
+            clientBuild.setMinorVersion(buildInfo.getMinorVersion());
+            clientBuild.setMajorVersion(buildInfo.getMajorVersion());
+            char[] hotfixVersion = new char[ClientBuild.HOTFIX_VERSION_LENGTH];
+            String vHotfixVersion = buildInfo.getHotfixVersion();
+            if (StringUtils.hasText(vHotfixVersion)) {
+                char[] chars = vHotfixVersion.toCharArray();
+                System.arraycopy(chars, 0, hotfixVersion, 0, Math.min(chars.length, hotfixVersion.length));
+            }
+            clientBuild.setHotfixVersion(hotfixVersion);
+            List<ClientBuild.AuthKey> authKeys = list.stream().map(view -> {
+                BuildAuthKey buildAuthKey = view.authKey();
+                BuildAuthKeyId keyId = buildAuthKey.getId();
+                return new ClientBuild.AuthKey(new ClientBuild.VariantId(keyId.getPlatform(), keyId.getArch(), keyId.getType()), SecureUtils.hexStringToByteArray(buildAuthKey.getKey()));
+            }).toList();
+            clientBuild.setAuthKeys(authKeys);
+            return clientBuild;
+        })));
     }
 
 
@@ -137,7 +136,7 @@ public class LocalRealmManager implements RealmManager, InitializingBean {
 
     @Override
     @Transactional
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         loadBuildInfo();
         int updateDelay = portalProperties.getRealmsStateUpdateDelay();
         scheduledExecutorService.scheduleWithFixedDelay(this::updateRealmList, updateDelay, updateDelay, TimeUnit.SECONDS);

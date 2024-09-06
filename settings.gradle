@@ -12,8 +12,8 @@ plugins {
 
 rootProject.name = 'PandariaCommunityServer'
 
-include('common-utility')
 include('common-netty')
+include('common-springboot-starter')
 include('auth-service-springboot-starter')
 include('game-service-springboot-starter')
 include('bnet-server-springboot-starter')

@@ -1,6 +1,7 @@
 package com.pandaria.portal;
 
-import com.pandaria.portal.handler.PortalRpcHandler;
+import com.pandaria.net.server.TcpServer;
+import com.pandaria.portal.handler.DefaultPortalRpcHandler;
 import com.pandaria.utils.SysProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -20,76 +21,18 @@ import org.springframework.beans.factory.annotation.Value;
 
 
 @Slf4j
-public class BNetPortalRestfulServer {
+public class BNetPortalRestfulServer extends TcpServer<BNetPortalRestfulServer> {
 
-    @Value("bnetserver.BindIP")
-    private String bindIP;
-
-    @Value("bnetserver.LoginREST.Port")
-    private int loginResTPort;
-
-    @Setter
-    private PortalRpcHandler rpcHandler;
-
-
-    private ChannelFuture closeFuture;
-    private final NioEventLoopGroup bossGroup = new NioEventLoopGroup(SysProperties.PORTAL_SERVER_IO_SELECT_COUNT, new DefaultThreadFactory(SysProperties.PORTAL_SERVER_IO_BOSS_THREAD_NAME, true));
-    private final NioEventLoopGroup workerGroup = new NioEventLoopGroup(SysProperties.PORTAL_SERVER_IO_WORKER_COUNT, new DefaultThreadFactory(SysProperties.PORTAL_SERVER_IO_WORKER_THREAD_NAME, true));
-
-
-
-    public void start() {
-
-        ChannelFuture httpFuture = new ServerBootstrap()
-                .group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
-                .option(ChannelOption.SO_RCVBUF, SysProperties.PORTAL_SERVER_IO_SO_RCVBUF)
-                .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .childOption(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
-                .childOption(ChannelOption.SO_RCVBUF, SysProperties.PORTAL_SERVER_IO_SO_RCVBUF)
-                .childOption(ChannelOption.SO_SNDBUF, SysProperties.PORTAL_SERVER_IO_SO_SNDBUF)
-                .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
-                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .childHandler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast("decoder",new HttpRequestDecoder())
-                                .addLast("encoder",new HttpResponseEncoder())
-                                .addLast("aggregator",new HttpObjectAggregator(512*1024))
-                                .addLast("handler",new HttpServerHandler());
-                    }
-                })
-                .bind(bindIP, loginResTPort);
-
-        Thread thread = new Thread("portal-restful-daemon") {
-            @Override
-            public void run() {
-                try {
-                    log.info("portal http server started on port {}: ", loginResTPort);
-                    closeFuture = httpFuture.sync();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        };
-        thread.setDaemon(true);
-        thread.start();
-
-
-
+    public static BNetPortalRestfulServer create() {
+        return new BNetPortalRestfulServer();
     }
 
-    public void stop() {
-        if (closeFuture != null) {
-            try {
-                closeFuture.channel().closeFuture().sync();
-            } catch (InterruptedException ignored) {
-
-            }
-            log.info("portal restful server stopped.");
-        }
+    @Override
+    protected BNetPortalRestfulServer self() {
+        return this;
     }
 
-
+    private BNetPortalRestfulServer() {
+        super(new ServerBootstrap());
+    }
 }

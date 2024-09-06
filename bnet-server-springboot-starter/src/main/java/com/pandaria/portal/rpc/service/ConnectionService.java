@@ -7,12 +7,14 @@ import com.google.protobuf.RpcController;
 import com.pandaria.common.RpcErrorCode;
 import com.pandaria.portal.rpc.DefaultRpcChannel;
 import com.pandaria.portal.rpc.DefaultRpcController;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
+@Service
 public class ConnectionService implements ConnectionServiceProto.ConnectionService.Interface {
 
-    private ConnectionServiceProto.ConnectionService.Interface clientNotification = ConnectionServiceProto.ConnectionService.newStub(new DefaultRpcChannel());
+    private final ConnectionServiceProto.ConnectionService.Interface clientNotification = ConnectionServiceProto.ConnectionService.newStub(new DefaultRpcChannel());
 
 
     @Override

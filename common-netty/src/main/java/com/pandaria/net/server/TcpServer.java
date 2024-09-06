@@ -56,7 +56,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
     public final DisposableServer bind() {
         ChannelFuture channelFuture = nettyBind();
-        DisposableServer disposableServer = ()-> {
+        DisposableServer disposableServer = () -> {
             channelGroup.close().awaitUninterruptibly();
             Optional.ofNullable(channelGroup).ifPresent(e -> e.close().awaitUninterruptibly());
             channelFuture.channel().close().awaitUninterruptibly();
@@ -124,7 +124,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
     public T runOn(LoopResources loopResources, boolean preferNative) {
         Objects.requireNonNull(loopResources, "loopResources");
-        if(this.loopResources != null) {
+        if (this.loopResources != null) {
             this.loopResources.shutdownGracefully();
         }
         this.loopResources = (DefaultLoopResources) loopResources;
@@ -167,7 +167,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
     public T doOnConnection(Consumer<? super Connection> other) {
         Objects.requireNonNull(other, "doOnConnected");
         ConnectionObserver newChildObserver = ((connection, newState) -> {
-            if(newState == ConnectionObserver.State.CONNECTED) {
+            if (newState == ConnectionObserver.State.CONNECTED) {
                 other.accept(connection);
             }
         });
@@ -195,7 +195,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
         Objects.requireNonNull(handler, "handler");
 
         ConnectionObserver newChildObserver = ((connection, newState) -> {
-            if(newState == ConnectionObserver.State.READ) {
+            if (newState == ConnectionObserver.State.READ) {
                 handler.accept(connection.inbound(), connection.outbound());
             }
         });
@@ -270,7 +270,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
 
     public T taskExecutor(ExecutorService taskExecutor) {
-        if(this.taskExecutor != null) {
+        if (this.taskExecutor != null) {
             this.taskExecutor.shutdown();
         }
         this.taskExecutor = taskExecutor;
@@ -285,13 +285,12 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
 
     private void shutdownTaskExecutor() {
-        log.debug("Shutting down TaskExecutor {} ",this.taskExecutor.getClass().getName() );
+        log.debug("Shutting down TaskExecutor {} ", this.taskExecutor.getClass().getName());
 
         if (this.taskExecutor != null) {
             if (this.waitForTasksToCompleteOnShutdown) {
                 this.taskExecutor.shutdown();
-            }
-            else {
+            } else {
                 for (Runnable remainingTask : this.taskExecutor.shutdownNow()) {
                     if (remainingTask instanceof Future<?> future) {
                         future.cancel(true);
@@ -302,8 +301,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
                 if (!taskExecutor.awaitTermination(5, TimeUnit.SECONDS)) {
                     log.warn("Timed out while waiting for taskExecutor {} to terminate", this.taskExecutor.getClass().getName());
                 }
-            }
-            catch (InterruptedException ex) {
+            } catch (InterruptedException ex) {
                 log.warn("Interrupted while waiting for taskExecutor {} to terminate", this.taskExecutor.getClass().getName());
                 Thread.currentThread().interrupt();
             }
@@ -362,13 +360,13 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
             ChannelPipelineConfigurer _default = null;
             if (sslProvider != null) {
-                _default =  (observer, ch, remoteAddress) -> sslProvider.addSslHandler(ch, remoteAddress,
+                _default = (observer, ch, remoteAddress) -> sslProvider.addSslHandler(ch, remoteAddress,
                         Boolean.parseBoolean(System.getProperty(CommonNetty.SSL_SERVER_DEBUG, "false")));
             }
 
-            if(null == _default) {
+            if (null == _default) {
                 _default = doOnChannelInit;
-            } else if(doOnChannelInit != null) {
+            } else if (doOnChannelInit != null) {
                 _default = _default.andThen(doOnChannelInit);
             }
 
@@ -381,41 +379,43 @@ public abstract class TcpServer<T extends TcpServer<T>> {
     }
 
 
-
-    record ChildObserverProxy(ConnectionObserver childObserver, ChannelGroup channelGroup, ExecutorService taskerExecutor) implements ConnectionObserver {
+    record ChildObserverProxy(ConnectionObserver childObserver, ChannelGroup channelGroup,
+                              ExecutorService taskerExecutor) implements ConnectionObserver {
 
         @Override
-            public void onUncaughtException(Connection connection, Throwable error) {
-                ChannelOperations<?, ?> ops = ChannelOperations.get(connection.channel());
-                if (ops == null && (error instanceof IOException || CommonNetty.isConnectionReset(error) ||
-                        // DecoderException at this point might be SSL handshake issue or other TLS related issue.
-                        // In case of HTTP if there is an HTTP decoding issue, it is propagated with
-                        // io.netty.handler.codec.DecoderResultProvider
-                        // and not with throwing an exception
-                        error instanceof DecoderException)) {
-                    if (log.isDebugEnabled()) {
-                        log.debug(CommonNetty.format(connection.channel(), "onUncaughtException(" + connection + ")"), error);
-                    }
-                } else {
-                    log.error(CommonNetty.format(connection.channel(), "onUncaughtException(" + connection + ")"), error);
+        public void onUncaughtException(Connection connection, Throwable error) {
+            ChannelOperations<?, ?> ops = ChannelOperations.get(connection.channel());
+            if (ops == null && (error instanceof IOException || CommonNetty.isConnectionReset(error) ||
+                    // DecoderException at this point might be SSL handshake issue or other TLS related issue.
+                    // In case of HTTP if there is an HTTP decoding issue, it is propagated with
+                    // io.netty.handler.codec.DecoderResultProvider
+                    // and not with throwing an exception
+                    error instanceof DecoderException)) {
+                if (log.isDebugEnabled()) {
+                    log.debug(CommonNetty.format(connection.channel(), "onUncaughtException(" + connection + ")"), error);
                 }
-                connection.dispose();
+            } else {
+                log.error(CommonNetty.format(connection.channel(), "onUncaughtException(" + connection + ")"), error);
             }
-
-            @Override
-            public void onStateChange(Connection connection, State newState) {
-
-                if (channelGroup != null && newState == State.CONNECTED) {
-                    channelGroup.add(connection.channel());
-                }
-                if (newState == State.DISCONNECTING) {
-                    if (connection.channel().isActive()) {
-                        connection.dispose();
-                    }
-
-                }
-                taskerExecutor.submit(() -> {childObserver.onStateChange(connection, newState);});
-            }
+            connection.dispose();
         }
+
+        @Override
+        public void onStateChange(Connection connection, State newState) {
+
+            if (channelGroup != null && newState == State.CONNECTED) {
+                channelGroup.add(connection.channel());
+            }
+            if (newState == State.DISCONNECTING) {
+                if (connection.channel().isActive()) {
+                    connection.dispose();
+                }
+
+            }
+            taskerExecutor.submit(() -> {
+                childObserver.onStateChange(connection, newState);
+            });
+        }
+    }
 
 }

@@ -4,12 +4,11 @@ import bgs.protocol.account.v1.AccountServiceProto;
 import bgs.protocol.authentication.v1.AuthenticationServiceProto;
 import bnet.protocol.connection.v1.ConnectionServiceProto;
 import bnet.protocol.game_utilities.v1.GameUtilitiesServiceProto;
+import com.pandaria.config.RefreshableValue;
 import com.pandaria.net.server.DisposableServer;
 import com.pandaria.net.server.LoopResources;
-import com.pandaria.net.server.NettyPipeline;
 import com.pandaria.net.ssl.TcpSslContextSpec;
 import com.pandaria.portal.BNetPortalRpcServer;
-import com.pandaria.portal.handler.PortalRpcHandler;
 import com.pandaria.portal.handler.RpcProtocolDecoder;
 import com.pandaria.portal.handler.RpcProtocolEncoder;
 import com.pandaria.portal.rpc.service.AccountService;
@@ -21,42 +20,58 @@ import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import lombok.AllArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.File;
 import java.net.InetSocketAddress;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@AllArgsConstructor
 @ComponentScan("com.pandaria.portal")
-@EnableConfigurationProperties(PortalConfigurationProperties.class)
 public class PortalServerAutoConfiguration {
 
 
-    @Autowired
-    private PortalRpcHandler rpcHandler;
-
-    private PortalConfigurationProperties properties;
-
+    @Bean
+    @ConfigurationProperties("bnetserver")
+    PortalProperties portalProperties() {
+        return new PortalProperties();
+    }
 
     @Bean
-    public PortalRpcHandler portalHandler() {
-        PortalRpcHandler portalRpcHandler = new PortalRpcHandler();
-        portalRpcHandler.register(ConnectionServiceProto.ConnectionService.newReflectiveService(new ConnectionService()));
-        portalRpcHandler.register(AuthenticationServiceProto.AuthenticationService.newReflectiveService(new AuthenticationService(portalProperties, authService)));
-        portalRpcHandler.register(AccountServiceProto.AccountService.newReflectiveService(new AccountService()));
-        portalRpcHandler.register(GameUtilitiesServiceProto.GameUtilitiesService.newReflectiveService(new GameUtilitiesService(authService, realmManager)));
-        return portalRpcHandler;
+    @RefreshableValue
+    @ConfigurationProperties("bnetserver.loginrest")
+    LoginRestProperties loginRestProperties() {
+        return new LoginRestProperties();
     }
+
+    @Bean
+    @ConfigurationProperties("bnetserver.wrongpass")
+    WrongPassProperties wrongPassProperties() {
+        return new WrongPassProperties();
+    }
+
+    @Bean
+    @RefreshableValue
+    @ConfigurationProperties("bnetserver.updates")
+    UpdatesProperties updatesProperties() {
+        return new UpdatesProperties();
+    }
+
+
+    private final ConnectionService connectionService;
+    private final AuthenticationService authenticationService;
+    private final AccountService accountService;
+    private final GameUtilitiesService gameUtilitiesService;
 
 
     @Bean(destroyMethod = "disposeNow")
     public DisposableServer bNetPortalRpcServer() {
+        PortalProperties portalProperties = portalProperties();
         return BNetPortalRpcServer.create()
                 .option(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
                 .option(ChannelOption.SO_RCVBUF, SysProperties.PORTAL_SERVER_IO_SO_RCVBUF)
@@ -68,19 +83,21 @@ public class PortalServerAutoConfiguration {
                 .childOption(ChannelOption.TCP_NODELAY, Boolean.TRUE)
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .secure(sslContextSpec -> {
-                    sslContextSpec.sslContext(TcpSslContextSpec.forServer(new File(properties), new File(privateKeyFile)));
+                    sslContextSpec.sslContext(TcpSslContextSpec.forServer(portalProperties.getCertificatesFile(), portalProperties.getPrivateKeyFile()));
                 }).doOnChannelInit((observer, channel, address) -> {
-                    channel.pipeline().addFirst("rpc.IdleHandler", new IdleStateHandler(0, 0, 30, TimeUnit.MINUTES));
-                    channel.pipeline().addBefore(NettyPipeline.ReactiveBridge, "rpc.RpcDecoder", new RpcProtocolDecoder());
+                    channel.pipeline().addLast("rpc.IdleHandler", new IdleStateHandler(0, 0, 30, TimeUnit.MINUTES));
+                    channel.pipeline().addLast("rpc.RpcDecoder", new RpcProtocolDecoder());
                     channel.pipeline().addLast("rpc.RpcEncoder", new RpcProtocolEncoder());
                 }).route(router -> {
-
-                    router.service()
-
-                }).bindAddress(() -> new InetSocketAddress(bindIP, battlenetPort))
-                .runOn(LoopResources.create(SysProperties.PORTAL_SERVER_IO_BOSS_THREAD_NAME,
-                                SysProperties.PORTAL_SERVER_IO_SELECT_COUNT, SysProperties.PORTAL_SERVER_IO_WORKER_COUNT, true),
-                        SysProperties.PORTAL_SERVER_IO_PREFERNATIVE)
+                    router.service(0x65446991, ConnectionServiceProto.ConnectionService.newReflectiveService(connectionService));
+                    router.service(0xDECFC01, AuthenticationServiceProto.AuthenticationService.newReflectiveService(authenticationService));
+                    router.service(0x62DA0891, AccountServiceProto.AccountService.newReflectiveService(accountService));
+                    router.service(0x3FC1274D, GameUtilitiesServiceProto.GameUtilitiesService.newReflectiveService(gameUtilitiesService));
+                }).bindAddress(() -> new InetSocketAddress(portalProperties.getBindIP(), portalProperties.getBattleNetPort()))
+                .runOn(LoopResources.create(SysProperties.PORTAL_SERVER_RPC_IO_WORKER_THREAD_NAME,
+                                portalProperties.getUseProcessors(), true),
+                        SysProperties.PORTAL_SERVER_IO_PREFERNATIVE
+                ).taskExecutor(Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name(SysProperties.PORTAL_SERVER_RPC_TASK_HANDLER_THREAD_NAME).factory()))
                 .bindNow();
     }
 

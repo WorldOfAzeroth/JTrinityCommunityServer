@@ -49,10 +49,10 @@ public class SysProperties {
     public static final String PORTAL_SERVER_PRIVATE_KEY_FILE =
             Utils.getProperty("portal.server.privateKeyFile", "/portalserver.key.pem");
 
-    public static final String PORTAL_SERVER_IO_BOSS_THREAD_NAME =
-            Utils.getProperty("portal.server.ioBoss.threadName", "ps-io-boss");
-    public static final String PORTAL_SERVER_IO_WORKER_THREAD_NAME =
-            Utils.getProperty("portal.server.ioWorker.threadName", "ps-io-worker");
+    public static final String PORTAL_SERVER_RPC_TASK_HANDLER_THREAD_NAME =
+            Utils.getProperty("portal.server.rpc.taskHandler.threadName", "portal-rpc-task-handler");
+    public static final String PORTAL_SERVER_RPC_IO_WORKER_THREAD_NAME =
+            Utils.getProperty("portal.server.rpc.ioWorker.threadName", "portal-rpc-io-worker");
 
     public static final String CACHE_PERSISTENCE_FILE_NAME =
             Utils.getProperty("cache.persistenceFileName", "cache.db");

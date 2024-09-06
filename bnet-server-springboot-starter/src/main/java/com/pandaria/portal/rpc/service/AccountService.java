@@ -6,12 +6,19 @@ import bgs.protocol.account.v1.AccountServiceProto;
 import bnet.protocol.RpcProto;
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
+import com.pandaria.auth.dto.AccountInfo;
+import com.pandaria.auth.dto.GameAccount;
 import com.pandaria.common.RpcErrorCode;
 import com.pandaria.portal.rpc.DefaultRpcController;
+import com.pandaria.portal.rpc.RpcSession;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AccountService implements AccountServiceProto.AccountService.Interface {
+
+
 
 
     @Override
@@ -38,7 +45,7 @@ public class AccountService implements AccountServiceProto.AccountService.Interf
     @Override
     public void getAccountState(RpcController controller, AccountServiceProto.GetAccountStateRequest request, RpcCallback<AccountServiceProto.GetAccountStateResponse> done) {
         DefaultRpcController rpcController = (DefaultRpcController) controller;
-        if (!rpcController.getRpcSession().isAuthorized()) {
+        if (!rpcController.getSession().isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(AccountServiceProto.GetAccountStateResponse.getDefaultInstance());
             return;
@@ -57,32 +64,37 @@ public class AccountService implements AccountServiceProto.AccountService.Interf
     @Override
     public void getGameAccountState(RpcController controller, AccountServiceProto.GetGameAccountStateRequest request, RpcCallback<AccountServiceProto.GetGameAccountStateResponse> done) {
         DefaultRpcController rpcController = (DefaultRpcController) controller;
-        if (!rpcController.getRpcSession().isAuthorized()) {
+        RpcSession session = rpcController.getSession();
+        if (!session.isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(AccountServiceProto.GetGameAccountStateResponse.getDefaultInstance());
             return;
         }
 
-
-        BattlenetAccount battlenetAccount = rpcController.getRpcSession().getAttachment(RpcSession.AUTHORIZED_USER);
+        AccountInfo accountInfo = session.getAccountInfo();
 
         AccountProto.GameAccountState.Builder stateBuilder = AccountProto.GameAccountState.newBuilder();
         AccountProto.GameAccountFieldTags.Builder tagBuilder = AccountProto.GameAccountFieldTags.newBuilder();
         if (request.getOptions().getFieldGameLevelInfo()) {
-            battlenetAccount.getGameAccounts().stream().filter(e -> request.getGameAccountId().getLow() == e.getId()).findFirst().ifPresent(e -> {
-                //String wowName = e.getUsername().replaceAll("^\\S*#", "WoW");
-                stateBuilder.setGameLevelInfo(AccountProto.GameLevelInfo.newBuilder().setName(e.getUsername()).setProgram(5730135).build());
-            });
+
+            GameAccount gameAccount = accountInfo.getGameAccount(request.getGameAccountId().getLow());
+            if(gameAccount != null) {
+                stateBuilder.setGameLevelInfo(AccountProto.GameLevelInfo.newBuilder().setName(gameAccount.getUsername()).setProgram(5730135).build());
+            }
+
             tagBuilder.setGameLevelInfoTag(0x5C46D483).build();
         }
 
         if (request.getOptions().getFieldGameStatus()) {
+
             AccountProto.GameStatus.Builder gameStatusBuilder = AccountProto.GameStatus.newBuilder().setProgram(5730135); // WoW
-            battlenetAccount.getGameAccounts().stream().filter(e -> request.getGameAccountId().getLow() == e.getId()).findFirst().ifPresent(e -> {
-                gameStatusBuilder.setIsSuspended(e.getBanned() != null && e.getBanned())
-                        .setIsBanned(e.getPermanentBanned() != null && e.getPermanentBanned())
-                        .setSuspensionExpires(0L);//uint64(itr->second.UnbanDate) * 1000000
-            });
+            GameAccount gameAccount = accountInfo.getGameAccount(request.getGameAccountId().getLow());
+            if(gameAccount != null) {
+
+                gameStatusBuilder.setIsSuspended(gameAccount.isBanded())
+                        .setIsBanned(gameAccount.isPermanentlyBanned())
+                        .setSuspensionExpires(gameAccount.getUnbandate());
+            }
             stateBuilder.setGameStatus(gameStatusBuilder.build()).build();
             tagBuilder.setGameStatusTag(0x98B75F99).build();
         }

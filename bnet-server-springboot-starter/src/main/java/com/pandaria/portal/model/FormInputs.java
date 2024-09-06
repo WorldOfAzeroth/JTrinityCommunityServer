@@ -1,6 +1,7 @@
 package com.pandaria.portal.model;
 
-import com.pandaria.portal.utils.JsonUtil;
+
+import com.pandaria.utils.JsonUtil;
 import lombok.Builder;
 import lombok.Data;
 

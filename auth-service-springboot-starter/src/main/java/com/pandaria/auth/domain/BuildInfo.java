@@ -30,4 +30,6 @@ public class BuildInfo {
     @Column(name = "hotfixVersion", length = 3)
     private String hotfixVersion;
 
+
+
 }

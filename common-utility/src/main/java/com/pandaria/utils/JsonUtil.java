@@ -1,9 +1,9 @@
-package com.pandaria.portal.utils;
+package com.pandaria.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pandaria.portal.exception.ServerException;
+
 
 public class JsonUtil {
 
@@ -18,7 +18,7 @@ public class JsonUtil {
         try {
             return mapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {
-            throw new ServerException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -26,7 +26,7 @@ public class JsonUtil {
         try {
             return mapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {
-            throw new ServerException(e);
+            throw new RuntimeException(e);
         }
     }
 

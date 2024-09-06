@@ -1,9 +1,8 @@
 package com.pandaria.portal.handler;
 
 import io.netty.channel.ChannelDuplexHandler;
-import reactor.util.Logger;
-import reactor.util.Loggers;
-import reactor.util.annotation.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -11,13 +10,13 @@ import java.net.SocketAddress;
 
 public class RpcAccessLogHandler extends ChannelDuplexHandler {
 
-    private static final Logger LOG = Loggers.getLogger("com.rainbowland.portal.rpc.server.AccessLog");
+    private static final Logger log = LoggerFactory.getLogger("rpc.server.AccessLog");
 
 
     private static final String MISSING_SERVICE = "-";
     private static final String MISSING_ADDR = "-";
 
-    static String applyAddress(@Nullable SocketAddress socketAddress) {
+    static String applyAddress(SocketAddress socketAddress) {
         if (socketAddress instanceof InetSocketAddress) {
             InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
             return inetSocketAddress.getHostString() + ":" + inetSocketAddress.getPort();

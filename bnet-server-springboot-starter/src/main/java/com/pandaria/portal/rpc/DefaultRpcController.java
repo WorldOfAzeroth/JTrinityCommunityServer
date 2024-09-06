@@ -23,15 +23,13 @@ package com.pandaria.portal.rpc;
 
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
+import com.pandaria.net.CommonNetty;
 import com.pandaria.net.Connection;
-import com.pandaria.portal.proto.RpcPacket;
 import com.pandaria.common.RpcErrorCode;
 import io.netty.util.AttributeKey;
 
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.List;
+
 public class DefaultRpcController implements RpcController {
 
 
@@ -104,10 +102,6 @@ public class DefaultRpcController implements RpcController {
 	}
 
 
-	public void addListenerPacket(RpcPacket listenerPacket) {
-		listenerPackets.add(listenerPacket);
-	}
-
 
 	//connect methods
 
@@ -115,12 +109,16 @@ public class DefaultRpcController implements RpcController {
         return ((InetSocketAddress) connection.remoteAddress());
 	}
 
-	public RpcSession getRpcSession() {
+	public RpcSession getSession() {
 		RpcSession rpcSession = connection.channel().attr(SESSION_KEY).get();
 		if (rpcSession == null) {
 			rpcSession = new RpcSession();
 			connection.channel().attr(SESSION_KEY).set(rpcSession);
 		}
 		return rpcSession;
+	}
+
+	public String format(String msg) {
+		return CommonNetty.format(connection.channel(), msg);
 	}
 }

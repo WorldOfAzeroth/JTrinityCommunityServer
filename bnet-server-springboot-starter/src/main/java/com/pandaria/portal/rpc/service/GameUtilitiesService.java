@@ -6,49 +6,61 @@ import bnet.protocol.game_utilities.v1.GameUtilitiesServiceProto;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
-import com.pandaria.portal.model.RealmProto;
-import com.pandaria.portal.utils.JsonUtil;
-import com.pandaria.portal.utils.LocaleConstant;
+import com.pandaria.auth.domain.Account;
+import com.pandaria.auth.domain.AccountLastPlayedCharacter;
+import com.pandaria.auth.domain.Realmcharacter;
+import com.pandaria.auth.domain.Realmlist;
+import com.pandaria.auth.dto.AccountInfo;
+import com.pandaria.auth.dto.GameAccount;
+import com.pandaria.auth.repository.AccountLastPlayedCharacterRepository;
+import com.pandaria.auth.repository.AccountRepository;
+import com.pandaria.auth.repository.RealmcharacterRepository;
 import com.pandaria.common.RpcErrorCode;
-
+import com.pandaria.portal.model.RealmProto;
+import com.pandaria.portal.realm.ClientBuild;
+import com.pandaria.portal.realm.Realm;
+import com.pandaria.portal.realm.RealmKey;
+import com.pandaria.portal.realm.RealmManager;
 import com.pandaria.portal.rpc.DefaultRpcController;
 import com.pandaria.portal.rpc.RpcSession;
-import com.pandaria.service.auth.AuthService;
-import com.pandaria.service.auth.domain.*;
-import com.pandaria.service.realm.Realm;
-import com.pandaria.service.realm.RealmBuildInfo;
-import com.pandaria.service.realm.RealmKey;
-import com.pandaria.service.realm.RealmManager;
+import com.pandaria.portal.utils.LocaleConstant;
+import com.pandaria.utils.Compress;
+import com.pandaria.utils.JsonUtil;
+import com.pandaria.utils.SecureUtils;
 import com.pandaria.utils.SysProperties;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;
+import org.springframework.stereotype.Service;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
+@Service
 public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtilitiesService.Interface {
 
-    private final AuthService authService;
-
     private final RealmManager realmManager;
+    private final AccountRepository accountRepo;
+    private final RealmcharacterRepository realmCharacterRepo;
+    private final AccountLastPlayedCharacterRepository accountLastPlayedCharacterRepo;
 
     @Override
+    @Transactional
     public void processClientRequest(RpcController controller, GameUtilitiesServiceProto.ClientRequest request,
                                      RpcCallback<GameUtilitiesServiceProto.ClientResponse> done) {
         DefaultRpcController rpcController = (DefaultRpcController) controller;
-        if (!rpcController.getRpcSession().isAuthorized()) {
+        if (!rpcController.getSession().isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
             return;
@@ -58,7 +70,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
                 .filter(e -> e.getName().startsWith("Command_")).findFirst().orElse(null);
 
         if (command == null) {
-            log.error("{} ClientRequest with no command.", rpcController.getRpcSession().getRemoteHostName());
+            log.error(rpcController.format("ClientRequest with no command."));
             rpcController.setFailed(RpcErrorCode.ERROR_RPC_MALFORMED_REQUEST);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
             return;
@@ -78,7 +90,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
                 processRealmJoinRequest(rpcController, request, done);
                 break;
             default:
-                log.error("{} ClientRequest with unknown command {}", rpcController.getRpcSession().getRemoteHostName(), command);
+                log.error(rpcController.format("ClientRequest with unknown command {}."), command);
                 rpcController.setFailed(RpcErrorCode.ERROR_RPC_NOT_IMPLEMENTED);
                 done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
                 break;
@@ -127,7 +139,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
                                          GameUtilitiesServiceProto.GetAllValuesForAttributeRequest request,
                                          RpcCallback<GameUtilitiesServiceProto.GetAllValuesForAttributeResponse> done) {
         DefaultRpcController rpcController = (DefaultRpcController) controller;
-        if (!rpcController.getRpcSession().isAuthorized()) {
+        if (!rpcController.getSession().isAuthorized()) {
             rpcController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(GameUtilitiesServiceProto.GetAllValuesForAttributeResponse.getDefaultInstance());
             return;
@@ -139,9 +151,10 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
             return;
         }
         GameUtilitiesServiceProto.GetAllValuesForAttributeResponse.Builder builder = GameUtilitiesServiceProto.GetAllValuesForAttributeResponse.newBuilder();
-        realmManager.realmKeys().stream().forEach(realmKey -> {
-            builder.addAttributeValue(AttributeProto.Variant.newBuilder().setStringValue(realmKey.toSubRegionAddressString()).build());
-        });
+        realmManager.realmKeys().forEach(
+                realmKey -> builder.addAttributeValue(AttributeProto.Variant.newBuilder()
+                        .setStringValue(realmKey.toSubRegionAddressString()).build())
+        );
         done.run(builder.build());
     }
 
@@ -171,9 +184,9 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         Map<String, AttributeProto.Attribute> attributeMap = request.getAttributeList().stream()
                 .collect(Collectors.toMap(AttributeProto.Attribute::getName, v -> v, (v1, v2) -> v1));
         AttributeProto.Attribute attribute = attributeMap.get("Param_RealmAddress");
-        RpcSession rpcSession = controller.getRpcSession();
-        Account selectAccount = rpcSession.getAttachment(RpcSession.SELECT_ACCOUNT);
-        if (attribute == null || selectAccount == null) {
+        RpcSession rpcSession = controller.getSession();
+        AccountInfo selectAccountInfo = rpcSession.getAccountInfo();
+        if (attribute == null || selectAccountInfo == null) {
             controller.setFailed(RpcErrorCode.ERROR_WOW_SERVICES_INVALID_JOIN_TICKET);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
             return;
@@ -191,7 +204,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         RealmProto.RealmListServerIPAddresses serverAddresses = new RealmProto.RealmListServerIPAddresses();
         RealmProto.RealmIPAddressFamily addressFamily = new RealmProto.RealmIPAddressFamily();
         RealmProto.IPAddress address = new RealmProto.IPAddress();
-        address.setIp(getAddressForClient(realm, rpcSession.getRemoteAddress().getAddress()));
+        address.setIp(getAddressForClient(realm, controller.remoteAddress().getAddress()));
         address.setPort(realm.getPort());
         addressFamily.setFamily(1);
         addressFamily.setAddresses(List.of(address));
@@ -200,51 +213,52 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         String json = "JSONRealmListServerIPAddresses:" + JsonUtil.toJson(serverAddresses);
         ByteString compressedValue = getCompressedValue(json);
 
-        byte[] clientSecret = rpcSession.getAttachment(RpcSession.CLIENT_SECRET);
+        byte[] clientSecret = rpcSession.getClientSecret();
         byte[] serverSecret = SecureUtils.generateRandomBytes(SysProperties.PORTAL_SERVER_SECRET_LENGTH);
         byte[] keyData = new byte[SysProperties.PORTAL_CLIENT_SECRET_LENGTH + SysProperties.PORTAL_SERVER_SECRET_LENGTH];
         System.arraycopy(clientSecret, 0, keyData, 0, SysProperties.PORTAL_CLIENT_SECRET_LENGTH);
         System.arraycopy(serverSecret, 0, keyData, SysProperties.PORTAL_CLIENT_SECRET_LENGTH, SysProperties.PORTAL_SERVER_SECRET_LENGTH);
 
-        selectAccount.setOs(rpcSession.getPlatform());
-        selectAccount.setLastIp(rpcSession.getRemoteHostName());
-        selectAccount.setSessionKeyBnet(keyData);
-        selectAccount.setLocale(LocaleConstant.fromName(rpcSession.getLocale()).ordinal());
-        selectAccount.setOs(rpcSession.getPlatform());
-
-        authService.update(selectAccount).subscribe(account -> {
-
-            GameUtilitiesServiceProto.ClientResponse.Builder builder = GameUtilitiesServiceProto.ClientResponse.newBuilder();
-
-            builder.addAttribute(AttributeProto.Attribute.newBuilder()
-                    .setName("Param_RealmJoinTicket")
-                    .setValue(AttributeProto.Variant.newBuilder().setBlobValue(ByteString.copyFromUtf8(account.getUsername())).build()).build());
-
-            builder.addAttribute(AttributeProto.Attribute.newBuilder()
-                    .setName("Param_ServerAddresses")
-                    .setValue(AttributeProto.Variant.newBuilder().setBlobValue(compressedValue).build()).build());
-
-            builder.addAttribute(AttributeProto.Attribute.newBuilder()
-                    .setName("Param_JoinSecret")
-                    .setValue(AttributeProto.Variant.newBuilder().setBlobValue(ByteString.copyFrom(serverSecret)).build()).build());
-
-            done.run(builder.build());
-
-        }, throwable -> {
-            log.error("Update account error.", throwable);
-            controller.setFailed(RpcErrorCode.ERROR_WOW_SERVICES_INVALID_JOIN_TICKET);
+        Optional<Account> accountRepoById = accountRepo.findById(selectAccountInfo.getId());
+        if (accountRepoById.isEmpty()) {
+            controller.setFailed(RpcErrorCode.ERROR_USER_SERVER_BAD_WOW_ACCOUNT);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
-        });
+            return;
+        }
 
+        Account account = accountRepoById.get();
+        account.setOs(rpcSession.getPlatform());
+        account.setLastIp(controller.remoteAddress().getAddress().getHostName());
+        account.setSessionKeyBnet(SecureUtils.bytesToHexString(keyData));
+        account.setLocale((short) LocaleConstant.fromName(rpcSession.getLocale()).ordinal());
+        account.setOs(rpcSession.getPlatform());
+        accountRepo.save(account);
+
+
+        GameUtilitiesServiceProto.ClientResponse.Builder builder = GameUtilitiesServiceProto.ClientResponse.newBuilder();
+
+        builder.addAttribute(AttributeProto.Attribute.newBuilder()
+                .setName("Param_RealmJoinTicket")
+                .setValue(AttributeProto.Variant.newBuilder().setBlobValue(ByteString.copyFromUtf8(account.getUsername())).build()).build());
+
+        builder.addAttribute(AttributeProto.Attribute.newBuilder()
+                .setName("Param_ServerAddresses")
+                .setValue(AttributeProto.Variant.newBuilder().setBlobValue(compressedValue).build()).build());
+
+        builder.addAttribute(AttributeProto.Attribute.newBuilder()
+                .setName("Param_JoinSecret")
+                .setValue(AttributeProto.Variant.newBuilder().setBlobValue(ByteString.copyFrom(serverSecret)).build()).build());
+
+        done.run(builder.build());
     }
 
     private void processRealmListRequest(DefaultRpcController controller,
                                          GameUtilitiesServiceProto.ClientRequest request,
                                          RpcCallback<GameUtilitiesServiceProto.ClientResponse> done) {
 
-        RpcSession rpcSession = controller.getRpcSession();
-        BattlenetAccount battlenetAccount = rpcSession.getAttachment(RpcSession.AUTHORIZED_USER);
-        if (battlenetAccount.getGameAccounts().isEmpty()) {
+        RpcSession rpcSession = controller.getSession();
+        AccountInfo accountInfo = rpcSession.getAccountInfo();
+        if (accountInfo.getAccounts().isEmpty()) {
             controller.setFailed(RpcErrorCode.ERROR_USER_SERVER_BAD_WOW_ACCOUNT);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
             return;
@@ -262,7 +276,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         int build = rpcSession.getBuild();
         List<RealmKey> realmKeys = realmManager.realmKeys().stream()
                 .filter(v -> subRegionId.equals(v.toSubRegionAddressString()))
-                .collect(Collectors.toList());
+                .toList();
         RealmProto.RealmListUpdates realmList = new RealmProto.RealmListUpdates();
 
         List<RealmProto.RealmState> realmStates = realmKeys.stream().map(realmManager::getRealmByKey).map(v -> {
@@ -279,29 +293,29 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
 
         ByteString compressedValue = getCompressedValue(value);
 
-        if(compressedValue.isEmpty()) {
+        if (compressedValue.isEmpty()) {
             controller.setFailed(RpcErrorCode.ERROR_UTIL_SERVER_FAILED_TO_SERIALIZE_RESPONSE);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
             return;
         }
 
         GameUtilitiesServiceProto.ClientResponse.Builder builder = GameUtilitiesServiceProto.ClientResponse.newBuilder();
-
         builder.addAttribute(AttributeProto.Attribute.newBuilder()
                 .setName("Param_RealmList")
                 .setValue(AttributeProto.Variant.newBuilder().setBlobValue(compressedValue).build()).build());
 
-        List<RealmProto.RealmCharacterCountEntry> countEntries = battlenetAccount.getGameAccounts().stream()
-                .filter(v -> Objects.nonNull(v.getRealmcharacter()) && Objects.nonNull(v.getRealmlist()))
-                .map(v -> {
-                    Realmcharacter rc = v.getRealmcharacter();
-                    Realmlist rl = v.getRealmlist();
-                    int address = RealmKey.createRealmKey(rl.getRegion(), rl.getBattlegroup(), rl.getId().intValue()).getAddress();
-                    RealmProto.RealmCharacterCountEntry countEntry = new RealmProto.RealmCharacterCountEntry();
-                    countEntry.setWowRealmAddress(address);
-                    countEntry.setCount(rc.getNumchars() == null ? 0 : rc.getNumchars());
-                    return countEntry;
-                }).collect(Collectors.toList());
+        Map<Long, GameAccount> gameAccountMap = accountInfo.getAccounts();
+        Object[][] byIdAccounts = realmCharacterRepo.findByIdAccounts(gameAccountMap.keySet());
+
+        List<RealmProto.RealmCharacterCountEntry> countEntries = Arrays.stream(byIdAccounts).map(objects -> {
+            Realmcharacter rc = (Realmcharacter) objects[0];
+            Realmlist r = (Realmlist) objects[1];
+            int address = RealmKey.createRealmKey(r.getRegion(), r.getBattlegroup(), r.getId().intValue()).getAddress();
+            RealmProto.RealmCharacterCountEntry countEntry = new RealmProto.RealmCharacterCountEntry();
+            countEntry.setWowRealmAddress(address);
+            countEntry.setCount(rc.getNumchars() == null ? 0 : rc.getNumchars());
+            return countEntry;
+        }).toList();
 
         RealmProto.RealmCharacterCountList countList = new RealmProto.RealmCharacterCountList();
         countList.setCounts(countEntries);
@@ -323,8 +337,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
 
         //Data is always little endian in c
         ByteBuffer.wrap(compressedWithLength).order(ByteOrder.LITTLE_ENDIAN).putInt(valueBytes.length).put(compressed);
-        ByteString compressedValue = ByteString.copyFrom(compressedWithLength);
-        return compressedValue;
+        return ByteString.copyFrom(compressedWithLength);
     }
 
     private void processLastCharPlayedRequest(DefaultRpcController controller,
@@ -339,17 +352,16 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
             return;
         }
         String stringValue = attribute.getValue().getStringValue();
-        RpcSession rpcSession = controller.getRpcSession();
-        BattlenetAccount battlenetAccount = rpcSession.getAttachment(RpcSession.AUTHORIZED_USER);
-        AccountLastPlayedCharacter playedCharacter = battlenetAccount.getGameAccounts().stream()
-                .map(Account::getAccountLastPlayedCharacter)
-                .filter(Objects::nonNull)
-                .filter(v -> stringValue.equals(RealmKey.getSubRegionAddressString(v.getRegion(), v.getBattlegroup())))
+        RpcSession rpcSession = controller.getSession();
+        AccountInfo accountInfo = rpcSession.getAccountInfo();
+        List<AccountLastPlayedCharacter> byIdAccountIds = accountLastPlayedCharacterRepo.findByIdAccountIds(accountInfo.getAccounts().keySet());
+        AccountLastPlayedCharacter playedCharacter = byIdAccountIds.stream()
+                .filter(v -> stringValue.equals(RealmKey.getSubRegionAddressString(v.getId().getRegion(), v.getId().getBattlegroup())))
                 .findFirst().orElse(null);
         GameUtilitiesServiceProto.ClientResponse response = GameUtilitiesServiceProto.ClientResponse.getDefaultInstance();
         if (playedCharacter != null) {
             int build = rpcSession.getBuild();
-            RealmKey realmKey = RealmKey.createRealmKey(playedCharacter.getRegion(), playedCharacter.getBattlegroup(), playedCharacter.getRealmId());
+            RealmKey realmKey = RealmKey.createRealmKey(playedCharacter.getId().getRegion(), playedCharacter.getId().getBattlegroup(), playedCharacter.getRealmId().intValue());
             Realm realm = realmManager.getRealmByKey(realmKey);
             if (realm != null && realm.getBuild() == build) {
                 RealmProto.RealmEntry entry = getRealmEntry(build, realm);
@@ -380,7 +392,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
                 builder.addAttribute(AttributeProto.Attribute.newBuilder()
                         .setName("Param_CharacterGUID")
                         .setValue(AttributeProto.Variant.newBuilder().setBlobValue(
-                                ByteString.copyFrom(ByteBuffer.wrap(new byte[8]).putLong(playedCharacter.getCharacterGuid()))
+                                ByteString.copyFrom(ByteBuffer.wrap(new byte[8]).putLong(playedCharacter.getCharacterGUID()))
                         ).build()).build());
 
                 builder.addAttribute(AttributeProto.Attribute.newBuilder()
@@ -406,7 +418,7 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         entry.setCfgCategoriesID(realm.getTimezone());
 
         RealmProto.ClientVersion version = new RealmProto.ClientVersion();
-        RealmBuildInfo buildInfo = realmManager.getBuildInfo(build);
+        ClientBuild buildInfo = realmManager.getBuildInfo(build);
 
         if (buildInfo != null) {
             version.setVersionBuild(buildInfo.getBuild());
@@ -434,15 +446,16 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
         Map<String, AttributeProto.Attribute> attributeMap = request.getAttributeList().stream()
                 .collect(Collectors.toMap(AttributeProto.Attribute::getName, v -> v, (v1, v2) -> v1));
         AttributeProto.Attribute param_identity = attributeMap.get("Param_Identity");
-        RpcSession rpcSession = controller.getRpcSession();
-        BattlenetAccount battlenetAccount = rpcSession.getAttachment(RpcSession.AUTHORIZED_USER);
-        Map<String, Account> accountMap = battlenetAccount.getGameAccounts().stream().collect(Collectors.toMap(v -> String.valueOf(v.getId()), v -> v, (v1, v2) -> v1));
 
-        Account identityAccount = null;
+        RpcSession rpcSession = controller.getSession();
+        AccountInfo accountInfo = rpcSession.getAccountInfo();
+
+
+        GameAccount identityAccount = null;
         if (param_identity != null) {
             String blobValue = param_identity.getValue().getBlobValue().toStringUtf8();
             RealmProto.RealmListTicketIdentity ticketIdentity = JsonUtil.fromAttributeJsonValue(blobValue, RealmProto.RealmListTicketIdentity.class);
-            identityAccount = accountMap.get(String.valueOf(ticketIdentity.getGameAccountID()));
+            identityAccount = accountInfo.getGameAccount((long) ticketIdentity.getGameAccountID());
         }
 
         if (identityAccount == null) {
@@ -451,14 +464,12 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
             return;
         }
 
-
-        if (identityAccount.getBanned() != null && identityAccount.getBanned()) {
+        if (identityAccount.isBanded()) {
             controller.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
             return;
         }
-
-        if (identityAccount.getPermanentBanned() != null && identityAccount.getPermanentBanned()) {
+        if (identityAccount.isPermanentlyBanned()) {
             controller.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_SUSPENDED);
             done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
             return;
@@ -476,8 +487,8 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
                 for (int i = 0; i < secret.length; i++) {
                     clientSecret[i] = (byte) secret[i];
                 }
-                rpcSession.setAttachment(RpcSession.CLIENT_SECRET, clientSecret);
-                rpcSession.setAttachment(RpcSession.SELECT_ACCOUNT, identityAccount);
+                rpcSession.setClientSecret(clientSecret);
+                rpcSession.setIdentityAccount(identityAccount);
             }
         }
 
@@ -487,23 +498,20 @@ public class GameUtilitiesService implements GameUtilitiesServiceProto.GameUtili
             return;
         }
 
-        authService.selectOne(Query.query(Criteria.where("id").is(battlenetAccount.getId())), BattlenetAccount.class).flatMap(selected -> {
-            selected.setLocale(LocaleConstant.fromName(rpcSession.getLocale()).ordinal());
-            selected.setLastLogin(LocalDateTime.now());
-            selected.setLastIp(rpcSession.getRemoteHostName());
-            selected.setOs(rpcSession.getPlatform());
-            return authService.update(selected);
-        }).subscribe(updated -> {
-            done.run(GameUtilitiesServiceProto.ClientResponse.newBuilder()
-                    .addAttribute(AttributeProto.Attribute.newBuilder()
-                            .setName("Param_RealmListTicket")
-                            .setValue(AttributeProto.Variant.newBuilder()
-                                    .setBlobValue(ByteString.copyFromUtf8("AuthRealmListTicket")).build()).build()).build());
-        }, throwable -> {
-            log.error("update the battle net account error.", throwable);
-            controller.setFailed(RpcErrorCode.ERROR_RPC_SERVER_ERROR);
-            done.run(GameUtilitiesServiceProto.ClientResponse.getDefaultInstance());
+        Optional<Account> accountRepoById = accountRepo.findById(identityAccount.getId());
+        accountRepoById.ifPresent(account -> {
+            account.setLocale((short)LocaleConstant.fromName(rpcSession.getLocale()).ordinal());
+            account.setLastLogin(Instant.now());
+            account.setLastIp(controller.remoteAddress().getHostName());
+            account.setOs(rpcSession.getPlatform());
+            accountRepo.save(account);
         });
+
+        done.run(GameUtilitiesServiceProto.ClientResponse.newBuilder()
+                .addAttribute(AttributeProto.Attribute.newBuilder()
+                        .setName("Param_RealmListTicket")
+                        .setValue(AttributeProto.Variant.newBuilder()
+                                .setBlobValue(ByteString.copyFromUtf8("AuthRealmListTicket")).build()).build()).build());
 
 
     }

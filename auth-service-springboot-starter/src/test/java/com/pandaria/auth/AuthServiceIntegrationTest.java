@@ -12,8 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.Instant;
+import java.util.Optional;
 
-@SpringBootTest
+@SpringBootTest(classes = AuthServiceIntegrationTest.class)
 @TestPropertySource( locations = "classpath:bnetserver.conf")
 @SpringBootApplication
 public class AuthServiceIntegrationTest {
@@ -153,30 +154,16 @@ public class AuthServiceIntegrationTest {
         alp.setId(alpid);
         accountLastPlayedCharacterRepository.save(alp);
 
-        Object[][] objects = repository.queryByLoginTicket("entry");
+        Optional<BattlenetAccount> accountInfo = repository.queryByLoginTicket("entry");
 
-        Assertions.assertEquals(0, objects.length);
 
-        objects = repository.queryByLoginTicket("123456");
-        Assertions.assertEquals(1, objects.length);
+        Assertions.assertTrue(accountInfo.isEmpty());
 
-        BattlenetAccount o1 = (BattlenetAccount)objects[0][0];
-        BattlenetAccountBan o2 = (BattlenetAccountBan)objects[0][1];
-        Account o3 = (Account)objects[0][2];
-        AccountBanned o4 = (AccountBanned)objects[0][3];
-        AccountAccess o5 = (AccountAccess)objects[0][4];
-        Realmcharacter o6 = (Realmcharacter)objects[0][5];
-        Realmlist o7 = (Realmlist)objects[0][6];
-        AccountLastPlayedCharacter o8 = (AccountLastPlayedCharacter)objects[0][7];
+        accountInfo = repository.queryByLoginTicket("123456");
+        Assertions.assertTrue(accountInfo.isPresent());
 
-        Assertions.assertEquals(battlenetAccount.getId(), o1.getId());
-        Assertions.assertEquals(battlenetAccountBan.getUnbandate(), o2.getUnbandate());
-        Assertions.assertEquals(account.getClientBuild(), o3.getClientBuild());
-        Assertions.assertEquals(banned.getUnbandate(), o4.getUnbandate());
-        Assertions.assertNull(o5);
-        Assertions.assertEquals(realmcharacter.getId(), o6.getId());
-        Assertions.assertEquals(realmlist.getId(), o7.getId());
-        Assertions.assertNull(o8);
+
+        Assertions.assertEquals(battlenetAccount.getId(), accountInfo.get().getId());
 
         account = new Account();
         account.setBattlenetAccount(battlenetAccount);
@@ -203,8 +190,8 @@ public class AuthServiceIntegrationTest {
         account.setRecruiter(1L);
         accountRepository.save(account);
 
-        objects = repository.queryByLoginTicket("123456");
-        Assertions.assertEquals(2, objects.length);
+        accountInfo = repository.queryByLoginTicket("123456");
+        Assertions.assertEquals(2, accountInfo.get().getAccounts().size());
 
     }
 

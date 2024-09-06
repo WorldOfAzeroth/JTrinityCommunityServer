@@ -24,6 +24,10 @@ import io.netty.channel.ServerChannel;
 public interface LoopResources {
     boolean DEFAULT_NATIVE = Boolean.parseBoolean(System.getProperty("netty.native", "true"));
 
+    static LoopResources create(String prefix, int workerCount, boolean daemon) {
+        return create(prefix, -1, workerCount, daemon, true);
+    }
+
     static LoopResources create(String prefix, int selectCount, int workerCount, boolean daemon) {
         if (Objects.requireNonNull(prefix, "prefix").isEmpty()) {
             throw new IllegalArgumentException("Cannot use empty prefix");

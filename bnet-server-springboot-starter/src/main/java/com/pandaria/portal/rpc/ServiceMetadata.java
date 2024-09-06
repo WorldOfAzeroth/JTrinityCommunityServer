@@ -15,6 +15,13 @@ import java.util.Map;
 public class ServiceMetadata {
 
 
+    public static final int CHALLENGE_NOTIFY = 0xBBDA171F;
+    public static final int AUTHENTICATION_CLIENT = 0x71240E35;
+    public static final int AUTHENTICATION_SERVER = 0xDECFC01;
+    public static final int CONNECTION_SERVICE = 0x65446991;
+    public static final int ACCOUNT_NOTIFY = 0x62DA0891;
+    public static final int GAME_UTILITIES = 0x3FC1274D;
+
     private static final Map<String, Integer> SERVICE_HASH_MAPPING = Map.of(
             "bnet.protocol.challenge.ChallengeNotify", 0xBBDA171F,
             "bnet.protocol.authentication.AuthenticationClient", 0x71240E35,

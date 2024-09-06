@@ -1,10 +1,10 @@
 package com.pandaria.portal.rpc;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.pandaria.auth.dto.AccountInfo;
+import com.pandaria.auth.dto.GameAccount;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 public class RpcSession {
     private String locale;
     private String platform;
@@ -12,4 +12,7 @@ public class RpcSession {
     private String ipCountry;
     private boolean authed;
     private boolean authorized;
+    private AccountInfo accountInfo;
+    private byte[] clientSecret;
+    private GameAccount identityAccount;
 }

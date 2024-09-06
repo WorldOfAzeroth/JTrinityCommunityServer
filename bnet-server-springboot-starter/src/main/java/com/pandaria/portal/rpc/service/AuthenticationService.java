@@ -8,38 +8,43 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
 import com.pandaria.auth.domain.*;
+import com.pandaria.auth.dto.AccountInfo;
+import com.pandaria.auth.dto.GameAccount;
+import com.pandaria.auth.repository.AccountBannedRepository;
+import com.pandaria.auth.repository.BattlenetAccountBanRepository;
 import com.pandaria.auth.repository.BattlenetAccountRepository;
 import com.pandaria.common.RpcErrorCode;
+import com.pandaria.portal.boot.LoginRestProperties;
+import com.pandaria.portal.realm.ClientBuild;
 import com.pandaria.portal.rpc.DefaultRpcChannel;
 import com.pandaria.portal.rpc.DefaultRpcController;
 import com.pandaria.portal.rpc.RpcSession;
 import com.pandaria.portal.utils.LocaleConstant;
 import com.pandaria.utils.SecureUtils;
 import com.pandaria.utils.SysProperties;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class AuthenticationService implements AuthenticationServiceProto.AuthenticationService.Interface {
 
-    @Value("bnetserver.LoginREST.Port")
-    private String externalAddress;
 
     private final AuthenticationServiceProto.AuthenticationListener.Interface authenticationListener = AuthenticationServiceProto.AuthenticationListener.newStub(new DefaultRpcChannel());
     private final ChallengeServiceProto.ChallengeListener.Interface challengeListener = ChallengeServiceProto.ChallengeListener.newStub(new DefaultRpcChannel());
 
-    private final BattlenetAccountRepository repository;
-
-    public AuthenticationService(BattlenetAccountRepository repository) {
-        this.repository = repository;
-    }
+    private final BattlenetAccountRepository battlenetAccountRepo;
+    private final BattlenetAccountBanRepository battlenetAccountBanRepo;
+    private final AccountBannedRepository accountBannedRepo;
+    private final LoginRestProperties loginRestProperties;
 
 
     @Override
@@ -47,6 +52,15 @@ public class AuthenticationService implements AuthenticationServiceProto.Authent
         DefaultRpcController statusController = (DefaultRpcController) controller;
         if (!SysProperties.PORTAL_WOW_PROGRAM_NAME.equals(request.getProgram())) {
             log.info("Attempted to log in with game other than WoW (using {})!", request.getProgram());
+            statusController.setFailed(RpcErrorCode.ERROR_BAD_PROGRAM);
+            done.run(RpcProto.NoData.getDefaultInstance());
+            return;
+        }
+
+
+        if (!ClientBuild.PLATFORM.contains(request.getPlatform()))
+        {
+            log.info("Attempted to log in from an unsupported platform (using {})!", request.getPlatform());
             statusController.setFailed(RpcErrorCode.ERROR_BAD_PROGRAM);
             done.run(RpcProto.NoData.getDefaultInstance());
             return;
@@ -66,7 +80,7 @@ public class AuthenticationService implements AuthenticationServiceProto.Authent
             return;
         }
 
-        RpcSession rpcSession = statusController.getRpcSession();
+        RpcSession rpcSession = statusController.getSession();
         rpcSession.setLocale(request.getLocale());
         rpcSession.setPlatform(request.getPlatform());
         rpcSession.setBuild(request.getApplicationVersion());
@@ -75,9 +89,8 @@ public class AuthenticationService implements AuthenticationServiceProto.Authent
             AuthenticationServiceProto.VerifyWebCredentialsRequest parameter = AuthenticationServiceProto.VerifyWebCredentialsRequest.newBuilder().setWebCredentials(request.getCachedWebCredentials()).build();
             this.verifyWebCredentials(controller, parameter, done);
         } else {
-
-            "https://%s:%d/bnetserver/login/".formatted(host, port)
-            ChallengeServiceProto.ChallengeExternalRequest challengeExternalRequest = ChallengeServiceProto.ChallengeExternalRequest.newBuilder().setPayloadType("web_auth_url").setPayload(ByteString.copyFromUtf8(webAuthUrl())).build();
+            String webAuthUrl = "https://%s:%d/bnetserver/login/".formatted(loginRestProperties.getExternalAddress(), loginRestProperties.getLoginResTPort());
+            ChallengeServiceProto.ChallengeExternalRequest challengeExternalRequest = ChallengeServiceProto.ChallengeExternalRequest.newBuilder().setPayloadType("web_auth_url").setPayload(ByteString.copyFromUtf8(webAuthUrl)).build();
             challengeListener.onExternalChallenge(statusController, challengeExternalRequest, null);
             done.run(RpcProto.NoData.getDefaultInstance());
         }
@@ -128,62 +141,78 @@ public class AuthenticationService implements AuthenticationServiceProto.Authent
             return;
         }
         String loginTicket = request.getWebCredentials().toStringUtf8();
-        Object[][] results = repository.queryByLoginTicket(loginTicket);
-        if (results.length < 1) {
+
+        Optional<BattlenetAccount> accountByTicket = battlenetAccountRepo.queryByLoginTicket(loginTicket);
+
+        if (accountByTicket.isEmpty()) {
             statusController.setFailed(RpcErrorCode.ERROR_DENIED);
             done.run(RpcProto.NoData.newBuilder().build());
             return;
         }
+        BattlenetAccount account = accountByTicket.get();
+        AccountInfo accountInfo = new AccountInfo(account);
 
-        BattlenetAccount o1 = (BattlenetAccount) results[0][0];
-        BattlenetAccountBan o2 = (BattlenetAccountBan) results[0][1];
-
-        if (System.currentTimeMillis() - o1.getLoginTicketExpiry() < 0) {
+        if (System.currentTimeMillis() - account.getLoginTicketExpiry() < 0) {
             statusController.setFailed(RpcErrorCode.ERROR_TIMED_OUT);
             done.run(RpcProto.NoData.newBuilder().build());
             return;
         }
 
         // If the IP is 'locked', check that the player comes indeed from the correct IP address
-        if (!Objects.equals(o1.getLocked(), 0)) {
-            log.debug("[Session::HandleVerifyWebCredentials] Account '{}' is locked to IP - '{}' is logging in from '{}'", o1.getEmail(), o1.getLastIp(), statusController.remoteAddress().getHostName());
+        if (!Objects.equals(account.getLocked(), 0)) {
+            log.debug("[Session::HandleVerifyWebCredentials] Account '{}' is locked to IP - '{}' is logging in from '{}'", account.getEmail(), account.getLastIp(), statusController.remoteAddress().getHostName());
             statusController.setFailed(RpcErrorCode.ERROR_RISK_ACCOUNT_LOCKED);
             done.run(RpcProto.NoData.newBuilder().build());
             return;
         }
 
-        Boolean banded = Optional.ofNullable(o2).map(e -> e.getId().getBandate() > System.currentTimeMillis()).orElse(false);
-        Boolean permanentlyBanned = Optional.ofNullable(o2).map(e -> Objects.equals(e.getUnbandate(), e.getId().getBandate())).orElse(false);
-
-        if (permanentlyBanned) {
-            log.info("[Session::HandleVerifyWebCredentials] Banned account {} tried to login!", o1.getEmail());
-            statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
-            done.run(RpcProto.NoData.newBuilder().build());
-            return;
-        } else if (banded) {
-            log.info("[Session::HandleVerifyWebCredentials] Temporarily banned account {} tried to login!", o1.getEmail());
-            statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
-            done.run(RpcProto.NoData.newBuilder().build());
-            return;
+        List<BattlenetAccountBan> accountBans = battlenetAccountBanRepo.findByAccount(account.getId());
+        for (BattlenetAccountBan accountBan : accountBans) {
+            boolean banded = accountBan.getId().getBandate() > System.currentTimeMillis();
+            boolean permanentlyBanned =  Objects.equals(accountBan.getUnbandate(), accountBan.getId().getBandate());
+            accountInfo.setBanded(banded);
+            accountInfo.setPermanentlyBanned(permanentlyBanned);
+            if (permanentlyBanned) {
+                log.info("[Session::HandleVerifyWebCredentials] Banned account {} tried to login!", account.getEmail());
+                statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
+                done.run(RpcProto.NoData.newBuilder().build());
+                return;
+            } else if (banded) {
+                log.info("[Session::HandleVerifyWebCredentials] Temporarily banned account {} tried to login!", account.getEmail());
+                statusController.setFailed(RpcErrorCode.ERROR_GAME_ACCOUNT_BANNED);
+                done.run(RpcProto.NoData.newBuilder().build());
+                return;
+            }
         }
+
+        Map<Long, GameAccount> accounts = accountInfo.getAccounts();
+        accounts.forEach((key, value)-> {
+            List<AccountBanned> accountBanneds = accountBannedRepo.findByAccountId(key);
+            for (AccountBanned accountBan : accountBanneds) {
+                boolean banded = accountBan.getId().getBandate() > System.currentTimeMillis();
+                boolean permanentlyBanned =  Objects.equals(accountBan.getUnbandate(), accountBan.getId().getBandate());
+                value.setBanded(banded);
+                value.setPermanentlyBanned(permanentlyBanned);
+                value.setUnbandate(accountBan.getUnbandate());
+            }
+        });
+
         done.run(RpcProto.NoData.getDefaultInstance());
         AuthenticationServiceProto.LogonResult.Builder resultBuilder = AuthenticationServiceProto.LogonResult.newBuilder()
                 .setErrorCode(RpcErrorCode.STATUS_OK)
-                .setAccountId(EntityProto.EntityId.newBuilder().setLow(o1.getId()).setHigh(0x100000000000000L).build())
+                .setAccountId(EntityProto.EntityId.newBuilder().setLow(account.getId()).setHigh(0x100000000000000L).build())
                 .setSessionKey(ByteString.copyFrom(SecureUtils.generateRandomBytes(SysProperties.PORTAL_SESSION_KEY_LENGTH)));
 
-        Arrays.stream(results).forEach(objects -> {
-            Account account = (Account) objects[2];
-            resultBuilder.addGameAccountId(EntityProto.EntityId.newBuilder().setLow(account.getId()).setHigh(0x200000200576F57L).build());
-        });
+        account.getAccounts().forEach(gameAccount -> resultBuilder.addGameAccountId(EntityProto.EntityId.newBuilder()
+                .setLow(gameAccount.getId()).setHigh(0x200000200576F57L).build()));
 
-        if (StringUtils.hasText(o1.getLockCountry())) {
-            resultBuilder.setGeoipCountry(o1.getLockCountry());
+        if (StringUtils.hasText(account.getLockCountry())) {
+            resultBuilder.setGeoipCountry(account.getLockCountry());
         }
 
-        RpcSession rpcSession = statusController.getRpcSession();
+        RpcSession rpcSession = statusController.getSession();
         rpcSession.setAuthorized(true);
-
+        rpcSession.setAccountInfo(accountInfo);
 
 
         authenticationListener.onLogonComplete(statusController, resultBuilder.build(), response -> {
@@ -198,10 +227,6 @@ public class AuthenticationService implements AuthenticationServiceProto.Authent
         done.run(AuthenticationServiceProto.GenerateWebCredentialsResponse.getDefaultInstance());
     }
 
-    private String webAuthUrl(boolean ssl, String host, int port) {
-
-        return "http%s://%s:%d/bnetserver/login/".formatted(ssl ? "s" : "", host, port);
-    }
 
 
 }

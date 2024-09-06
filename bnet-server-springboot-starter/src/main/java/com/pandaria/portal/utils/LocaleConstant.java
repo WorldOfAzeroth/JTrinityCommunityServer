@@ -20,10 +20,9 @@ public enum LocaleConstant {
 
 
     public static LocaleConstant fromName(String name) {
-        LocaleConstant localeConstant = Arrays.stream(LocaleConstant.values())
+        return Arrays.stream(LocaleConstant.values())
                 .filter(e -> e.name().endsWith(name))
                 .findFirst().orElse(TOTAL_LOCALES);
-        return localeConstant;
     }
 
     public static boolean isValidLocale(String name) {

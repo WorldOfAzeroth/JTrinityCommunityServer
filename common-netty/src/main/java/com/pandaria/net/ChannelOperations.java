@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
-import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
@@ -50,22 +49,13 @@ public class ChannelOperations<IN extends NettyInbound, OUT extends NettyOutboun
     }
 
 
-    final LinkedList<Object> received = new LinkedList<>();
+    protected Object receivedMessage;
+    protected final Connection connection;
+    protected final ConnectionObserver listener;
 
-    final Connection connection;
-    final ConnectionObserver listener;
-
-    boolean localActive;
+    protected boolean localActive;
     String longId;
     String shortId;
-
-    protected ChannelOperations(ChannelOperations<IN, OUT> replaced) {
-        this.connection = replaced.connection;
-        this.listener = replaced.listener;
-        this.shortId = replaced.shortId;
-        this.longId = replaced.longId;
-        this.localActive = replaced.localActive;
-    }
 
 
     public ChannelOperations(Connection connection, ConnectionObserver listener) {
@@ -105,32 +95,32 @@ public class ChannelOperations<IN extends NettyInbound, OUT extends NettyOutboun
     }
 
     @Override
-    public ChannelOperations<IN, OUT> withConnection(Consumer<? super Connection> withConnection) {
+    public ChannelOperations<? extends IN, ? extends OUT> withConnection(Consumer<? super Connection> withConnection) {
         requireNonNull(withConnection, "withConnection");
         withConnection.accept(this);
         return this;
     }
 
     @Override
-    public void dispose() {
+    public void close() {
         if (log.isDebugEnabled()) {
             log.debug(CommonNetty.format(channel(), "Disposing ChannelOperation from a channel"));
         }
-        connection.dispose();
+        connection.close();
     }
 
 
     @Override
-    public <T> T receiveObject() {
-        @SuppressWarnings("unchecked")
-        T result = (T) received.poll();
-        return result;
+    public <T> T receiveObject(Class<T> clazz) {
+        return clazz.cast(receivedMessage);
     }
 
     @Override
     public ByteBuf receive() {
-        return receiveObject();
+        return receiveObject(ByteBuf.class);
     }
+
+
 
     @Override
     public NettyOutbound send(ByteBuf dataStream) {
@@ -147,41 +137,31 @@ public class ChannelOperations<IN extends NettyInbound, OUT extends NettyOutboun
         return this;
     }
 
-
-
-    public final ConnectionObserver listener() {
-        return listener;
-    }
-
-
     protected void onInboundNext(ChannelHandlerContext ctx, Object msg) {
-        received.offer(msg);
+        this.receivedMessage = msg;
         listener.onStateChange(this, ConnectionObserver.State.READ);
     }
 
 
     protected void onInboundClose() {
-        while (received.isEmpty()) {
-            CommonNetty.safeRelease(received.poll());
+        if (receivedMessage != null) {
+            CommonNetty.safeRelease(receivedMessage);
         }
-        if (unbind(connection)) {
-            if (log.isTraceEnabled()) {
-                log.trace(CommonNetty.format(channel(), "Disposing ChannelOperation from a channel"),
-                        new Exception("ChannelOperation terminal stack"));
-            }
-            listener.onStateChange(this, ConnectionObserver.State.DISCONNECTING);
+        if (log.isTraceEnabled()) {
+            log.trace(CommonNetty.format(channel(), "Disposing ChannelOperation from a channel"),
+                    new Exception("ChannelOperation terminal stack"));
         }
+        listener.onStateChange(this, ConnectionObserver.State.DISCONNECTING);
 
     }
 
     protected final void onInboundError(Throwable err) {
-        listener.onUncaughtException(connection, err);
+        listener.onUncaughtException(this, err);
     }
 
     protected final Connection connection() {
         return connection;
     }
-
 
 
     protected void onWritabilityChanged() {
@@ -195,8 +175,6 @@ public class ChannelOperations<IN extends NettyInbound, OUT extends NettyOutboun
 
         return shortId;
     }
-
-
 
 
     @Override

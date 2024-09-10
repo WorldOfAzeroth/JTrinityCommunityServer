@@ -27,7 +27,7 @@ public class DefaultPortalRpcHandler implements PortalRpcHandler {
 
     @Override
     public void handle(NettyInbound in, NettyOutbound out, Service service) {
-        RpcPacket packet = in.receiveObject();
+        RpcPacket packet = in.receiveObject(RpcPacket.class);
         AtomicReference<DefaultRpcController> controller = new AtomicReference<>();
         in.withConnection(connection -> {
             controller.set(new DefaultRpcController(connection));

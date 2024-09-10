@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.*;
-import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.time.ZoneId;
 import java.util.Objects;
@@ -208,7 +207,7 @@ public final class CommonNetty {
         return new InternalNettyException(Objects.requireNonNull(throwable));
     }
 
-    static void addChunkedWriter(Connection c) {
+    public static void addChunkedWriter(Connection c) {
         if (c.channel()
                 .pipeline()
                 .get(ChunkedWriteHandler.class) == null) {
@@ -322,7 +321,7 @@ public final class CommonNetty {
         }
     }
 
-    static boolean mustChunkFileTransfer(Connection c, Path file) {
+    public static boolean mustChunkFileTransfer(Connection c, Path file) {
         // if channel multiplexing a parent channel as an http2 stream
         if (c.channel().parent() != null && c.channel().parent().pipeline().get(NettyPipeline.H2MultiplexHandler) != null) {
             return true;
@@ -698,9 +697,10 @@ public final class CommonNetty {
             }
 
             @Override
-            public Object receiveObject() {
+            public <T> T receiveObject(Class<T> clazz) {
                 throw new IllegalStateException("Receiver Unavailable");
             }
+
 
             @Override
             public NettyInbound withConnection(Consumer<? super Connection> withConnection) {
@@ -754,17 +754,6 @@ public final class CommonNetty {
 
     static final AttributeKey<Connection> CONNECTION = AttributeKey.valueOf("$CONNECTION");
 
-
-    static final Consumer<? super FileChannel> fileCloser = fc -> {
-        try {
-            fc.close();
-        }
-        catch (Throwable e) {
-            if (log.isTraceEnabled()) {
-                log.trace("", e);
-            }
-        }
-    };
 
 
     static final Predicate<ByteBuf>        PREDICATE_BB_FLUSH    = b -> false;

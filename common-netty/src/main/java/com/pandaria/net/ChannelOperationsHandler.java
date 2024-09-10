@@ -49,10 +49,8 @@ final class ChannelOperationsHandler extends ChannelInboundHandlerAdapter {
             Connection c = Connection.from(ctx.channel());
             listener.onStateChange(c, ConnectionObserver.State.CONNECTED);
             ChannelOperations<?, ?> ops = opsFactory.create(c, listener, null);
-            if (ops != null) {
-                ops.bind();
-                listener.onStateChange(ops, ConnectionObserver.State.CONFIGURED);
-            }
+            ops.bind();
+            listener.onStateChange(ops, ConnectionObserver.State.CONFIGURED);
         }
     }
 
@@ -98,8 +96,9 @@ final class ChannelOperationsHandler extends ChannelInboundHandlerAdapter {
         try {
             Connection connection = Connection.from(ctx.channel());
             ChannelOperations<?, ?> ops = connection.as(ChannelOperations.class);
+
             if (ops != null) {
-                ops.onInboundNext(ctx, msg);
+                opsFactory.create(connection, listener, msg).onInboundNext(ctx, msg);
             } else {
                 if (msg instanceof DecoderResultProvider) {
                     DecoderResult decoderResult = ((DecoderResultProvider) msg).decoderResult();

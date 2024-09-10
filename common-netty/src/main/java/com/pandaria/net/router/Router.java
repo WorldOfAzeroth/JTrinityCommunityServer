@@ -16,13 +16,12 @@ public abstract class Router<C extends Router<C, IN, OUT>, IN extends NettyInbou
 
     private final CopyOnWriteArrayList<RouteHandler<IN, OUT>> handlers = new CopyOnWriteArrayList<>();
 
-    public C route(Predicate<IN> condition, BiConsumer<IN, OUT> handler) {
+    public C route(Predicate<? super IN> condition, BiConsumer<? super IN, ? super OUT> handler) {
         Objects.requireNonNull(condition, "condition");
         Objects.requireNonNull(handler, "handler");
         RouteHandler<IN, OUT> httpRouteHandler = new RouteHandler<>(condition, handler);
         handlers.add(httpRouteHandler);
-        @SuppressWarnings("unchecked")
-        C c = (C) this;
+        @SuppressWarnings("unchecked") C c = (C) this;
         return c;
     }
 
@@ -53,13 +52,10 @@ public abstract class Router<C extends Router<C, IN, OUT>, IN extends NettyInbou
         return null;
     }
 
-    static final class RouteHandler<IN extends NettyInbound, OUT extends NettyOutbound>
-            implements BiConsumer<IN, OUT>, Predicate<IN> {
+    record RouteHandler<IN extends NettyInbound, OUT extends NettyOutbound>(Predicate<? super IN> condition,
+                                                                            BiConsumer<? super IN, ? super OUT> handler) implements BiConsumer<IN, OUT>, Predicate<IN> {
 
-        final Predicate<? super IN> condition;
-        final BiConsumer<? super IN, ? super OUT> handler;
-
-        RouteHandler(Predicate<IN> condition, BiConsumer<IN, OUT> handler) {
+        RouteHandler(Predicate<? super IN> condition, BiConsumer<? super IN, ? super OUT> handler) {
             this.condition = Objects.requireNonNull(condition, "condition");
             this.handler = Objects.requireNonNull(handler, "handler");
         }

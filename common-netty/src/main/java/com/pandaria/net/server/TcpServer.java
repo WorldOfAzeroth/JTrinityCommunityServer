@@ -55,7 +55,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
 
     public final DisposableServer bind() {
-        ChannelFuture channelFuture = nettyBind();
+        ChannelFuture channelFuture = bind0();
         DisposableServer disposableServer = () -> {
             channelGroup.close().awaitUninterruptibly();
             Optional.ofNullable(channelGroup).ifPresent(e -> e.close().awaitUninterruptibly());
@@ -73,7 +73,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
     public final DisposableServer bindNow() {
         try {
-            ChannelFuture channelFuture = nettyBind().sync();
+            ChannelFuture channelFuture = bind0().sync();
             DisposableServer disposableServer = () -> {
                 Optional.ofNullable(channelGroup).ifPresent(e -> e.close().awaitUninterruptibly());
                 channelFuture.channel().close().awaitUninterruptibly();
@@ -167,7 +167,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
     public T doOnConnection(Consumer<? super Connection> other) {
         Objects.requireNonNull(other, "doOnConnected");
         ConnectionObserver newChildObserver = ((connection, newState) -> {
-            if (newState == ConnectionObserver.State.CONNECTED) {
+            if (newState == ConnectionObserver.State.CONFIGURED) {
                 other.accept(connection);
             }
         });
@@ -309,7 +309,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
         }
     }
 
-    private ChannelFuture nettyBind() {
+    private ChannelFuture bind0() {
         Objects.requireNonNull(bindAddress, "bindAddress");
         Objects.requireNonNull(loopResources, "loopResources");
         Objects.requireNonNull(taskExecutor, "taskExecutor");
@@ -380,7 +380,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
 
 
     record ChildObserverProxy(ConnectionObserver childObserver, ChannelGroup channelGroup,
-                              ExecutorService taskerExecutor) implements ConnectionObserver {
+                              ExecutorService taskExecutor) implements ConnectionObserver {
 
         @Override
         public void onUncaughtException(Connection connection, Throwable error) {
@@ -397,7 +397,7 @@ public abstract class TcpServer<T extends TcpServer<T>> {
             } else {
                 log.error(CommonNetty.format(connection.channel(), "onUncaughtException(" + connection + ")"), error);
             }
-            connection.dispose();
+            connection.close();
         }
 
         @Override
@@ -408,12 +408,21 @@ public abstract class TcpServer<T extends TcpServer<T>> {
             }
             if (newState == State.DISCONNECTING) {
                 if (connection.channel().isActive()) {
-                    connection.dispose();
+                    connection.close();
                 }
 
             }
-            taskerExecutor.submit(() -> {
-                childObserver.onStateChange(connection, newState);
+            taskExecutor.submit(() -> {
+                try {
+                    childObserver.onStateChange(connection, newState);
+                } catch (Throwable throwable) {
+                    log.error(CommonNetty.format(connection.channel(), "I/0 handler to process connection on " + newState + " error"), throwable);
+                } finally {
+                    Object received = connection.inbound().receiveObject(Object.class);
+                    if (received != null) {
+                        CommonNetty.safeRelease(received);
+                    }
+                }
             });
         }
     }

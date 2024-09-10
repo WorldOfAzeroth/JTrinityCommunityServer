@@ -36,11 +36,6 @@ public class BNetPortalRpcServer extends TcpServer<BNetPortalRpcServer> {
         return this;
     }
 
-    @Override
-    protected ChannelOperations.OnSetup onSetup() {
-        return null;
-    }
-
     private BNetPortalRpcServer() {
         super(new ServerBootstrap());
     }
@@ -54,7 +49,7 @@ public class BNetPortalRpcServer extends TcpServer<BNetPortalRpcServer> {
 
         public RpcRouter service(int serviceHash, Service service) {
             route(nettyInbound -> {
-                RpcPacket o = nettyInbound.receiveObject();
+                RpcPacket o = nettyInbound.receiveObject(RpcPacket.class);
                 return serviceHash == o.getHeader().getServiceHash();
             }, (in, out)-> handler.handle(in, out, service));
             return this;

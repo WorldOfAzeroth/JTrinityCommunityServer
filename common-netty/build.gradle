@@ -9,6 +9,7 @@ plugins {
 dependencies {
     implementation libs.slf4j.api
     implementation libs.netty.handler
+    implementation libs.netty.codec.http
     implementation libs.netty.transport.native.epoll
     implementation libs.netty.transport.native.kqueue
     implementation libs.netty.transport.native.iouring

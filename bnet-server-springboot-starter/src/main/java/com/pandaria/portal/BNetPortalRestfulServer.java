@@ -1,23 +1,15 @@
 package com.pandaria.portal;
 
+import com.pandaria.net.ChannelOperations;
+import com.pandaria.net.Connection;
+import com.pandaria.net.http.HttpOperations;
+import com.pandaria.net.server.ConnectionObserver;
 import com.pandaria.net.server.TcpServer;
-import com.pandaria.portal.handler.DefaultPortalRpcHandler;
-import com.pandaria.utils.SysProperties;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
-import io.netty.util.concurrent.DefaultThreadFactory;
-import lombok.Setter;
+import io.netty.buffer.ByteBuf;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+
+import java.nio.charset.Charset;
 
 
 @Slf4j
@@ -35,4 +27,28 @@ public class BNetPortalRestfulServer extends TcpServer<BNetPortalRestfulServer> 
     private BNetPortalRestfulServer() {
         super(new ServerBootstrap());
     }
+
+    @Override
+    protected ChannelOperations.OnSetup onSetup() {
+        return (ch, c, msg) -> new ServerOperations(ch, c);
+    }
+
+    private static final class ServerOperations extends HttpOperations {
+
+        public ServerOperations(Connection connection, ConnectionObserver listener) {
+            super(connection, listener);
+        }
+
+        @Override
+        protected void deserialize(Object content, ByteBuf buffer, Charset charset) {
+            
+        }
+
+        @Override
+        protected <T> T serialize(ByteBuf content, Class<T> clazz, Charset charset) {
+            return null;
+        }
+    }
+
+
 }

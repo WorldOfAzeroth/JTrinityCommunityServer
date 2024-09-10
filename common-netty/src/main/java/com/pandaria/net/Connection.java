@@ -1,5 +1,6 @@
 package com.pandaria.net;
 
+import com.pandaria.net.server.ConnectionObserver;
 import com.pandaria.net.server.NettyPipeline;
 import io.netty.channel.*;
 
@@ -30,18 +31,16 @@ public interface Connection {
         return null;
     }
 
-
     Channel channel();
 
-    default void dispose() {
+    default void close() {
         channel().close();
     }
 
 
-    default void dispose(ChannelFutureListener listener) {
-        channel().close().addListener(listener);
+    default void onClose(Runnable runnable) {
+        channel().closeFuture().addListener((ChannelFutureListener) future -> runnable.run());
     }
-
 
 
     default SocketAddress remoteAddress() {
@@ -109,9 +108,9 @@ public interface Connection {
     }
 
 
-    default boolean unbind(Connection connection) {
+    default boolean rebind(Connection connection) {
         return channel().attr(CommonNetty.CONNECTION)
-                .compareAndSet(this, null);
+                .compareAndSet(this, connection);
     }
 
     default Connection removeHandler(String name) {

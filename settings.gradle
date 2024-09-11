@@ -15,5 +15,8 @@ rootProject.name = 'PandariaCommunityServer'
 include('common-netty')
 include('common-springboot-starter')
 include('auth-service-springboot-starter')
+include('characters-service-springboot-starter')
 include('game-service-springboot-starter')
+include('hotfixes-service-springboot-starter')
 include('bnet-server-springboot-starter')
+include('world-server-springboot-starter')

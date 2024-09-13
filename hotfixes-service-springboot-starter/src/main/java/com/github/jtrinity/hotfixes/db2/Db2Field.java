@@ -8,7 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD, METHOD})
 @Retention(RUNTIME)
-public @interface Db2FieldMeta {
+public @interface Db2Field {
 
     boolean signed() default false;
     Db2Type type();

@@ -8,9 +8,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({TYPE})
 @Retention(RUNTIME)
-public @interface Db2FileMate {
-    int fileDataId() default 0;
-    int layoutHash() default 0;
-    int indexField() default 0;
-    int parentIndexField() default 0;
+public @interface Db2File {
+    String name() default "";
+    int fileDataId() default -1;
+    int layoutHash() default -1;
+    int indexField() default -1;
+    int parentIndexField() default -1;
 }

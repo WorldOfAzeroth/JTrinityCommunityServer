@@ -1,5 +1,9 @@
 package com.github.jtrinity.hotfixes.domain;
 
+import com.github.jtrinity.hotfixes.db2.Db2Field;
+import com.github.jtrinity.hotfixes.db2.Db2File;
+import com.github.jtrinity.hotfixes.db2.Db2Type;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +16,12 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "summon_properties")
+@Db2File(name = "SummonProperties.db2", fileDataId = 1345276, layoutHash = 0x927C6DBA)
 public class SummonProperty {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
+    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Long id;
 
     @Id
@@ -25,26 +31,32 @@ public class SummonProperty {
 
     @ColumnDefault("0")
     @Column(name = "Control", nullable = false)
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
     private Integer control;
 
     @ColumnDefault("0")
     @Column(name = "Faction", nullable = false)
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
     private Integer faction;
 
     @ColumnDefault("0")
     @Column(name = "Title", nullable = false)
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
     private Integer title;
 
     @ColumnDefault("0")
     @Column(name = "Slot", nullable = false)
+    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
     private Integer slot;
 
     @ColumnDefault("0")
     @Column(name = "Flags1", nullable = false)
+    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
     private Integer flags1;
 
     @ColumnDefault("0")
     @Column(name = "Flags2", nullable = false)
+    @Db2Field(fieldIndex = 6, type = Db2Type.INT, signed = true)
     private Integer flags2;
 
 }

@@ -1,5 +1,9 @@
 package com.github.jtrinity.hotfixes.domain;
 
+import com.github.jtrinity.hotfixes.db2.Db2Field;
+import com.github.jtrinity.hotfixes.db2.Db2File;
+import com.github.jtrinity.hotfixes.db2.Db2Type;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +16,12 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_x_bonus_tree")
+@Db2File(name = "ItemXBonusTree.db2", fileDataId = 987133, layoutHash = 0xB088DCDC, parentIndexField = 1)
 public class ItemXBonusTree {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
+    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
     @Id
@@ -25,10 +31,12 @@ public class ItemXBonusTree {
 
     @ColumnDefault("'0'")
     @Column(name = "ItemBonusTreeID", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
     private Integer itemBonusTreeID;
 
     @ColumnDefault("'0'")
     @Column(name = "ItemID", columnDefinition = "int UNSIGNED not null")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
     private Long itemID;
 
 }

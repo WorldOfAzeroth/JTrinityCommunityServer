@@ -1,5 +1,9 @@
 package com.github.jtrinity.hotfixes.domain;
 
+import com.github.jtrinity.hotfixes.db2.Db2Field;
+import com.github.jtrinity.hotfixes.db2.Db2File;
+import com.github.jtrinity.hotfixes.db2.Db2Type;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +16,12 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "cinematic_sequences")
+@Db2File(name = "CinematicSequences.db2", fileDataId = 1134583, layoutHash = 0x32B8FB41)
 public class CinematicSequence {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
+    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
     @Id
@@ -25,38 +31,47 @@ public class CinematicSequence {
 
     @ColumnDefault("'0'")
     @Column(name = "SoundID", columnDefinition = "int UNSIGNED not null")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
     private Long soundID;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera1", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
     private Integer camera1;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera2", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 3, type = Db2Type.SHORT)
     private Integer camera2;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera3", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 4, type = Db2Type.SHORT)
     private Integer camera3;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera4", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 5, type = Db2Type.SHORT)
     private Integer camera4;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera5", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT)
     private Integer camera5;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera6", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 7, type = Db2Type.SHORT)
     private Integer camera6;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera7", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 8, type = Db2Type.SHORT)
     private Integer camera7;
 
     @ColumnDefault("'0'")
     @Column(name = "Camera8", columnDefinition = "smallint UNSIGNED not null")
+    @Db2Field(fieldIndex = 9, type = Db2Type.SHORT)
     private Integer camera8;
 
 }

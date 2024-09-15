@@ -1,7 +1,7 @@
 package com.github.jtrinity.world.model;
 
 
-import com.pandaria.utils.JsonUtil;
+import com.github.jtrinity.utils.JsonUtil;
 import lombok.Builder;
 import lombok.Data;
 

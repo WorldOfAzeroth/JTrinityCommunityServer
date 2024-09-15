@@ -1,8 +1,8 @@
 package com.github.jtrinity.world.handler;
 
 import com.google.protobuf.Service;
-import com.pandaria.net.NettyInbound;
-import com.pandaria.net.NettyOutbound;
+import com.github.jtrinity.net.NettyInbound;
+import com.github.jtrinity.net.NettyOutbound;
 
 @FunctionalInterface
 public interface PortalRpcHandler {

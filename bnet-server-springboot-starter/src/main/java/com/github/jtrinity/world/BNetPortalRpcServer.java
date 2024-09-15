@@ -1,10 +1,10 @@
 package com.github.jtrinity.world;
 
 import com.google.protobuf.Service;
-import com.pandaria.net.NettyInbound;
-import com.pandaria.net.NettyOutbound;
-import com.pandaria.net.router.Router;
-import com.pandaria.net.server.TcpServer;
+import com.github.jtrinity.net.NettyInbound;
+import com.github.jtrinity.net.NettyOutbound;
+import com.github.jtrinity.net.router.Router;
+import com.github.jtrinity.net.server.TcpServer;
 import com.github.jtrinity.world.handler.DefaultPortalRpcHandler;
 import com.github.jtrinity.world.handler.PortalRpcHandler;
 import com.github.jtrinity.world.proto.RpcPacket;

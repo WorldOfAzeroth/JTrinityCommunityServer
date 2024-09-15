@@ -1,7 +1,6 @@
 package com.github.jtrinity.auth.repository;
 
 import com.github.jtrinity.auth.domain.BattlenetAccount;
-import com.pandaria.auth.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

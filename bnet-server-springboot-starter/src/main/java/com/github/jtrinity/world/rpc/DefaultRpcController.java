@@ -23,9 +23,9 @@ package com.github.jtrinity.world.rpc;
 
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
-import com.pandaria.net.CommonNetty;
-import com.pandaria.net.Connection;
-import com.pandaria.common.RpcErrorCode;
+import com.github.jtrinity.net.CommonNetty;
+import com.github.jtrinity.net.Connection;
+import com.github.jtrinity.common.RpcErrorCode;
 import com.github.jtrinity.world.proto.RpcPacket;
 import io.netty.util.AttributeKey;
 

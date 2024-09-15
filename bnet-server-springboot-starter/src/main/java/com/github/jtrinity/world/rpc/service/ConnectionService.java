@@ -4,7 +4,7 @@ import bnet.protocol.RpcProto;
 import bnet.protocol.connection.v1.ConnectionServiceProto;
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
-import com.pandaria.common.RpcErrorCode;
+import com.github.jtrinity.common.RpcErrorCode;
 import com.github.jtrinity.world.rpc.DefaultRpcChannel;
 import com.github.jtrinity.world.rpc.DefaultRpcController;
 import org.springframework.stereotype.Service;

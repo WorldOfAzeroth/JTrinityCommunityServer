@@ -1,5 +1,6 @@
 package com.pandaria.utils;
 
+import com.github.jtrinity.utils.SecureUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

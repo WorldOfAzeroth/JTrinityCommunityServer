@@ -8,7 +8,7 @@ import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
 import com.github.jtrinity.auth.dto.AccountInfo;
 import com.github.jtrinity.auth.dto.GameAccount;
-import com.pandaria.common.RpcErrorCode;
+import com.github.jtrinity.common.RpcErrorCode;
 import com.github.jtrinity.world.rpc.DefaultRpcController;
 import com.github.jtrinity.world.rpc.RpcSession;
 import lombok.AllArgsConstructor;

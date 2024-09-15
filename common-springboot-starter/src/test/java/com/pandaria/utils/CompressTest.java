@@ -1,5 +1,6 @@
 package com.pandaria.utils;
 
+import com.github.jtrinity.utils.Compress;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

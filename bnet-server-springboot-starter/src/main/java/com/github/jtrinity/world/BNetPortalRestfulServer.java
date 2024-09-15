@@ -1,10 +1,10 @@
 package com.github.jtrinity.world;
 
-import com.pandaria.net.ChannelOperations;
-import com.pandaria.net.Connection;
-import com.pandaria.net.http.HttpOperations;
-import com.pandaria.net.server.ConnectionObserver;
-import com.pandaria.net.server.TcpServer;
+import com.github.jtrinity.net.ChannelOperations;
+import com.github.jtrinity.net.Connection;
+import com.github.jtrinity.net.http.HttpOperations;
+import com.github.jtrinity.net.server.ConnectionObserver;
+import com.github.jtrinity.net.server.TcpServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import lombok.extern.slf4j.Slf4j;

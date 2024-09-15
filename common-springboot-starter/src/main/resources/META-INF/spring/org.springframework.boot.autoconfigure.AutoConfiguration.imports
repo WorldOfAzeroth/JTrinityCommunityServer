@@ -1,4 +1,4 @@
 # Auto Configure
-com.pandaria.config.ConfigurationSourceLoader
-com.pandaria.config.ConfigurationRefreshProcessor
-com.pandaria.schedule.ScheduledExecutorServiceBean
+com.github.jtrinity.config.ConfigurationSourceLoader
+com.github.jtrinity.config.ConfigurationRefreshProcessor
+com.github.jtrinity.schedule.ScheduledExecutorServiceBean

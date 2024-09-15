@@ -1,2 +1,2 @@
 org.springframework.boot.env.PropertySourceLoader=\
-  com.pandaria.config.ConfigurationSourceLoader
+  com.github.jtrinity.config.ConfigurationSourceLoader

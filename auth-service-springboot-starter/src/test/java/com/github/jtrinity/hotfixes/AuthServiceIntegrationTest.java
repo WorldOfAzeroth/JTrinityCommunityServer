@@ -3,10 +3,6 @@ package com.github.jtrinity.hotfixes;
 
 import com.github.jtrinity.auth.domain.*;
 import com.github.jtrinity.auth.repository.*;
-import com.github.jtrinity.hotfixes.domain.*;
-import com.github.jtrinity.hotfixes.repository.*;
-import com.pandaria.auth.domain.*;
-import com.pandaria.auth.repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

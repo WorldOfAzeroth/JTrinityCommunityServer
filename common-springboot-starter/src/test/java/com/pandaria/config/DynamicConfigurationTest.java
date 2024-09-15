@@ -1,6 +1,7 @@
 package com.pandaria.config;
 
 
+import com.github.jtrinity.config.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

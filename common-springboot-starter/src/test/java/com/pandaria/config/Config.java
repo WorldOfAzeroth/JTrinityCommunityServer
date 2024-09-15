@@ -1,5 +1,6 @@
 package com.pandaria.config;
 
+import com.github.jtrinity.config.RefreshableValue;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

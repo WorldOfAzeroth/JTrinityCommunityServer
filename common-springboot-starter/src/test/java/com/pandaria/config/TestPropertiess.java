@@ -1,6 +1,6 @@
 package com.pandaria.config;
 
-import com.pandaria.config.RefreshableValue;
+import com.github.jtrinity.config.RefreshableValue;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

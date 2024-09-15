@@ -1,4 +1,3 @@
 # Auto Configure
-com.github.jtrinity.config.ConfigurationSourceLoader
 com.github.jtrinity.config.ConfigurationRefreshProcessor
 com.github.jtrinity.schedule.ScheduledExecutorServiceBean

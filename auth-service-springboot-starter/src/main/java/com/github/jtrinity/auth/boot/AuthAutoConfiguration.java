@@ -38,7 +38,7 @@ public class AuthAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "bnetserver.logindatabaseinfo.jpa")
-    Properties jpaProperties() {
+    Properties authJpaProperties() {
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.hbm2ddl.auto", "none");
         jpaProperties.put("hibernate.show_sql", "true");
@@ -60,15 +60,14 @@ public class AuthAutoConfiguration {
         em.setMappingResources("META-INF/jpa-named-queries.xml");
         em.setPersistenceUnitName("auth");
         em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(jpaProperties());
+        em.setJpaProperties(authJpaProperties());
         return em;
     }
 
 
     @Bean
-    PlatformTransactionManager authTransactionManager(
-            @Qualifier("authEntityManagerFactory") LocalContainerEntityManagerFactoryBean todosEntityManagerFactory) {
-        return new JpaTransactionManager(Objects.requireNonNull(todosEntityManagerFactory.getObject()));
+    PlatformTransactionManager authTransactionManager() {
+        return new JpaTransactionManager(Objects.requireNonNull(authEntityManagerFactory().getObject()));
     }
 
 }

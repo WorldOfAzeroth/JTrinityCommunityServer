@@ -1,2 +1,2 @@
 # Auto Configure
-com.github.jtrinity.hotfixes.HotfixesAutoConfiguration
+com.github.jtrinity.dbc.boot.HotfixesAutoConfiguration

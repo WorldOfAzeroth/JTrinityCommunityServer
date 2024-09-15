@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(classes = ArrayToResultConverterTest.class)
 @TestPropertySource( locations = "classpath:bnetserver.conf")
 @SpringBootApplication
-
 class ArrayToResultConverterTest {
 
 

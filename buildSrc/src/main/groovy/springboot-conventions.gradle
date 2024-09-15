@@ -13,7 +13,7 @@ dependencies {
 
 
 
-    implementation libs.springboot
+    implementation libs.springboot.starter
     implementation libs.springboot.data.jpa
 
     testImplementation libs.springboot.test

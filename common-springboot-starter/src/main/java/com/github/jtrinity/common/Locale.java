@@ -1,5 +1,7 @@
 package com.github.jtrinity.common;
 
+import org.springframework.core.convert.converter.Converter;
+
 import java.util.Arrays;
 
 public enum Locale {
@@ -26,6 +28,5 @@ public enum Locale {
     public static boolean isValidLocale(Locale locale) {
         return locale.ordinal() < TOTAL_LOCALES.ordinal() && locale != none;
     }
-
 
 }

@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,66 +14,62 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "dungeon_encounter")
-@Db2File(name = "DungeonEncounter.db2", layoutHash = 0x970800CA, indexField = 1, parentIndexField = 2)
+@Db2File(name = "DungeonEncounter.db2", layoutHash = 0xB04A2596, indexField = 6, parentIndexField = 2)
 public class DungeonEncounter implements DbcEntity {
+
+    @Column(name = "Name")
+    @Db2Field(fieldIndex = 0, type = Db2Type.STRING)
+    private LocalizedString name;
+
+
+    @Column(name = "CreatureDisplayID")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
+    private Integer creatureDisplayID;
+
+
+    @Column(name = "MapID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT, signed = true)
+    private Short mapID;
+
+
+    @Column(name = "DifficultyID")
+    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE, signed = true)
+    private Byte difficultyID;
+
+
+    @Column(name = "Bit")
+    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE, signed = true)
+    private Byte bit;
+
+
+    @Column(name = "Flags")
+    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE)
+    private Byte flags;
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
+    @Db2Field(fieldIndex = 6, type = Db2Type.INT)
     private Integer id;
+
+
+    @Column(name = "OrderIndex")
+    @Db2Field(fieldIndex = 7, type = Db2Type.INT, signed = true)
+    private Integer orderIndex;
+
+
+    @Column(name = "SpellIconFileID")
+    @Db2Field(fieldIndex = 8, type = Db2Type.INT, signed = true)
+    private Integer spellIconFileID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @Lob
-    @Column(name = "Name")
-    @Db2Field(fieldIndex = 0, type = Db2Type.STRING)
-    private String name;
-
-    @ColumnDefault("0")
-    @Column(name = "MapID", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT, signed = true)
-    private Short mapID;
-
-    @ColumnDefault("0")
-    @Column(name = "DifficultyID", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer difficultyID;
-
-    @ColumnDefault("0")
-    @Column(name = "OrderIndex", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
-    private Integer orderIndex;
-
-    @ColumnDefault("0")
-    @Column(name = "CompleteWorldStateID", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer completeWorldStateID;
-
-    @ColumnDefault("0")
-    @Column(name = "Bit", nullable = false)
-    @Db2Field(fieldIndex = 6, type = Db2Type.BYTE, signed = true)
-    private Byte bit;
-
-    @ColumnDefault("0")
-    @Column(name = "Flags", nullable = false)
-    @Db2Field(fieldIndex = 7, type = Db2Type.INT, signed = true)
-    private Integer flags;
-
-    @ColumnDefault("0")
-    @Column(name = "SpellIconFileID", nullable = false)
-    @Db2Field(fieldIndex = 8, type = Db2Type.INT, signed = true)
-    private Integer spellIconFileID;
-
-    @ColumnDefault("0")
-    @Column(name = "Faction", nullable = false)
-    @Db2Field(fieldIndex = 9, type = Db2Type.INT, signed = true)
-    private Integer faction;
 
 }

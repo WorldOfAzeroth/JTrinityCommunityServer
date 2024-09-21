@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "area_group_member")
-@Db2File(name = "AreaGroupMember.db2", layoutHash = 0x93C93492, parentIndexField = 1)
+@Db2File(name = "AreaGroupMember.db2", layoutHash = 0x50AA43EE, parentIndexField = 1)
 public class AreaGroupMember implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,19 +26,20 @@ public class AreaGroupMember implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "AreaID")
+    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
+    private Short areaID;
+
+
+    @Column(name = "AreaGroupID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
+    private Short areaGroupID;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "AreaID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
-    private Integer areaID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "AreaGroupID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
-    private Long areaGroupID;
 
 }

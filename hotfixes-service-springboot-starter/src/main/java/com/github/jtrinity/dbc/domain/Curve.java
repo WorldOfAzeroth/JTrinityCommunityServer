@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "curve")
-@Db2File(name = "Curve.db2", layoutHash = 0x58B43CA3, indexField = 0)
+@Db2File(name = "Curve.db2", layoutHash = 0x17EA5154)
 public class Curve implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,19 +26,20 @@ public class Curve implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "Type")
+    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
+    private Byte type;
+
+
+    @Column(name = "Flags")
+    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE)
+    private Byte flags;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "Type", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
-    private Short type;
-
-    @ColumnDefault("'0'")
-    @Column(name = "Flags", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE)
-    private Short flags;
 
 }

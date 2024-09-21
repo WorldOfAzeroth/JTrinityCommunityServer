@@ -22,11 +22,27 @@ public interface DbcObjectManager {
         return achievementCategory().get(id);
     }
 
-    default DbcEntityStore<AnimationDatum> animationData() {
+    default DbcEntityStore<AdventureJournal> adventureJournal() {
+        return getEntityStore(DbcObjects.AdventureJournal);
+    }
+
+    default AdventureJournal adventureJournal(Integer id) {
+        return adventureJournal().get(id);
+    }
+
+    default DbcEntityStore<AdventureMapPoi> adventureMapPoi() {
+        return getEntityStore(DbcObjects.AdventureMapPoi);
+    }
+
+    default AdventureMapPoi adventureMapPoi(Integer id) {
+        return adventureMapPoi().get(id);
+    }
+
+    default DbcEntityStore<AnimationData> animationData() {
         return getEntityStore(DbcObjects.AnimationData);
     }
 
-    default AnimationDatum animationData(Integer id) {
+    default AnimationData animationData(Integer id) {
         return animationData().get(id);
     }
 
@@ -78,6 +94,94 @@ public interface DbcObjectManager {
         return armorLocation().get(id);
     }
 
+    default DbcEntityStore<Artifact> artifact() {
+        return getEntityStore(DbcObjects.Artifact);
+    }
+
+    default Artifact artifact(Integer id) {
+        return artifact().get(id);
+    }
+
+    default DbcEntityStore<ArtifactAppearance> artifactAppearance() {
+        return getEntityStore(DbcObjects.ArtifactAppearance);
+    }
+
+    default ArtifactAppearance artifactAppearance(Integer id) {
+        return artifactAppearance().get(id);
+    }
+
+    default DbcEntityStore<ArtifactAppearanceSet> artifactAppearanceSet() {
+        return getEntityStore(DbcObjects.ArtifactAppearanceSet);
+    }
+
+    default ArtifactAppearanceSet artifactAppearanceSet(Integer id) {
+        return artifactAppearanceSet().get(id);
+    }
+
+    default DbcEntityStore<ArtifactCategory> artifactCategory() {
+        return getEntityStore(DbcObjects.ArtifactCategory);
+    }
+
+    default ArtifactCategory artifactCategory(Integer id) {
+        return artifactCategory().get(id);
+    }
+
+    default DbcEntityStore<ArtifactPower> artifactPower() {
+        return getEntityStore(DbcObjects.ArtifactPower);
+    }
+
+    default ArtifactPower artifactPower(Integer id) {
+        return artifactPower().get(id);
+    }
+
+    default DbcEntityStore<ArtifactPowerLink> artifactPowerLink() {
+        return getEntityStore(DbcObjects.ArtifactPowerLink);
+    }
+
+    default ArtifactPowerLink artifactPowerLink(Integer id) {
+        return artifactPowerLink().get(id);
+    }
+
+    default DbcEntityStore<ArtifactPowerPicker> artifactPowerPicker() {
+        return getEntityStore(DbcObjects.ArtifactPowerPicker);
+    }
+
+    default ArtifactPowerPicker artifactPowerPicker(Integer id) {
+        return artifactPowerPicker().get(id);
+    }
+
+    default DbcEntityStore<ArtifactPowerRank> artifactPowerRank() {
+        return getEntityStore(DbcObjects.ArtifactPowerRank);
+    }
+
+    default ArtifactPowerRank artifactPowerRank(Integer id) {
+        return artifactPowerRank().get(id);
+    }
+
+    default DbcEntityStore<ArtifactQuestXp> artifactQuestXp() {
+        return getEntityStore(DbcObjects.ArtifactQuestXp);
+    }
+
+    default ArtifactQuestXp artifactQuestXp(Integer id) {
+        return artifactQuestXp().get(id);
+    }
+
+    default DbcEntityStore<ArtifactTier> artifactTier() {
+        return getEntityStore(DbcObjects.ArtifactTier);
+    }
+
+    default ArtifactTier artifactTier(Integer id) {
+        return artifactTier().get(id);
+    }
+
+    default DbcEntityStore<ArtifactUnlock> artifactUnlock() {
+        return getEntityStore(DbcObjects.ArtifactUnlock);
+    }
+
+    default ArtifactUnlock artifactUnlock(Integer id) {
+        return artifactUnlock().get(id);
+    }
+
     default DbcEntityStore<AuctionHouse> auctionHouse() {
         return getEntityStore(DbcObjects.AuctionHouse);
     }
@@ -86,20 +190,20 @@ public interface DbcObjectManager {
         return auctionHouse().get(id);
     }
 
-    default DbcEntityStore<BankBagSlotPrice> bankBagSlotPrices() {
-        return getEntityStore(DbcObjects.BankBagSlotPrices);
+    default DbcEntityStore<BankBagSlotPrice> bankBagSlotPrice() {
+        return getEntityStore(DbcObjects.BankBagSlotPrice);
     }
 
-    default BankBagSlotPrice bankBagSlotPrices(Integer id) {
-        return bankBagSlotPrices().get(id);
+    default BankBagSlotPrice bankBagSlotPrice(Integer id) {
+        return bankBagSlotPrice().get(id);
     }
 
-    default DbcEntityStore<BannedAddon> bannedAddons() {
-        return getEntityStore(DbcObjects.BannedAddons);
+    default DbcEntityStore<BannedAddon> bannedAddon() {
+        return getEntityStore(DbcObjects.BannedAddon);
     }
 
-    default BannedAddon bannedAddons(Integer id) {
-        return bannedAddons().get(id);
+    default BannedAddon bannedAddon(Integer id) {
+        return bannedAddon().get(id);
     }
 
     default DbcEntityStore<BarberShopStyle> barberShopStyle() {
@@ -134,12 +238,12 @@ public interface DbcObjectManager {
         return battlePetBreedState().get(id);
     }
 
-    default DbcEntityStore<BattlePetSpecie> battlePetSpecies() {
-        return getEntityStore(DbcObjects.BattlePetSpecies);
+    default DbcEntityStore<BattlePetSpecie> battlePetSpecie() {
+        return getEntityStore(DbcObjects.BattlePetSpecie);
     }
 
-    default BattlePetSpecie battlePetSpecies(Integer id) {
-        return battlePetSpecies().get(id);
+    default BattlePetSpecie battlePetSpecie(Integer id) {
+        return battlePetSpecie().get(id);
     }
 
     default DbcEntityStore<BattlePetSpeciesState> battlePetSpeciesState() {
@@ -150,11 +254,11 @@ public interface DbcObjectManager {
         return battlePetSpeciesState().get(id);
     }
 
-    default DbcEntityStore<BattlemasterList> battleMasterList() {
-        return getEntityStore(DbcObjects.BattlemasterList);
+    default DbcEntityStore<BattleMasterList> battleMasterList() {
+        return getEntityStore(DbcObjects.BattleMasterList);
     }
 
-    default BattlemasterList battleMasterList(Integer id) {
+    default BattleMasterList battleMasterList(Integer id) {
         return battleMasterList().get(id);
     }
 
@@ -166,148 +270,100 @@ public interface DbcObjectManager {
         return broadcastText().get(id);
     }
 
-    default DbcEntityStore<CfgCategory> cfgCategories() {
-        return getEntityStore(DbcObjects.CfgCategories);
+    default DbcEntityStore<CfgCategory> cfgCategory() {
+        return getEntityStore(DbcObjects.CfgCategory);
     }
 
-    default CfgCategory cfgCategories(Integer id) {
-        return cfgCategories().get(id);
+    default CfgCategory cfgCategory(Integer id) {
+        return cfgCategory().get(id);
     }
 
-    default DbcEntityStore<CfgRegion> cfgRegions() {
-        return getEntityStore(DbcObjects.CfgRegions);
+    default DbcEntityStore<CfgRegion> cfgRegion() {
+        return getEntityStore(DbcObjects.CfgRegion);
     }
 
-    default CfgRegion cfgRegions(Integer id) {
-        return cfgRegions().get(id);
+    default CfgRegion cfgRegion(Integer id) {
+        return cfgRegion().get(id);
     }
 
-    default DbcEntityStore<CharTitle> charTitles() {
-        return getEntityStore(DbcObjects.CharTitles);
+    default DbcEntityStore<CharacterFacialHairStyle> characterFacialHairStyle() {
+        return getEntityStore(DbcObjects.CharacterFacialHairStyle);
     }
 
-    default CharTitle charTitles(Integer id) {
-        return charTitles().get(id);
+    default CharacterFacialHairStyle characterFacialHairStyle(Integer id) {
+        return characterFacialHairStyle().get(id);
     }
 
-    default DbcEntityStore<CharacterLoadout> characterLoadout() {
-        return getEntityStore(DbcObjects.CharacterLoadout);
+    default DbcEntityStore<CharBaseSection> charBaseSection() {
+        return getEntityStore(DbcObjects.CharBaseSection);
     }
 
-    default CharacterLoadout characterLoadout(Integer id) {
-        return characterLoadout().get(id);
+    default CharBaseSection charBaseSection(Integer id) {
+        return charBaseSection().get(id);
     }
 
-    default DbcEntityStore<CharacterLoadoutItem> characterLoadoutItem() {
-        return getEntityStore(DbcObjects.CharacterLoadoutItem);
+    default DbcEntityStore<CharSection> charSection() {
+        return getEntityStore(DbcObjects.CharSection);
     }
 
-    default CharacterLoadoutItem characterLoadoutItem(Integer id) {
-        return characterLoadoutItem().get(id);
+    default CharSection charSection(Integer id) {
+        return charSection().get(id);
     }
 
-    default DbcEntityStore<ChatChannel> chatChannels() {
-        return getEntityStore(DbcObjects.ChatChannels);
+    default DbcEntityStore<CharStartOutfit> charStartOutfit() {
+        return getEntityStore(DbcObjects.CharStartOutfit);
     }
 
-    default ChatChannel chatChannels(Integer id) {
-        return chatChannels().get(id);
+    default CharStartOutfit charStartOutfit(Integer id) {
+        return charStartOutfit().get(id);
     }
 
-    default DbcEntityStore<ChrClassUiDisplay> chrClassUIDisplay() {
-        return getEntityStore(DbcObjects.ChrClassUIDisplay);
+    default DbcEntityStore<CharTitle> charTitle() {
+        return getEntityStore(DbcObjects.CharTitle);
     }
 
-    default ChrClassUiDisplay chrClassUIDisplay(Integer id) {
-        return chrClassUIDisplay().get(id);
+    default CharTitle charTitle(Integer id) {
+        return charTitle().get(id);
     }
 
-    default DbcEntityStore<ChrClass> chrClasses() {
-        return getEntityStore(DbcObjects.ChrClasses);
+    default DbcEntityStore<ChatChannel> chatChannel() {
+        return getEntityStore(DbcObjects.ChatChannel);
     }
 
-    default ChrClass chrClasses(Integer id) {
-        return chrClasses().get(id);
+    default ChatChannel chatChannel(Integer id) {
+        return chatChannel().get(id);
     }
 
-    default DbcEntityStore<ChrClassesXPowerType> chrClassesXPowerTypes() {
-        return getEntityStore(DbcObjects.ChrClassesXPowerTypes);
+    default DbcEntityStore<ChrClass> chrClass() {
+        return getEntityStore(DbcObjects.ChrClass);
     }
 
-    default ChrClassesXPowerType chrClassesXPowerTypes(Integer id) {
-        return chrClassesXPowerTypes().get(id);
+    default ChrClass chrClass(Integer id) {
+        return chrClass().get(id);
     }
 
-    default DbcEntityStore<ChrCustomizationChoice> chrCustomizationChoice() {
-        return getEntityStore(DbcObjects.ChrCustomizationChoice);
+    default DbcEntityStore<ChrClassesXPowerType> chrClassesXPowerType() {
+        return getEntityStore(DbcObjects.ChrClassesXPowerType);
     }
 
-    default ChrCustomizationChoice chrCustomizationChoice(Integer id) {
-        return chrCustomizationChoice().get(id);
+    default ChrClassesXPowerType chrClassesXPowerType(Integer id) {
+        return chrClassesXPowerType().get(id);
     }
 
-    default DbcEntityStore<ChrCustomizationDisplayInfo> chrCustomizationDisplayInfo() {
-        return getEntityStore(DbcObjects.ChrCustomizationDisplayInfo);
+    default DbcEntityStore<ChrRace> chrRace() {
+        return getEntityStore(DbcObjects.ChrRace);
     }
 
-    default ChrCustomizationDisplayInfo chrCustomizationDisplayInfo(Integer id) {
-        return chrCustomizationDisplayInfo().get(id);
+    default ChrRace chrRace(Integer id) {
+        return chrRace().get(id);
     }
 
-    default DbcEntityStore<ChrCustomizationElement> chrCustomizationElement() {
-        return getEntityStore(DbcObjects.ChrCustomizationElement);
+    default DbcEntityStore<ChrSpecialization> chrSpecialization() {
+        return getEntityStore(DbcObjects.ChrSpecialization);
     }
 
-    default ChrCustomizationElement chrCustomizationElement(Integer id) {
-        return chrCustomizationElement().get(id);
-    }
-
-    default DbcEntityStore<ChrCustomizationOption> chrCustomizationOption() {
-        return getEntityStore(DbcObjects.ChrCustomizationOption);
-    }
-
-    default ChrCustomizationOption chrCustomizationOption(Integer id) {
-        return chrCustomizationOption().get(id);
-    }
-
-    default DbcEntityStore<ChrCustomizationReq> chrCustomizationReq() {
-        return getEntityStore(DbcObjects.ChrCustomizationReq);
-    }
-
-    default ChrCustomizationReq chrCustomizationReq(Integer id) {
-        return chrCustomizationReq().get(id);
-    }
-
-    default DbcEntityStore<ChrCustomizationReqChoice> chrCustomizationReqChoice() {
-        return getEntityStore(DbcObjects.ChrCustomizationReqChoice);
-    }
-
-    default ChrCustomizationReqChoice chrCustomizationReqChoice(Integer id) {
-        return chrCustomizationReqChoice().get(id);
-    }
-
-    default DbcEntityStore<ChrModel> chrModel() {
-        return getEntityStore(DbcObjects.ChrModel);
-    }
-
-    default ChrModel chrModel(Integer id) {
-        return chrModel().get(id);
-    }
-
-    default DbcEntityStore<ChrRaceXChrModel> chrRaceXChrModel() {
-        return getEntityStore(DbcObjects.ChrRaceXChrModel);
-    }
-
-    default ChrRaceXChrModel chrRaceXChrModel(Integer id) {
-        return chrRaceXChrModel().get(id);
-    }
-
-    default DbcEntityStore<ChrRace> chrRaces() {
-        return getEntityStore(DbcObjects.ChrRaces);
-    }
-
-    default ChrRace chrRaces(Integer id) {
-        return chrRaces().get(id);
+    default ChrSpecialization chrSpecialization(Integer id) {
+        return chrSpecialization().get(id);
     }
 
     default DbcEntityStore<CinematicCamera> cinematicCamera() {
@@ -318,36 +374,12 @@ public interface DbcObjectManager {
         return cinematicCamera().get(id);
     }
 
-    default DbcEntityStore<CinematicSequence> cinematicSequences() {
-        return getEntityStore(DbcObjects.CinematicSequences);
+    default DbcEntityStore<CinematicSequence> cinematicSequence() {
+        return getEntityStore(DbcObjects.CinematicSequence);
     }
 
-    default CinematicSequence cinematicSequences(Integer id) {
-        return cinematicSequences().get(id);
-    }
-
-    default DbcEntityStore<ConditionalChrModel> conditionalChrModel() {
-        return getEntityStore(DbcObjects.ConditionalChrModel);
-    }
-
-    default ConditionalChrModel conditionalChrModel(Integer id) {
-        return conditionalChrModel().get(id);
-    }
-
-    default DbcEntityStore<ConditionalContentTuning> conditionalContentTuning() {
-        return getEntityStore(DbcObjects.ConditionalContentTuning);
-    }
-
-    default ConditionalContentTuning conditionalContentTuning(Integer id) {
-        return conditionalContentTuning().get(id);
-    }
-
-    default DbcEntityStore<ContentTuning> contentTuning() {
-        return getEntityStore(DbcObjects.ContentTuning);
-    }
-
-    default ContentTuning contentTuning(Integer id) {
-        return contentTuning().get(id);
+    default CinematicSequence cinematicSequence(Integer id) {
+        return cinematicSequence().get(id);
     }
 
     default DbcEntityStore<ConversationLine> conversationLine() {
@@ -382,11 +414,11 @@ public interface DbcObjectManager {
         return creatureFamily().get(id);
     }
 
-    default DbcEntityStore<CreatureModelDatum> creatureModelData() {
+    default DbcEntityStore<CreatureModelData> creatureModelData() {
         return getEntityStore(DbcObjects.CreatureModelData);
     }
 
-    default CreatureModelDatum creatureModelData(Integer id) {
+    default CreatureModelData creatureModelData(Integer id) {
         return creatureModelData().get(id);
     }
 
@@ -414,20 +446,12 @@ public interface DbcObjectManager {
         return criteriaTree().get(id);
     }
 
-    default DbcEntityStore<CurrencyContainer> currencyContainer() {
-        return getEntityStore(DbcObjects.CurrencyContainer);
+    default DbcEntityStore<CurrencyType> currencyType() {
+        return getEntityStore(DbcObjects.CurrencyType);
     }
 
-    default CurrencyContainer currencyContainer(Integer id) {
-        return currencyContainer().get(id);
-    }
-
-    default DbcEntityStore<CurrencyType> currencyTypes() {
-        return getEntityStore(DbcObjects.CurrencyTypes);
-    }
-
-    default CurrencyType currencyTypes(Integer id) {
-        return currencyTypes().get(id);
+    default CurrencyType currencyType(Integer id) {
+        return currencyType().get(id);
     }
 
     default DbcEntityStore<Curve> curve() {
@@ -446,11 +470,11 @@ public interface DbcObjectManager {
         return curvePoint().get(id);
     }
 
-    default DbcEntityStore<DestructibleModelDatum> destructibleModelData() {
+    default DbcEntityStore<DestructibleModelData> destructibleModelData() {
         return getEntityStore(DbcObjects.DestructibleModelData);
     }
 
-    default DestructibleModelDatum destructibleModelData(Integer id) {
+    default DestructibleModelData destructibleModelData(Integer id) {
         return destructibleModelData().get(id);
     }
 
@@ -470,12 +494,12 @@ public interface DbcObjectManager {
         return dungeonEncounter().get(id);
     }
 
-    default DbcEntityStore<DurabilityCost> durabilityCosts() {
-        return getEntityStore(DbcObjects.DurabilityCosts);
+    default DbcEntityStore<DurabilityCost> durabilityCost() {
+        return getEntityStore(DbcObjects.DurabilityCost);
     }
 
-    default DurabilityCost durabilityCosts(Integer id) {
-        return durabilityCosts().get(id);
+    default DurabilityCost durabilityCost(Integer id) {
+        return durabilityCost().get(id);
     }
 
     default DbcEntityStore<DurabilityQuality> durabilityQuality() {
@@ -486,12 +510,12 @@ public interface DbcObjectManager {
         return durabilityQuality().get(id);
     }
 
-    default DbcEntityStore<Emote> emotes() {
-        return getEntityStore(DbcObjects.Emotes);
+    default DbcEntityStore<Emote> emote() {
+        return getEntityStore(DbcObjects.Emote);
     }
 
-    default Emote emotes(Integer id) {
-        return emotes().get(id);
+    default Emote emote(Integer id) {
+        return emote().get(id);
     }
 
     default DbcEntityStore<EmotesText> emotesText() {
@@ -510,22 +534,6 @@ public interface DbcObjectManager {
         return emotesTextSound().get(id);
     }
 
-    default DbcEntityStore<ExpectedStat> expectedStat() {
-        return getEntityStore(DbcObjects.ExpectedStat);
-    }
-
-    default ExpectedStat expectedStat(Integer id) {
-        return expectedStat().get(id);
-    }
-
-    default DbcEntityStore<ExpectedStatMod> expectedStatMod() {
-        return getEntityStore(DbcObjects.ExpectedStatMod);
-    }
-
-    default ExpectedStatMod expectedStatMod(Integer id) {
-        return expectedStatMod().get(id);
-    }
-
     default DbcEntityStore<Faction> faction() {
         return getEntityStore(DbcObjects.Faction);
     }
@@ -540,6 +548,14 @@ public interface DbcObjectManager {
 
     default FactionTemplate factionTemplate(Integer id) {
         return factionTemplate().get(id);
+    }
+
+    default DbcEntityStore<GameObjectArtKit> gameObjectArtKit() {
+        return getEntityStore(DbcObjects.GameObjectArtKit);
+    }
+
+    default GameObjectArtKit gameObjectArtKit(Integer id) {
+        return gameObjectArtKit().get(id);
     }
 
     default DbcEntityStore<FriendshipRepReaction> friendshipRepReaction() {
@@ -558,36 +574,116 @@ public interface DbcObjectManager {
         return friendshipReputation().get(id);
     }
 
-    default DbcEntityStore<Gameobject> gameObjects() {
-        return getEntityStore(DbcObjects.GameObjects);
-    }
-
-    default Gameobject gameObjects(Integer id) {
-        return gameObjects().get(id);
-    }
-
-    default DbcEntityStore<GameobjectArtKit> gameObjectArtKit() {
-        return getEntityStore(DbcObjects.GameObjectArtKit);
-    }
-
-    default GameobjectArtKit gameObjectArtKit(Integer id) {
-        return gameObjectArtKit().get(id);
-    }
-
-    default DbcEntityStore<GameobjectDisplayInfo> gameObjectDisplayInfo() {
+    default DbcEntityStore<GameObjectDisplayInfo> gameObjectDisplayInfo() {
         return getEntityStore(DbcObjects.GameObjectDisplayInfo);
     }
 
-    default GameobjectDisplayInfo gameObjectDisplayInfo(Integer id) {
+    default GameObjectDisplayInfo gameObjectDisplayInfo(Integer id) {
         return gameObjectDisplayInfo().get(id);
     }
 
-    default DbcEntityStore<GemProperty> gemProperties() {
-        return getEntityStore(DbcObjects.GemProperties);
+    default DbcEntityStore<GameObject> gameObject() {
+        return getEntityStore(DbcObjects.GameObject);
     }
 
-    default GemProperty gemProperties(Integer id) {
-        return gemProperties().get(id);
+    default GameObject gameObject(Integer id) {
+        return gameObject().get(id);
+    }
+
+    default DbcEntityStore<GarrAbility> garrAbility() {
+        return getEntityStore(DbcObjects.GarrAbility);
+    }
+
+    default GarrAbility garrAbility(Integer id) {
+        return garrAbility().get(id);
+    }
+
+    default DbcEntityStore<GarrBuilding> garrBuilding() {
+        return getEntityStore(DbcObjects.GarrBuilding);
+    }
+
+    default GarrBuilding garrBuilding(Integer id) {
+        return garrBuilding().get(id);
+    }
+
+    default DbcEntityStore<GarrBuildingPlotInst> garrBuildingPlotInst() {
+        return getEntityStore(DbcObjects.GarrBuildingPlotInst);
+    }
+
+    default GarrBuildingPlotInst garrBuildingPlotInst(Integer id) {
+        return garrBuildingPlotInst().get(id);
+    }
+
+    default DbcEntityStore<GarrClassSpec> garrClassSpec() {
+        return getEntityStore(DbcObjects.GarrClassSpec);
+    }
+
+    default GarrClassSpec garrClassSpec(Integer id) {
+        return garrClassSpec().get(id);
+    }
+
+    default DbcEntityStore<GarrFollower> garrFollower() {
+        return getEntityStore(DbcObjects.GarrFollower);
+    }
+
+    default GarrFollower garrFollower(Integer id) {
+        return garrFollower().get(id);
+    }
+
+    default DbcEntityStore<GarrFollowerXAbility> garrFollowerXAbility() {
+        return getEntityStore(DbcObjects.GarrFollowerXAbility);
+    }
+
+    default GarrFollowerXAbility garrFollowerXAbility(Integer id) {
+        return garrFollowerXAbility().get(id);
+    }
+
+    default DbcEntityStore<GarrPlot> garrPlot() {
+        return getEntityStore(DbcObjects.GarrPlot);
+    }
+
+    default GarrPlot garrPlot(Integer id) {
+        return garrPlot().get(id);
+    }
+
+    default DbcEntityStore<GarrPlotBuilding> garrPlotBuilding() {
+        return getEntityStore(DbcObjects.GarrPlotBuilding);
+    }
+
+    default GarrPlotBuilding garrPlotBuilding(Integer id) {
+        return garrPlotBuilding().get(id);
+    }
+
+    default DbcEntityStore<GarrPlotInstance> garrPlotInstance() {
+        return getEntityStore(DbcObjects.GarrPlotInstance);
+    }
+
+    default GarrPlotInstance garrPlotInstance(Integer id) {
+        return garrPlotInstance().get(id);
+    }
+
+    default DbcEntityStore<GarrSiteLevel> garrSiteLevel() {
+        return getEntityStore(DbcObjects.GarrSiteLevel);
+    }
+
+    default GarrSiteLevel garrSiteLevel(Integer id) {
+        return garrSiteLevel().get(id);
+    }
+
+    default DbcEntityStore<GarrSiteLevelPlotInst> garrSiteLevelPlotInst() {
+        return getEntityStore(DbcObjects.GarrSiteLevelPlotInst);
+    }
+
+    default GarrSiteLevelPlotInst garrSiteLevelPlotInst(Integer id) {
+        return garrSiteLevelPlotInst().get(id);
+    }
+
+    default DbcEntityStore<GemProperty> gemProperty() {
+        return getEntityStore(DbcObjects.GemProperty);
+    }
+
+    default GemProperty gemProperty(Integer id) {
+        return gemProperty().get(id);
     }
 
     default DbcEntityStore<GlyphBindableSpell> glyphBindableSpell() {
@@ -598,20 +694,12 @@ public interface DbcObjectManager {
         return glyphBindableSpell().get(id);
     }
 
-    default DbcEntityStore<GlyphSlot> glyphSlot() {
-        return getEntityStore(DbcObjects.GlyphSlot);
+    default DbcEntityStore<GlyphProperty> glyphProperty() {
+        return getEntityStore(DbcObjects.GlyphProperty);
     }
 
-    default GlyphSlot glyphSlot(Integer id) {
-        return glyphSlot().get(id);
-    }
-
-    default DbcEntityStore<GlyphProperty> glyphProperties() {
-        return getEntityStore(DbcObjects.GlyphProperties);
-    }
-
-    default GlyphProperty glyphProperties(Integer id) {
-        return glyphProperties().get(id);
+    default GlyphProperty glyphProperty(Integer id) {
+        return glyphProperty().get(id);
     }
 
     default DbcEntityStore<GlyphRequiredSpec> glyphRequiredSpec() {
@@ -620,14 +708,6 @@ public interface DbcObjectManager {
 
     default GlyphRequiredSpec glyphRequiredSpec(Integer id) {
         return glyphRequiredSpec().get(id);
-    }
-
-    default DbcEntityStore<GossipNpcOption> gossipNPCOption() {
-        return getEntityStore(DbcObjects.GossipNPCOption);
-    }
-
-    default GossipNpcOption gossipNPCOption(Integer id) {
-        return gossipNPCOption().get(id);
     }
 
     default DbcEntityStore<GuildColorBackground> guildColorBackground() {
@@ -654,12 +734,12 @@ public interface DbcObjectManager {
         return guildColorEmblem().get(id);
     }
 
-    default DbcEntityStore<GuildPerkSpell> guildPerkSpells() {
-        return getEntityStore(DbcObjects.GuildPerkSpells);
+    default DbcEntityStore<GuildPerkSpell> guildPerkSpell() {
+        return getEntityStore(DbcObjects.GuildPerkSpell);
     }
 
-    default GuildPerkSpell guildPerkSpells(Integer id) {
-        return guildPerkSpells().get(id);
+    default GuildPerkSpell guildPerkSpell(Integer id) {
+        return guildPerkSpell().get(id);
     }
 
     default DbcEntityStore<Heirloom> heirloom() {
@@ -670,12 +750,12 @@ public interface DbcObjectManager {
         return heirloom().get(id);
     }
 
-    default DbcEntityStore<Holiday> holidays() {
-        return getEntityStore(DbcObjects.Holidays);
+    default DbcEntityStore<Holiday> holiday() {
+        return getEntityStore(DbcObjects.Holiday);
     }
 
-    default Holiday holidays(Integer id) {
-        return holidays().get(id);
+    default Holiday holiday(Integer id) {
+        return holiday().get(id);
     }
 
     default DbcEntityStore<ImportPriceArmor> importPriceArmor() {
@@ -950,12 +1030,20 @@ public interface DbcObjectManager {
         return itemPriceBase().get(id);
     }
 
-    default DbcEntityStore<ItemReforge> itemReforge() {
-        return getEntityStore(DbcObjects.ItemReforge);
+    default DbcEntityStore<ItemRandomProperty> itemRandomProperty() {
+        return getEntityStore(DbcObjects.ItemRandomPropertie);
     }
 
-    default ItemReforge itemReforge(Integer id) {
-        return itemReforge().get(id);
+    default ItemRandomProperty itemRandomProperty(Integer id) {
+        return itemRandomProperty().get(id);
+    }
+
+    default DbcEntityStore<ItemRandomSuffix> itemRandomSuffix() {
+        return getEntityStore(DbcObjects.ItemRandomSuffix);
+    }
+
+    default ItemRandomSuffix itemRandomSuffix(Integer id) {
+        return itemRandomSuffix().get(id);
     }
 
     default DbcEntityStore<ItemSearchName> itemSearchName() {
@@ -990,6 +1078,30 @@ public interface DbcObjectManager {
         return itemSparse().get(id);
     }
 
+    default DbcEntityStore<ItemSpec> itemSpec() {
+        return getEntityStore(DbcObjects.ItemSpec);
+    }
+
+    default ItemSpec itemSpec(Integer id) {
+        return itemSpec().get(id);
+    }
+
+    default DbcEntityStore<ItemSpecOverride> itemSpecOverride() {
+        return getEntityStore(DbcObjects.ItemSpecOverride);
+    }
+
+    default ItemSpecOverride itemSpecOverride(Integer id) {
+        return itemSpecOverride().get(id);
+    }
+
+    default DbcEntityStore<ItemUpgrade> itemUpgrade() {
+        return getEntityStore(DbcObjects.ItemUpgrade);
+    }
+
+    default ItemUpgrade itemUpgrade(Integer id) {
+        return itemUpgrade().get(id);
+    }
+
     default DbcEntityStore<ItemXBonusTree> itemXBonusTree() {
         return getEntityStore(DbcObjects.ItemXBonusTree);
     }
@@ -1012,6 +1124,14 @@ public interface DbcObjectManager {
 
     default JournalEncounterSection journalEncounterSection(Integer id) {
         return journalEncounterSection().get(id);
+    }
+
+    default DbcEntityStore<JournalEncounterItem> journalEncounterItem() {
+        return getEntityStore(DbcObjects.JournalEncounterItem);
+    }
+
+    default JournalEncounterItem journalEncounterItem(Integer id) {
+        return journalEncounterItem().get(id);
     }
 
     default DbcEntityStore<JournalInstance> journalInstance() {
@@ -1046,28 +1166,28 @@ public interface DbcObjectManager {
         return keystoneAffix().get(id);
     }
 
-    default DbcEntityStore<LanguageWord> languageWords() {
-        return getEntityStore(DbcObjects.LanguageWords);
+    default DbcEntityStore<LanguageWord> languageWord() {
+        return getEntityStore(DbcObjects.LanguageWord);
     }
 
-    default LanguageWord languageWords(Integer id) {
-        return languageWords().get(id);
+    default LanguageWord languageWord(Integer id) {
+        return languageWord().get(id);
     }
 
-    default DbcEntityStore<Language> languages() {
-        return getEntityStore(DbcObjects.Languages);
+    default DbcEntityStore<Language> language() {
+        return getEntityStore(DbcObjects.Language);
     }
 
-    default Language languages(Integer id) {
-        return languages().get(id);
+    default Language language(Integer id) {
+        return language().get(id);
     }
 
-    default DbcEntityStore<LfgDungeon> lFGDungeons() {
-        return getEntityStore(DbcObjects.LFGDungeons);
+    default DbcEntityStore<LfgDungeon> lfgDungeon() {
+        return getEntityStore(DbcObjects.LfgDungeon);
     }
 
-    default LfgDungeon lFGDungeons(Integer id) {
-        return lFGDungeons().get(id);
+    default LfgDungeon lfgDungeon(Integer id) {
+        return lfgDungeon().get(id);
     }
 
     default DbcEntityStore<Light> light() {
@@ -1190,14 +1310,6 @@ public interface DbcObjectManager {
         return movie().get(id);
     }
 
-    default DbcEntityStore<MythicPlusSeason> mythicPlusSeason() {
-        return getEntityStore(DbcObjects.MythicPlusSeason);
-    }
-
-    default MythicPlusSeason mythicPlusSeason(Integer id) {
-        return mythicPlusSeason().get(id);
-    }
-
     default DbcEntityStore<NameGen> nameGen() {
         return getEntityStore(DbcObjects.NameGen);
     }
@@ -1230,19 +1342,11 @@ public interface DbcObjectManager {
         return namesReservedLocale().get(id);
     }
 
-    default DbcEntityStore<NumTalentsAtLevel> numTalentsAtLevel() {
-        return getEntityStore(DbcObjects.NumTalentsAtLevel);
-    }
-
-    default NumTalentsAtLevel numTalentsAtLevel(Integer id) {
-        return numTalentsAtLevel().get(id);
-    }
-
-    default DbcEntityStore<OverrideSpellDatum> overrideSpellData() {
+    default DbcEntityStore<OverrideSpellData> overrideSpellData() {
         return getEntityStore(DbcObjects.OverrideSpellData);
     }
 
-    default OverrideSpellDatum overrideSpellData(Integer id) {
+    default OverrideSpellData overrideSpellData(Integer id) {
         return overrideSpellData().get(id);
     }
 
@@ -1326,36 +1430,44 @@ public interface DbcObjectManager {
         return prestigeLevelInfo().get(id);
     }
 
-    default DbcEntityStore<PvpDifficulty> pVPDifficulty() {
-        return getEntityStore(DbcObjects.PVPDifficulty);
+    default DbcEntityStore<PvpDifficulty> pvpDifficulty() {
+        return getEntityStore(DbcObjects.PvpDifficulty);
     }
 
-    default PvpDifficulty pVPDifficulty(Integer id) {
-        return pVPDifficulty().get(id);
+    default PvpDifficulty pvpDifficulty(Integer id) {
+        return pvpDifficulty().get(id);
     }
 
-    default DbcEntityStore<PvpItem> pVPItem() {
-        return getEntityStore(DbcObjects.PVPItem);
+    default DbcEntityStore<PvpItem> pvpItem() {
+        return getEntityStore(DbcObjects.PvpItem);
     }
 
-    default PvpItem pVPItem(Integer id) {
-        return pVPItem().get(id);
+    default PvpItem pvpItem(Integer id) {
+        return pvpItem().get(id);
     }
 
-    default DbcEntityStore<PvpSeason> pvpSeason() {
-        return getEntityStore(DbcObjects.PvpSeason);
+    default DbcEntityStore<PvpReward> pvpReward() {
+        return getEntityStore(DbcObjects.PvpReward);
     }
 
-    default PvpSeason pvpSeason(Integer id) {
-        return pvpSeason().get(id);
+    default PvpReward pvpReward(Integer id) {
+        return pvpReward().get(id);
     }
 
-    default DbcEntityStore<PvpTier> pvpTier() {
-        return getEntityStore(DbcObjects.PvpTier);
+    default DbcEntityStore<PvpTalent> pvpTalent() {
+        return getEntityStore(DbcObjects.PvpTalent);
     }
 
-    default PvpTier pvpTier(Integer id) {
-        return pvpTier().get(id);
+    default PvpTalent pvpTalent(Integer id) {
+        return pvpTalent().get(id);
+    }
+
+    default DbcEntityStore<PvpTalentUnlock> pvpTalentUnlock() {
+        return getEntityStore(DbcObjects.PvpTalentUnlock);
+    }
+
+    default PvpTalentUnlock pvpTalentUnlock(Integer id) {
+        return pvpTalentUnlock().get(id);
     }
 
     default DbcEntityStore<QuestFactionReward> questFactionReward() {
@@ -1372,14 +1484,6 @@ public interface DbcObjectManager {
 
     default QuestInfo questInfo(Integer id) {
         return questInfo().get(id);
-    }
-
-    default DbcEntityStore<QuestLineXQuest> questLineXQuest() {
-        return getEntityStore(DbcObjects.QuestLineXQuest);
-    }
-
-    default QuestLineXQuest questLineXQuest(Integer id) {
-        return questLineXQuest().get(id);
     }
 
     default DbcEntityStore<QuestMoneyReward> questMoneyReward() {
@@ -1414,20 +1518,20 @@ public interface DbcObjectManager {
         return questV2().get(id);
     }
 
-    default DbcEntityStore<QuestXp> questXP() {
-        return getEntityStore(DbcObjects.QuestXP);
+    default DbcEntityStore<QuestXp> questXp() {
+        return getEntityStore(DbcObjects.QuestXp);
     }
 
-    default QuestXp questXP(Integer id) {
-        return questXP().get(id);
+    default QuestXp questXp(Integer id) {
+        return questXp().get(id);
     }
 
-    default DbcEntityStore<RandPropPoint> randPropPoints() {
-        return getEntityStore(DbcObjects.RandPropPoints);
+    default DbcEntityStore<RandPropPoint> randPropPoint() {
+        return getEntityStore(DbcObjects.RandPropPoint);
     }
 
-    default RandPropPoint randPropPoints(Integer id) {
-        return randPropPoints().get(id);
+    default RandPropPoint randPropPoint(Integer id) {
+        return randPropPoint().get(id);
     }
 
     default DbcEntityStore<RewardPack> rewardPack() {
@@ -1452,6 +1556,30 @@ public interface DbcObjectManager {
 
     default RewardPackXItem rewardPackXItem(Integer id) {
         return rewardPackXItem().get(id);
+    }
+
+    default DbcEntityStore<RulesetItemUpgrade> rulesetItemUpgrade() {
+        return getEntityStore(DbcObjects.RulesetItemUpgrade);
+    }
+
+    default RulesetItemUpgrade rulesetItemUpgrade(Integer id) {
+        return rulesetItemUpgrade().get(id);
+    }
+
+    default DbcEntityStore<SandboxScaling> sandboxScaling() {
+        return getEntityStore(DbcObjects.SandboxScaling);
+    }
+
+    default SandboxScaling sandboxScaling(Integer id) {
+        return sandboxScaling().get(id);
+    }
+
+    default DbcEntityStore<ScalingStatDistribution> scalingStatDistribution() {
+        return getEntityStore(DbcObjects.ScalingStatDistribution);
+    }
+
+    default ScalingStatDistribution scalingStatDistribution(Integer id) {
+        return scalingStatDistribution().get(id);
     }
 
     default DbcEntityStore<Scenario> scenario() {
@@ -1502,12 +1630,12 @@ public interface DbcObjectManager {
         return sceneScriptText().get(id);
     }
 
-    default DbcEntityStore<ServerMessage> serverMessages() {
+    default DbcEntityStore<ServerMessage> serverMessage() {
         return getEntityStore(DbcObjects.ServerMessages);
     }
 
-    default ServerMessage serverMessages(Integer id) {
-        return serverMessages().get(id);
+    default ServerMessage serverMessage(Integer id) {
+        return serverMessage().get(id);
     }
 
     default DbcEntityStore<SkillLine> skillLine() {
@@ -1542,36 +1670,52 @@ public interface DbcObjectManager {
         return soundKit().get(id);
     }
 
-    default DbcEntityStore<SpellAuraOption> spellAuraOptions() {
-        return getEntityStore(DbcObjects.SpellAuraOptions);
+    default DbcEntityStore<SpecializationSpell> specializationSpell() {
+        return getEntityStore(DbcObjects.SpecializationSpell);
     }
 
-    default SpellAuraOption spellAuraOptions(Integer id) {
-        return spellAuraOptions().get(id);
+    default SpecializationSpell specializationSpell(Integer id) {
+        return specializationSpell().get(id);
     }
 
-    default DbcEntityStore<SpellAuraRestriction> spellAuraRestrictions() {
-        return getEntityStore(DbcObjects.SpellAuraRestrictions);
+    default DbcEntityStore<Spell> spell() {
+        return getEntityStore(DbcObjects.Spell);
     }
 
-    default SpellAuraRestriction spellAuraRestrictions(Integer id) {
-        return spellAuraRestrictions().get(id);
+    default Spell spell(Integer id) {
+        return spell().get(id);
     }
 
-    default DbcEntityStore<SpellCastTime> spellCastTimes() {
-        return getEntityStore(DbcObjects.SpellCastTimes);
+    default DbcEntityStore<SpellAuraOption> spellAuraOption() {
+        return getEntityStore(DbcObjects.SpellAuraOption);
     }
 
-    default SpellCastTime spellCastTimes(Integer id) {
-        return spellCastTimes().get(id);
+    default SpellAuraOption spellAuraOption(Integer id) {
+        return spellAuraOption().get(id);
     }
 
-    default DbcEntityStore<SpellCastingRequirement> spellCastingRequirements() {
-        return getEntityStore(DbcObjects.SpellCastingRequirements);
+    default DbcEntityStore<SpellAuraRestriction> spellAuraRestriction() {
+        return getEntityStore(DbcObjects.SpellAuraRestriction);
     }
 
-    default SpellCastingRequirement spellCastingRequirements(Integer id) {
-        return spellCastingRequirements().get(id);
+    default SpellAuraRestriction spellAuraRestriction(Integer id) {
+        return spellAuraRestriction().get(id);
+    }
+
+    default DbcEntityStore<SpellCastTime> spellCastTime() {
+        return getEntityStore(DbcObjects.SpellCastTime);
+    }
+
+    default SpellCastTime spellCastTime(Integer id) {
+        return spellCastTime().get(id);
+    }
+
+    default DbcEntityStore<SpellCastingRequirement> spellCastingRequirement() {
+        return getEntityStore(DbcObjects.SpellCastingRequirement);
+    }
+
+    default SpellCastingRequirement spellCastingRequirement(Integer id) {
+        return spellCastingRequirement().get(id);
     }
 
     default DbcEntityStore<SpellCategories> spellCategories() {
@@ -1590,20 +1734,20 @@ public interface DbcObjectManager {
         return spellCategory().get(id);
     }
 
-    default DbcEntityStore<SpellClassOption> spellClassOptions() {
-        return getEntityStore(DbcObjects.SpellClassOptions);
+    default DbcEntityStore<SpellClassOption> spellClassOption() {
+        return getEntityStore(DbcObjects.SpellClassOption);
     }
 
-    default SpellClassOption spellClassOptions(Integer id) {
-        return spellClassOptions().get(id);
+    default SpellClassOption spellClassOption(Integer id) {
+        return spellClassOption().get(id);
     }
 
-    default DbcEntityStore<SpellCooldown> spellCooldowns() {
-        return getEntityStore(DbcObjects.SpellCooldowns);
+    default DbcEntityStore<SpellCooldown> spellCooldown() {
+        return getEntityStore(DbcObjects.SpellCooldown);
     }
 
-    default SpellCooldown spellCooldowns(Integer id) {
-        return spellCooldowns().get(id);
+    default SpellCooldown spellCooldown(Integer id) {
+        return spellCooldown().get(id);
     }
 
     default DbcEntityStore<SpellDuration> spellDuration() {
@@ -1622,12 +1766,12 @@ public interface DbcObjectManager {
         return spellEffect().get(id);
     }
 
-    default DbcEntityStore<SpellEquippedItem> spellEquippedItems() {
-        return getEntityStore(DbcObjects.SpellEquippedItems);
+    default DbcEntityStore<SpellEquippedItem> spellEquippedItem() {
+        return getEntityStore(DbcObjects.SpellEquippedItem);
     }
 
-    default SpellEquippedItem spellEquippedItems(Integer id) {
-        return spellEquippedItems().get(id);
+    default SpellEquippedItem spellEquippedItem(Integer id) {
+        return spellEquippedItem().get(id);
     }
 
     default DbcEntityStore<SpellFocusObject> spellFocusObject() {
@@ -1638,12 +1782,12 @@ public interface DbcObjectManager {
         return spellFocusObject().get(id);
     }
 
-    default DbcEntityStore<SpellInterrupt> spellInterrupts() {
-        return getEntityStore(DbcObjects.SpellInterrupts);
+    default DbcEntityStore<SpellInterrupt> spellInterrupt() {
+        return getEntityStore(DbcObjects.SpellInterrupt);
     }
 
-    default SpellInterrupt spellInterrupts(Integer id) {
-        return spellInterrupts().get(id);
+    default SpellInterrupt spellInterrupt(Integer id) {
+        return spellInterrupt().get(id);
     }
 
     default DbcEntityStore<SpellItemEnchantment> spellItemEnchantment() {
@@ -1686,12 +1830,12 @@ public interface DbcObjectManager {
         return spellLearnSpell().get(id);
     }
 
-    default DbcEntityStore<SpellLevel> spellLevels() {
-        return getEntityStore(DbcObjects.SpellLevels);
+    default DbcEntityStore<SpellLevel> spellLevel() {
+        return getEntityStore(DbcObjects.SpellLevel);
     }
 
-    default SpellLevel spellLevels(Integer id) {
-        return spellLevels().get(id);
+    default SpellLevel spellLevel(Integer id) {
+        return spellLevel().get(id);
     }
 
     default DbcEntityStore<SpellMisc> spellMisc() {
@@ -1700,14 +1844,6 @@ public interface DbcObjectManager {
 
     default SpellMisc spellMisc(Integer id) {
         return spellMisc().get(id);
-    }
-
-    default DbcEntityStore<SpellName> spellName() {
-        return getEntityStore(DbcObjects.SpellName);
-    }
-
-    default SpellName spellName(Integer id) {
-        return spellName().get(id);
     }
 
     default DbcEntityStore<SpellPower> spellPower() {
@@ -1743,7 +1879,7 @@ public interface DbcObjectManager {
     }
 
     default DbcEntityStore<SpellRadius> spellRadius() {
-        return getEntityStore(DbcObjects.SpellRadius);
+        return getEntityStore(DbcObjects.SpellRadiu);
     }
 
     default SpellRadius spellRadius(Integer id) {
@@ -1758,20 +1894,12 @@ public interface DbcObjectManager {
         return spellRange().get(id);
     }
 
-    default DbcEntityStore<SpellReagent> spellReagents() {
-        return getEntityStore(DbcObjects.SpellReagents);
+    default DbcEntityStore<SpellReagent> spellReagent() {
+        return getEntityStore(DbcObjects.SpellReagent);
     }
 
-    default SpellReagent spellReagents(Integer id) {
-        return spellReagents().get(id);
-    }
-
-    default DbcEntityStore<SpellReagentsCurrency> spellReagentsCurrency() {
-        return getEntityStore(DbcObjects.SpellReagentsCurrency);
-    }
-
-    default SpellReagentsCurrency spellReagentsCurrency(Integer id) {
-        return spellReagentsCurrency().get(id);
+    default SpellReagent spellReagent(Integer id) {
+        return spellReagent().get(id);
     }
 
     default DbcEntityStore<SpellScaling> spellScaling() {
@@ -1798,20 +1926,20 @@ public interface DbcObjectManager {
         return spellShapeshiftForm().get(id);
     }
 
-    default DbcEntityStore<SpellTargetRestriction> spellTargetRestrictions() {
-        return getEntityStore(DbcObjects.SpellTargetRestrictions);
+    default DbcEntityStore<SpellTargetRestriction> spellTargetRestriction() {
+        return getEntityStore(DbcObjects.SpellTargetRestriction);
     }
 
-    default SpellTargetRestriction spellTargetRestrictions(Integer id) {
-        return spellTargetRestrictions().get(id);
+    default SpellTargetRestriction spellTargetRestriction(Integer id) {
+        return spellTargetRestriction().get(id);
     }
 
-    default DbcEntityStore<SpellTotem> spellTotems() {
-        return getEntityStore(DbcObjects.SpellTotems);
+    default DbcEntityStore<SpellTotem> spellTotem() {
+        return getEntityStore(DbcObjects.SpellTotem);
     }
 
-    default SpellTotem spellTotems(Integer id) {
-        return spellTotems().get(id);
+    default SpellTotem spellTotem(Integer id) {
+        return spellTotem().get(id);
     }
 
     default DbcEntityStore<SpellVisual> spellVisual() {
@@ -1854,12 +1982,12 @@ public interface DbcObjectManager {
         return spellXSpellVisual().get(id);
     }
 
-    default DbcEntityStore<SummonProperty> summonProperties() {
-        return getEntityStore(DbcObjects.SummonProperties);
+    default DbcEntityStore<SummonProperty> summonProperty() {
+        return getEntityStore(DbcObjects.SummonProperty);
     }
 
-    default SummonProperty summonProperties(Integer id) {
-        return summonProperties().get(id);
+    default SummonProperty summonProperty(Integer id) {
+        return summonProperty().get(id);
     }
 
     default DbcEntityStore<TactKey> tactKey() {
@@ -1878,28 +2006,12 @@ public interface DbcObjectManager {
         return talent().get(id);
     }
 
-    default DbcEntityStore<TalentTab> talentTab() {
-        return getEntityStore(DbcObjects.TalentTab);
+    default DbcEntityStore<TaxiNode> taxiNode() {
+        return getEntityStore(DbcObjects.TaxiNode);
     }
 
-    default TalentTab talentTab(Integer id) {
-        return talentTab().get(id);
-    }
-
-    default DbcEntityStore<TalentTreePrimarySpell> talentTreePrimarySpells() {
-        return getEntityStore(DbcObjects.TalentTreePrimarySpells);
-    }
-
-    default TalentTreePrimarySpell talentTreePrimarySpells(Integer id) {
-        return talentTreePrimarySpells().get(id);
-    }
-
-    default DbcEntityStore<TaxiNode> taxiNodes() {
-        return getEntityStore(DbcObjects.TaxiNodes);
-    }
-
-    default TaxiNode taxiNodes(Integer id) {
-        return taxiNodes().get(id);
+    default TaxiNode taxiNode(Integer id) {
+        return taxiNode().get(id);
     }
 
     default DbcEntityStore<TaxiPath> taxiPath() {
@@ -1982,38 +2094,6 @@ public interface DbcObjectManager {
         return transportRotation().get(id);
     }
 
-    default DbcEntityStore<UiMap> uiMap() {
-        return getEntityStore(DbcObjects.UiMap);
-    }
-
-    default UiMap uiMap(Integer id) {
-        return uiMap().get(id);
-    }
-
-    default DbcEntityStore<UiMapAssignment> uiMapAssignment() {
-        return getEntityStore(DbcObjects.UiMapAssignment);
-    }
-
-    default UiMapAssignment uiMapAssignment(Integer id) {
-        return uiMapAssignment().get(id);
-    }
-
-    default DbcEntityStore<UiMapLink> uiMapLink() {
-        return getEntityStore(DbcObjects.UiMapLink);
-    }
-
-    default UiMapLink uiMapLink(Integer id) {
-        return uiMapLink().get(id);
-    }
-
-    default DbcEntityStore<UiMapXMapArt> uiMapXMapArt() {
-        return getEntityStore(DbcObjects.UiMapXMapArt);
-    }
-
-    default UiMapXMapArt uiMapXMapArt(Integer id) {
-        return uiMapXMapArt().get(id);
-    }
-
     default DbcEntityStore<UnitCondition> unitCondition() {
         return getEntityStore(DbcObjects.UnitCondition);
     }
@@ -2054,12 +2134,12 @@ public interface DbcObjectManager {
         return vignette().get(id);
     }
 
-    default DbcEntityStore<WmoAreaTable> wMOAreaTable() {
-        return getEntityStore(DbcObjects.WMOAreaTable);
+    default DbcEntityStore<WmoAreaTable> wmoAreaTable() {
+        return getEntityStore(DbcObjects.WmoAreaTable);
     }
 
-    default WmoAreaTable wMOAreaTable(Integer id) {
-        return wMOAreaTable().get(id);
+    default WmoAreaTable wmoAreaTable(Integer id) {
+        return wmoAreaTable().get(id);
     }
 
     default DbcEntityStore<WorldEffect> worldEffect() {
@@ -2070,12 +2150,36 @@ public interface DbcObjectManager {
         return worldEffect().get(id);
     }
 
+    default DbcEntityStore<WorldMapArea> worldMapArea() {
+        return getEntityStore(DbcObjects.WorldMapArea);
+    }
+
+    default WorldMapArea worldMapArea(Integer id) {
+        return worldMapArea().get(id);
+    }
+
     default DbcEntityStore<WorldMapOverlay> worldMapOverlay() {
         return getEntityStore(DbcObjects.WorldMapOverlay);
     }
 
     default WorldMapOverlay worldMapOverlay(Integer id) {
         return worldMapOverlay().get(id);
+    }
+
+    default DbcEntityStore<WorldMapTransform> worldMapTransform() {
+        return getEntityStore(DbcObjects.WorldMapTransform);
+    }
+
+    default WorldMapTransform worldMapTransform(Integer id) {
+        return worldMapTransform().get(id);
+    }
+
+    default DbcEntityStore<WorldSafeLoc> worldSafeLoc() {
+        return getEntityStore(DbcObjects.WorldSafeLoc);
+    }
+
+    default WorldSafeLoc worldSafeLoc(Integer id) {
+        return worldSafeLoc().get(id);
     }
 
     default DbcEntityStore<WorldStateExpression> worldStateExpression() {

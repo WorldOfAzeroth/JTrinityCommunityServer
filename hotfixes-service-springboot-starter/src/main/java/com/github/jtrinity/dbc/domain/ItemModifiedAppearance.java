@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,46 +14,47 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_modified_appearance")
-@Db2File(name = "ItemModifiedAppearance.db2", layoutHash = 0xB6515E40, indexField = 0, parentIndexField = 1)
+@Db2File(name = "ItemModifiedAppearance.db2", layoutHash = 0xE64FD18B, indexField = 1, parentIndexField = 0)
 public class ItemModifiedAppearance implements DbcEntity {
+
+    @Column(name = "ItemID")
+    @Db2Field(fieldIndex = 0, type = Db2Type.INT, signed = true)
+    private Integer itemID;
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
     private Integer id;
+
+
+    @Column(name = "ItemAppearanceModifierID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE)
+    private Byte itemAppearanceModifierID;
+
+
+    @Column(name = "ItemAppearanceID")
+    @Db2Field(fieldIndex = 3, type = Db2Type.SHORT)
+    private Short itemAppearanceID;
+
+
+    @Column(name = "OrderIndex")
+    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
+    private Byte orderIndex;
+
+
+    @Column(name = "TransmogSourceTypeEnum")
+    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE, signed = true)
+    private Byte transmogSourceTypeEnum;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("0")
-    @Column(name = "ItemID", nullable = false)
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
-    private Integer itemID;
-
-    @ColumnDefault("0")
-    @Column(name = "ItemAppearanceModifierID", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
-    private Integer itemAppearanceModifierID;
-
-    @ColumnDefault("0")
-    @Column(name = "ItemAppearanceID", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer itemAppearanceID;
-
-    @ColumnDefault("0")
-    @Column(name = "OrderIndex", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
-    private Integer orderIndex;
-
-    @ColumnDefault("'0'")
-    @Column(name = "TransmogSourceTypeEnum", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE)
-    private Short transmogSourceTypeEnum;
 
 }

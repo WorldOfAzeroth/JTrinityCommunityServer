@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_category")
-@Db2File(name = "SpellCategory.db2", layoutHash = 0xF7647E24)
+@Db2File(name = "SpellCategory.db2", layoutHash = 0xEA60E384)
 public class SpellCategory implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,39 +26,40 @@ public class SpellCategory implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "Name")
+    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
+    private LocalizedString name;
+
+
+    @Column(name = "ChargeRecoveryTime")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
+    private Integer chargeRecoveryTime;
+
+
+    @Column(name = "Flags")
+    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE, signed = true)
+    private Byte flags;
+
+
+    @Column(name = "UsesPerWeek")
+    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
+    private Byte usesPerWeek;
+
+
+    @Column(name = "MaxCharges")
+    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE, signed = true)
+    private Byte maxCharges;
+
+
+    @Column(name = "TypeMask")
+    @Db2Field(fieldIndex = 6, type = Db2Type.INT, signed = true)
+    private Integer typeMask;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @Lob
-    @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String name;
-
-    @ColumnDefault("0")
-    @Column(name = "Flags", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
-    private Integer flags;
-
-    @ColumnDefault("'0'")
-    @Column(name = "UsesPerWeek", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
-    private Short usesPerWeek;
-
-    @ColumnDefault("0")
-    @Column(name = "MaxCharges", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE, signed = true)
-    private Byte maxCharges;
-
-    @ColumnDefault("0")
-    @Column(name = "ChargeRecoveryTime", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer chargeRecoveryTime;
-
-    @ColumnDefault("0")
-    @Column(name = "TypeMask", nullable = false)
-    @Db2Field(fieldIndex = 6, type = Db2Type.INT, signed = true)
-    private Integer typeMask;
 
 }

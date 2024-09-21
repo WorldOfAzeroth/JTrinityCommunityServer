@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "quest_sort")
-@Db2File(name = "QuestSort.db2", layoutHash = 0x1DDCABD9)
+@Db2File(name = "QuestSort.db2", layoutHash = 0xAD7072C6)
 public class QuestSort implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,19 +26,20 @@ public class QuestSort implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "SortName")
+    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
+    private LocalizedString sortName;
+
+
+    @Column(name = "UiOrderIndex")
+    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE, signed = true)
+    private Byte uiOrderIndex;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @Lob
-    @Column(name = "SortName")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String sortName;
-
-    @ColumnDefault("0")
-    @Column(name = "UiOrderIndex", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE, signed = true)
-    private Byte uiOrderIndex;
 
 }

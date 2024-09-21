@@ -3,7 +3,6 @@
 slf4j = "2.0.13"
 netty = "4.1.112.Final"
 springBoot = "3.3.2"
-mapdb = "3.1.0"
 junit = "5.10.2"
 lombok = "1.18.34"
 protobuf = "4.28.0"

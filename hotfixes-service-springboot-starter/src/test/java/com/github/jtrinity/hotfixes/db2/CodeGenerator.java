@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,7 @@ class CodeGenerator {
     public String fileCode = """
             package com.github.jtrinity.dbc.domain;
             
+            import com.github.jtrinity.common.LocalizedString;
             import com.github.jtrinity.cache.DbcEntity;
             import com.github.jtrinity.dbc.db2.Db2Field;
             import com.github.jtrinity.dbc.db2.Db2File;
@@ -36,21 +38,12 @@ class CodeGenerator {
             @Table(name = "%s")
             @Db2File(name = "%s", layoutHash = %s, indexField = %s, parentIndexField = %s)
             public class %s implements DbcEntity {
-                @Id
-                @ColumnDefault("'0'")
-                @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-                @Db2Field(fieldIndex = %s, type = Db2Type.INT)
-                private Integer id;
-            
-                @Id
-                @ColumnDefault("0")
-                @Column(name = "VerifiedBuild", nullable = false)
-                private Integer verifiedBuild;
+            %s
             }
             """;
 
-    public static final String PATH_JAVA = "<>";
-    public static final String PATH_CPLUSPLUS = "<>";
+    public static final String PATH_JAVA = "C:\\Users\\Jorgie\\Documents\\CodeRepo\\PandariaCommunityServer\\";
+    public static final String PATH_CPLUSPLUS = "\\\\wsl.localhost\\Ubuntu-22.04\\home\\jorgie\\CoreRepo\\LegionCommunityServer\\";
 
     private static class FileMate {
         String name;
@@ -62,28 +55,13 @@ class CodeGenerator {
     }
 
 
-    void generate2() {
-        for (DbcObjects value : DbcObjects.values()) {
-
-            String name = value.name();
-            if(name.endsWith("Data")) {
-                name = name.replace("Data", "Datum");
-            }
-
-            String code = """
-                         %s(%s.class),
-                    """.formatted(value.name(), name);
-
-            System.out.print(code);
-        }
-    }
-
-
     void generate() throws IOException {
 
-        Pattern fileName = Pattern.compile(".+Store\\(\"(\\w+.db2)\".+&(\\w+)LoadInfo", Pattern.CASE_INSENSITIVE);
+        Set<String> sets = Set.of();
+
+        Pattern fileName = Pattern.compile(".+Store\\(\\\"(\\w+.db2)\\\", (\\w+)LoadInfo", Pattern.CASE_INSENSITIVE);
         Pattern structMeta = Pattern.compile("struct (\\w+)Meta", Pattern.CASE_INSENSITIVE);
-        Pattern structMetaItem = Pattern.compile(".+Instance\\{.(\\d+), ([-|\\d]+), \\d+, \\d+, (\\w+), \\w+, ([-|\\d]+)", Pattern.CASE_INSENSITIVE);
+        Pattern structMetaItem = Pattern.compile(".+instance\\(([-|\\d]+), \\d+, (\\w+), \\w+, +\\w+. ([-|\\d]+)\\)", Pattern.CASE_INSENSITIVE);
 
         Pattern name = Pattern.compile("struct\\s+(\\w+)LoadInfo", Pattern.CASE_INSENSITIVE);
 
@@ -119,10 +97,10 @@ class CodeGenerator {
                 if (fileMate == null) {
                     continue;
                 }
-                fileMate.dataId = matcher.group(1);
-                fileMate.layoutHash = matcher.group(3);
-                fileMate.indexField = matcher.group(2);
-                fileMate.parentIndexField = matcher.group(4);
+
+                fileMate.indexField = matcher.group(1);
+                fileMate.layoutHash = matcher.group(2);
+                fileMate.parentIndexField = matcher.group(3);
             }
         }
 
@@ -139,93 +117,123 @@ class CodeGenerator {
             }
             Matcher matcher = type.matcher(line);
             if (matcher.find()) {
-                dbFileName.get(entryName).fields.add(new String[]{matcher.group(1), matcher.group(2), matcher.group(3)});
+                FileMate fileMate = dbFileName.get(entryName);
+                if (fileMate == null) {
+                    throw new IllegalStateException(entryName);
+                }
+                fileMate.fields.add(new String[]{matcher.group(1), matcher.group(2), matcher.group(3)});
             }
         }
 
         Map<String, String> classFix = new LinkedHashMap<>();
-        classFix.put("ItemClass", "ItemClass");
-        classFix.put("SpellRadius", "SpellRadius");
-        classFix.put("SpellCategories", "SpellCategories");
-        classFix.put("GlyphProperties", "GlyphProperty");
-        classFix.put("ItemBonus", "ItemBonus");
-        classFix.put("GemProperties", "GemProperty");
-        classFix.put("SummonProperties", "SummonProperty");
-        classFix.put("CfgCategories", "CfgCategory");
-        classFix.put("ChrClasses", "ChrClass");
-
         Map<String, String> fieldFix = new HashMap<>();
         fieldFix.put("ID", "id");
-        fieldFix.put("Class", "classField");
+        fieldFix.put("Class", "klass");
+
+        Function<String, String> fieldNormalize = (value) -> {
+            if (fieldFix.get(value) != null) {
+                return fieldFix.get(value);
+            }
+            ;
+            String s = Character.toLowerCase(value.charAt(0)) + value.substring(1);
+            s = s.replace("modifier", "Modifier");
+            return s;
+        };
 
         dbFileName.forEach((key, value) -> {
+
+            if (!sets.contains(key)) {
+                return;
+            }
 
             if (classFix.containsKey(key)) {
                 key = classFix.get(key);
             } else if (key.endsWith("s")) {
                 key = key.substring(0, key.length() - 1);
-            } else if (key.endsWith("Data")) {
-                key = key.substring(0, key.length() - 4) + "Datum";
             }
 
-            Path sourceFile = Paths.get(PATH_JAVA + "hotfixes-service-springboot-starter\\src\\main\\java\\com\\github\\jtrinity\\hotfixes\\domain\\", key + ".java");
+            Path sourceFile = Paths.get(PATH_JAVA + "hotfixes-service-springboot-starter\\src\\main\\java\\com\\github\\jtrinity\\dbc\\domain\\", key + ".java");
+
+
+            StringBuilder texxt = new StringBuilder();
+
+            for (int i = 0; i < value.fields.size(); i++) {
+                String[] field = value.fields.get(i);
+
+                String javaType = switch (field[1]) {
+                    case "STRING" -> "LocalizedString";
+                    case "STRING_NOT_LOCALIZED" -> "String";
+                    case "FLOAT" -> "Float";
+                    case "INT" -> "Integer";
+                    case "BYTE" -> "Byte";
+                    case "SHORT" -> "Short";
+                    case "LONG" -> "Long";
+                    default -> throw new IllegalStateException("Unexpected value: " + field[1]);
+                };
+
+                if ("ID".equalsIgnoreCase(field[2])) {
+                    texxt.append("""
+                                @Id
+                                @ColumnDefault("'0'")
+                                @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
+                                @Db2Field(fieldIndex = %d, type = Db2Type.INT)
+                                private Integer id;
+                            
+                            """.formatted(i)
+                    );
+                } else {
+                    texxt.append("""
+                            
+                                @Column(name = "%s")
+                                @Db2Field(fieldIndex = %d, type = Db2Type.%s, signed = %s)
+                                private %s %s;
+                            
+                            """.formatted(field[2], i, field[1], field[0], javaType, fieldNormalize.apply(field[2]))
+                    );
+                }
+            }
+            texxt.append("""
+                        @Id
+                        @ColumnDefault("0")
+                        @Column(name = "VerifiedBuild", nullable = false)
+                        private Integer verifiedBuild;
+                    
+                    """
+            );
+
+
+            String formatted = fileCode.formatted(key.toLowerCase(), value.name, value.layoutHash, value.indexField, value.parentIndexField, key, texxt.toString());
+
+
+            System.out.println(key + "(" + key + ".class),");
+
 
             try {
-                String sourceText = Files.readString(sourceFile);
-                StringBuilder builder = new StringBuilder(sourceText);
-                String packageStr = "package com.github.jtrinity.dbc.domain;";
-
-                int indexOf = builder.indexOf(packageStr);
-                if (indexOf == -1) {
-                    throw new IllegalStateException("Could not find package " + packageStr);
-                }
-
-
-                builder.insert(indexOf + packageStr.length(), "\r\n\r\nimport com.github.jtrinity.hotfixes.db2.Db2Field;\r\nimport com.github.jtrinity.hotfixes.db2.Db2File;\r\nimport com.github.jtrinity.hotfixes.db2.Db2Type;");
-
-                String classStr = "public class";
-                indexOf = builder.indexOf(classStr);
-                if (indexOf == -1) {
-                    throw new IllegalStateException("Could not find class " + classStr);
-                }
-
-                builder.insert(indexOf, "@Db2File(name = \"%s\", fileDataId = %s, layoutHash = %s, indexField = %s, parentIndexField = %s)\r\n".formatted(value.name, value.dataId, value.layoutHash, value.indexField, value.parentIndexField));
-
-
-                for (int i = 0; i < value.fields.size(); i++) {
-                    String[] items = value.fields.get(i);
-                    String fieldCode = "\r\n    @Db2Field(fieldIndex = %s, type = Db2Type.%s, signed = %s)".formatted(i, items[1], items[0]);
-                    String fieldName;
-
-                    if (fieldFix.containsKey(items[2])) {
-                        fieldName = fieldFix.get(items[2]);
-                    } else {
-                        fieldName = Character.toLowerCase(items[2].charAt(0)) + new StringBuilder(items[2]).substring(1);
-                    }
-                    int index = builder.indexOf(fieldName + ";");
-
-                    if (index == -1) {
-                        throw new RuntimeException("Not found field: " + fieldName + " in " + key + ".java");
-                    }
-
-                    for (int j = index; j > 0; j--) {
-                        if (builder.charAt(j) == '\r') {
-                            index = j;
-                            break;
-                        }
-                    }
-
-                    builder.insert(index, fieldCode);
-
-                }
-
-                //System.out.println(builder.toString());
-                Files.write(sourceFile, builder.toString().getBytes());
-
+                Files.writeString(sourceFile, formatted);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+
         });
 
+    }
+
+    @Test
+    public void generate2() {
+        for (DbcObjects value : DbcObjects.values()) {
+            String methodName = Character.toLowerCase(value.name().charAt(0)) + value.name().substring(1);
+            String text = """
+                        default DbcEntityStore<%s> %s() {
+                            return getEntityStore(DbcObjects.%s);
+                        }
+                    
+                        default %s %s(Integer id) {
+                            return %s().get(id);
+                        }
+                    """.formatted(value.name(), methodName, value.name(), value.name(), methodName, methodName);
+
+            System.out.println(text);
+        }
     }
 }

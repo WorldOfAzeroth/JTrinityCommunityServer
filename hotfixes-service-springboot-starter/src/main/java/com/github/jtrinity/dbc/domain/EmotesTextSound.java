@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "emotes_text_sound")
-@Db2File(name = "EmotesTextSound.db2", layoutHash = 0xF058B2EF, parentIndexField = 4)
+@Db2File(name = "EmotesTextSound.db2", layoutHash = 0x6DFAF9BC, parentIndexField = 4)
 public class EmotesTextSound implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,34 +26,35 @@ public class EmotesTextSound implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "RaceID")
+    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
+    private Byte raceID;
+
+
+    @Column(name = "SexID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE)
+    private Byte sexID;
+
+
+    @Column(name = "ClassID")
+    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
+    private Byte classID;
+
+
+    @Column(name = "SoundID")
+    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
+    private Integer soundID;
+
+
+    @Column(name = "EmotesTextID")
+    @Db2Field(fieldIndex = 5, type = Db2Type.SHORT)
+    private Short emotesTextID;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "RaceID", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
-    private Short raceID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ClassID", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE)
-    private Short classID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SexID", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
-    private Short sexID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SoundID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
-    private Long soundID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "EmotesTextID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT)
-    private Long emotesTextID;
 
 }

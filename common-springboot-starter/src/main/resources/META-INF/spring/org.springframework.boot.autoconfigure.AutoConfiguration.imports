@@ -1,3 +1,4 @@
 # Auto Configure
 com.github.jtrinity.config.ConfigurationRefreshProcessor
 com.github.jtrinity.schedule.ScheduledExecutorServiceBean
+com.github.jtrinity.cache.MapdbCacheProvider

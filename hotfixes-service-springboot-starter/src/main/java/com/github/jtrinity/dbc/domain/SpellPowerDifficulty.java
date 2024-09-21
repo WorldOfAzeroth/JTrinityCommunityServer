@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,31 +14,32 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_power_difficulty")
-@Db2File(name = "SpellPowerDifficulty.db2", layoutHash = 0x8CDFB01A, indexField = 0)
+@Db2File(name = "SpellPowerDifficulty.db2", layoutHash = 0x74714FF7, indexField = 2)
 public class SpellPowerDifficulty implements DbcEntity {
+
+    @Column(name = "DifficultyID")
+    @Db2Field(fieldIndex = 0, type = Db2Type.BYTE)
+    private Byte difficultyID;
+
+
+    @Column(name = "OrderIndex")
+    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
+    private Byte orderIndex;
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
-    private  Integer id;
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
+    private Integer id;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "DifficultyID", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
-    private Short difficultyID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "OrderIndex", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE)
-    private Short orderIndex;
 
 }

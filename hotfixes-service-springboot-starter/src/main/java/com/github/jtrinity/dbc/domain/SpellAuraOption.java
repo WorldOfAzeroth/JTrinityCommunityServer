@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_aura_options")
-@Db2File(name = "SpellAuraOptions.db2", layoutHash = 0xB247D703, parentIndexField = 7)
+@Db2File(name = "SpellAuraOptions.db2", layoutHash = 0xE05BE94F, parentIndexField = 7)
 public class SpellAuraOption implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,54 +26,50 @@ public class SpellAuraOption implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "ProcCharges")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
+    private Integer procCharges;
+
+
+    @Column(name = "ProcTypeMask")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
+    private Integer procTypeMask;
+
+
+    @Column(name = "ProcCategoryRecovery")
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
+    private Integer procCategoryRecovery;
+
+
+    @Column(name = "CumulativeAura")
+    @Db2Field(fieldIndex = 4, type = Db2Type.SHORT)
+    private Short cumulativeAura;
+
+
+    @Column(name = "SpellProcsPerMinuteID")
+    @Db2Field(fieldIndex = 5, type = Db2Type.SHORT)
+    private Short spellProcsPerMinuteID;
+
+
+    @Column(name = "DifficultyID")
+    @Db2Field(fieldIndex = 6, type = Db2Type.BYTE)
+    private Byte difficultyID;
+
+
+    @Column(name = "ProcChance")
+    @Db2Field(fieldIndex = 7, type = Db2Type.BYTE)
+    private Byte procChance;
+
+
+    @Column(name = "SpellID")
+    @Db2Field(fieldIndex = 8, type = Db2Type.INT, signed = true)
+    private Integer spellID;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "DifficultyID", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
-    private Short difficultyID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "CumulativeAura", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
-    private Long cumulativeAura;
-
-    @ColumnDefault("0")
-    @Column(name = "ProcCategoryRecovery", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer procCategoryRecovery;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ProcChance", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
-    private Short procChance;
-
-    @ColumnDefault("0")
-    @Column(name = "ProcCharges", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer procCharges;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SpellProcsPerMinuteID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT)
-    private Integer spellProcsPerMinuteID;
-
-    @ColumnDefault("0")
-    @Column(name = "ProcTypeMask1", nullable = false)
-    @Db2Field(fieldIndex = 7, type = Db2Type.INT, signed = true)
-    private Integer procTypeMask1;
-
-    @ColumnDefault("0")
-    @Column(name = "ProcTypeMask2", nullable = false)
-    @Db2Field(fieldIndex = 8, type = Db2Type.INT, signed = true)
-    private Integer procTypeMask2;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SpellID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 9, type = Db2Type.INT)
-    private Long spellID;
 
 }

@@ -6,6 +6,7 @@ import com.github.jtrinity.cache.DbcEntityStore;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.common.Locale;
 import com.github.jtrinity.dbc.db2.Db2FileReader;
+import org.springframework.beans.factory.annotation.Value;
 
 
 import java.io.IOException;
@@ -18,13 +19,19 @@ import static com.github.jtrinity.common.Logs.SERVER_LOADING;
 
 public class HotfixesDbcObjectManager implements DbcObjectManager {
 
+    @Value("${worldserver.dbc.locale}")
     private Locale defaultDbcLocale;
 
+    @Value("${worldserver.datadir}")
     private String dataFolder;
 
-    private CacheProvider cacheProvider;
+    private final CacheProvider cacheProvider;
 
     private final EnumMap<DbcObjects, DbcEntityStore<? extends DbcEntity>> entityStoreMap = new EnumMap<>(DbcObjects.class);
+
+    public HotfixesDbcObjectManager(CacheProvider cacheProvider) {
+        this.cacheProvider = cacheProvider;
+    }
 
     public void loadEntityStores() {
         loadEntityStores(entityStoreMap.keySet());

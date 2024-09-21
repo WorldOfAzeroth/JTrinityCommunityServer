@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,51 +14,47 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_cooldowns")
-@Db2File(name = "SpellCooldowns.db2", layoutHash = 0x254654DD, parentIndexField = 5)
+@Db2File(name = "SpellCooldowns.db2", layoutHash = 0xCA8D8B3C, parentIndexField = 4)
 public class SpellCooldown implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
-    private  Integer id;
+    private Integer id;
+
+
+    @Column(name = "CategoryRecoveryTime")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
+    private Integer categoryRecoveryTime;
+
+
+    @Column(name = "RecoveryTime")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
+    private Integer recoveryTime;
+
+
+    @Column(name = "StartRecoveryTime")
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
+    private Integer startRecoveryTime;
+
+
+    @Column(name = "DifficultyID")
+    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
+    private Byte difficultyID;
+
+
+    @Column(name = "SpellID")
+    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
+    private Integer spellID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "DifficultyID", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.BYTE)
-    private Short difficultyID;
-
-    @ColumnDefault("0")
-    @Column(name = "CategoryRecoveryTime", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
-    private Integer categoryRecoveryTime;
-
-    @ColumnDefault("0")
-    @Column(name = "RecoveryTime", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer recoveryTime;
-
-    @ColumnDefault("0")
-    @Column(name = "StartRecoveryTime", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
-    private Integer startRecoveryTime;
-
-    @ColumnDefault("0")
-    @Column(name = "AuraSpellID", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer auraSpellID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SpellID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 6, type = Db2Type.INT)
-    private Long spellID;
 
 }

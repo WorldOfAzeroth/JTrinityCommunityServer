@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,36 +14,37 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_duration")
-@Db2File(name = "SpellDuration.db2", layoutHash = 0x5ECABAFD)
+@Db2File(name = "SpellDuration.db2", layoutHash = 0x0D6C9082)
 public class SpellDuration implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
-    private  Integer id;
+    private Integer id;
+
+
+    @Column(name = "Duration")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
+    private Integer duration;
+
+
+    @Column(name = "MaxDuration")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
+    private Integer maxDuration;
+
+
+    @Column(name = "DurationPerLevel")
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
+    private Integer durationPerLevel;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("0")
-    @Column(name = "Duration", nullable = false)
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
-    private Integer duration;
-
-    @ColumnDefault("'0'")
-    @Column(name = "DurationPerLevel", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
-    private Long durationPerLevel;
-
-    @ColumnDefault("0")
-    @Column(name = "MaxDuration", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer maxDuration;
 
 }

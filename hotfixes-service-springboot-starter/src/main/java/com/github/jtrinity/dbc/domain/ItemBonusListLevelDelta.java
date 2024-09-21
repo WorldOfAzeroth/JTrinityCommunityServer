@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,12 +14,17 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_bonus_list_level_delta")
-@Db2File(name = "ItemBonusListLevelDelta.db2", layoutHash = 0xC6EA2151, indexField = 1)
+@Db2File(name = "ItemBonusListLevelDelta.db2", layoutHash = 0xDFBF5AC9, indexField = 1)
 public class ItemBonusListLevelDelta implements DbcEntity {
+
+    @Column(name = "ItemLevelDelta")
+    @Db2Field(fieldIndex = 0, type = Db2Type.SHORT, signed = true)
+    private Short itemLevelDelta;
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
@@ -30,9 +36,5 @@ public class ItemBonusListLevelDelta implements DbcEntity {
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("0")
-    @Column(name = "ItemLevelDelta", nullable = false)
-    @Db2Field(fieldIndex = 0, type = Db2Type.SHORT, signed = true)
-    private Short itemLevelDelta;
 
 }

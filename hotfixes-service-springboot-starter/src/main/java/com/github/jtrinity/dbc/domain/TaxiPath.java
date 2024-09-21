@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,36 +14,37 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "taxi_path")
-@Db2File(name = "TaxiPath.db2", layoutHash = 0x9B67699C, indexField = 0, parentIndexField = 1)
+@Db2File(name = "TaxiPath.db2", layoutHash = 0xF44E2BF5, indexField = 2, parentIndexField = 0)
 public class TaxiPath implements DbcEntity {
+
+    @Column(name = "FromTaxiNode")
+    @Db2Field(fieldIndex = 0, type = Db2Type.SHORT)
+    private Short fromTaxiNode;
+
+
+    @Column(name = "ToTaxiNode")
+    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
+    private Short toTaxiNode;
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
-    private  Integer id;
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
+    private Integer id;
+
+
+    @Column(name = "Cost")
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
+    private Integer cost;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "FromTaxiNode", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
-    private Integer fromTaxiNode;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ToTaxiNode", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
-    private Integer toTaxiNode;
-
-    @ColumnDefault("'0'")
-    @Column(name = "Cost", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
-    private Long cost;
 
 }

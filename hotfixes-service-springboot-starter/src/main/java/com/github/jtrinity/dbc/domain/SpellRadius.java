@@ -13,41 +13,42 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_radius")
-@Db2File(name = "SpellRadius.db2", layoutHash = 0x84246EAE)
+@Db2File(name = "SpellRadius.db2", layoutHash = 0xC12E5C90)
 public class SpellRadius implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
-    private  Integer id;
+    private Integer id;
+
+
+    @Column(name = "Radius")
+    @Db2Field(fieldIndex = 1, type = Db2Type.FLOAT)
+    private Float radius;
+
+
+    @Column(name = "RadiusPerLevel")
+    @Db2Field(fieldIndex = 2, type = Db2Type.FLOAT)
+    private Float radiusPerLevel;
+
+
+    @Column(name = "RadiusMin")
+    @Db2Field(fieldIndex = 3, type = Db2Type.FLOAT)
+    private Float radiusMin;
+
+
+    @Column(name = "RadiusMax")
+    @Db2Field(fieldIndex = 4, type = Db2Type.FLOAT)
+    private Float radiusMax;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("0")
-    @Column(name = "Radius", nullable = false)
-    @Db2Field(fieldIndex = 1, type = Db2Type.FLOAT)
-    private Float radius;
-
-    @ColumnDefault("0")
-    @Column(name = "RadiusPerLevel", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.FLOAT)
-    private Float radiusPerLevel;
-
-    @ColumnDefault("0")
-    @Column(name = "RadiusMin", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.FLOAT)
-    private Float radiusMin;
-
-    @ColumnDefault("0")
-    @Column(name = "RadiusMax", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.FLOAT)
-    private Float radiusMax;
 
 }

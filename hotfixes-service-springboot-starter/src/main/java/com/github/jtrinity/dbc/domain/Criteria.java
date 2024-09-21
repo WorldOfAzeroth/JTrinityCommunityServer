@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "criteria")
-@Db2File(name = "Criteria.db2", layoutHash = 0x2C87F5ED)
+@Db2File(name = "Criteria.db2", layoutHash = 0xA87A5BB9)
 public class Criteria implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,64 +26,65 @@ public class Criteria implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "Asset")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
+    private Integer asset;
+
+
+    @Column(name = "StartAsset")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
+    private Integer startAsset;
+
+
+    @Column(name = "FailAsset")
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
+    private Integer failAsset;
+
+
+    @Column(name = "ModifierTreeId")
+    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
+    private Integer ModifierTreeId;
+
+
+    @Column(name = "StartTimer")
+    @Db2Field(fieldIndex = 5, type = Db2Type.SHORT)
+    private Short startTimer;
+
+
+    @Column(name = "EligibilityWorldStateID")
+    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT, signed = true)
+    private Short eligibilityWorldStateID;
+
+
+    @Column(name = "Type")
+    @Db2Field(fieldIndex = 7, type = Db2Type.BYTE)
+    private Byte type;
+
+
+    @Column(name = "StartEvent")
+    @Db2Field(fieldIndex = 8, type = Db2Type.BYTE)
+    private Byte startEvent;
+
+
+    @Column(name = "FailEvent")
+    @Db2Field(fieldIndex = 9, type = Db2Type.BYTE)
+    private Byte failEvent;
+
+
+    @Column(name = "Flags")
+    @Db2Field(fieldIndex = 10, type = Db2Type.BYTE)
+    private Byte flags;
+
+
+    @Column(name = "EligibilityWorldStateValue")
+    @Db2Field(fieldIndex = 11, type = Db2Type.BYTE, signed = true)
+    private Byte eligibilityWorldStateValue;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("0")
-    @Column(name = "Type", nullable = false)
-    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT, signed = true)
-    private Short type;
-
-    @ColumnDefault("0")
-    @Column(name = "Asset", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
-    private Integer asset;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ModifierTreeId", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
-    private Long modifierTreeId;
-
-    @ColumnDefault("0")
-    @Column(name = "StartEvent", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
-    private Integer startEvent;
-
-    @ColumnDefault("0")
-    @Column(name = "StartAsset", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer startAsset;
-
-    @ColumnDefault("'0'")
-    @Column(name = "StartTimer", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT)
-    private Integer startTimer;
-
-    @ColumnDefault("0")
-    @Column(name = "FailEvent", nullable = false)
-    @Db2Field(fieldIndex = 7, type = Db2Type.INT, signed = true)
-    private Integer failEvent;
-
-    @ColumnDefault("0")
-    @Column(name = "FailAsset", nullable = false)
-    @Db2Field(fieldIndex = 8, type = Db2Type.INT, signed = true)
-    private Integer failAsset;
-
-    @ColumnDefault("0")
-    @Column(name = "Flags", nullable = false)
-    @Db2Field(fieldIndex = 9, type = Db2Type.INT, signed = true)
-    private Integer flags;
-
-    @ColumnDefault("0")
-    @Column(name = "EligibilityWorldStateID", nullable = false)
-    @Db2Field(fieldIndex = 10, type = Db2Type.SHORT, signed = true)
-    private Short eligibilityWorldStateID;
-
-    @ColumnDefault("0")
-    @Column(name = "EligibilityWorldStateValue", nullable = false)
-    @Db2Field(fieldIndex = 11, type = Db2Type.BYTE, signed = true)
-    private Byte eligibilityWorldStateValue;
 
 }

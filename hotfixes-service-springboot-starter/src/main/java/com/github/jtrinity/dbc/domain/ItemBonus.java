@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_bonus")
-@Db2File(name = "ItemBonus.db2", layoutHash = 0x7864A3E0, parentIndexField = 1)
+@Db2File(name = "ItemBonus.db2", layoutHash = 0xE12FB1A0, parentIndexField = 1)
 public class ItemBonus implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,44 +26,40 @@ public class ItemBonus implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "Value1")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
+    private Integer value1;
+
+
+    @Column(name = "Value2")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
+    private Integer value2;
+
+
+    @Column(name = "Value3")
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
+    private Integer value3;
+
+
+    @Column(name = "ParentItemBonusListID")
+    @Db2Field(fieldIndex = 4, type = Db2Type.SHORT)
+    private Short parentItemBonusListID;
+
+
+    @Column(name = "Type")
+    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE)
+    private Byte type;
+
+
+    @Column(name = "OrderIndex")
+    @Db2Field(fieldIndex = 6, type = Db2Type.BYTE)
+    private Byte orderIndex;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("0")
-    @Column(name = "Value1", nullable = false)
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
-    private Integer value1;
-
-    @ColumnDefault("0")
-    @Column(name = "Value2", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
-    private Integer value2;
-
-    @ColumnDefault("0")
-    @Column(name = "Value3", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer value3;
-
-    @ColumnDefault("0")
-    @Column(name = "Value4", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
-    private Integer value4;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ParentItemBonusListID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 5, type = Db2Type.SHORT)
-    private Integer parentItemBonusListID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "Type", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 6, type = Db2Type.BYTE)
-    private Short type;
-
-    @ColumnDefault("'0'")
-    @Column(name = "OrderIndex", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 7, type = Db2Type.BYTE)
-    private Short orderIndex;
 
 }

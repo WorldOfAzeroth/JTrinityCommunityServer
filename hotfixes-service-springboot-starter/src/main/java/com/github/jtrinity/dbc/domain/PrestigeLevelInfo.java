@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "prestige_level_info")
-@Db2File(name = "PrestigeLevelInfo.db2", layoutHash = 0xB4AE6313)
+@Db2File(name = "PrestigeLevelInfo.db2", layoutHash = 0xA7B2D559)
 public class PrestigeLevelInfo implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,34 +26,30 @@ public class PrestigeLevelInfo implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "Name")
+    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
+    private LocalizedString name;
+
+
+    @Column(name = "BadgeTextureFileDataID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
+    private Integer badgeTextureFileDataID;
+
+
+    @Column(name = "PrestigeLevel")
+    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
+    private Byte prestigeLevel;
+
+
+    @Column(name = "Flags")
+    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
+    private Byte flags;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @Lob
-    @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String name;
-
-    @ColumnDefault("0")
-    @Column(name = "PrestigeLevel", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
-    private Integer prestigeLevel;
-
-    @ColumnDefault("0")
-    @Column(name = "BadgeTextureFileDataID", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer badgeTextureFileDataID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "Flags", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
-    private Short flags;
-
-    @ColumnDefault("0")
-    @Column(name = "AwardedAchievementID", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer awardedAchievementID;
 
 }

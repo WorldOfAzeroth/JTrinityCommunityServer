@@ -10,9 +10,6 @@ plugins {
 
 dependencies {
 
-
-
-
     implementation libs.springboot.starter
     implementation libs.springboot.data.jpa
 

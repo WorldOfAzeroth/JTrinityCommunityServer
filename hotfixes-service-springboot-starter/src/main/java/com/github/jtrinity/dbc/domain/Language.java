@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,12 +14,17 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "languages")
-@Db2File(name = "Languages.db2", layoutHash = 0xE73E1D81, indexField = 1)
+@Db2File(name = "Languages.db2", layoutHash = 0x6FA5D0C4, indexField = 1)
 public class Language implements DbcEntity {
+
+    @Column(name = "Name")
+    @Db2Field(fieldIndex = 0, type = Db2Type.STRING)
+    private LocalizedString name;
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
@@ -30,29 +36,5 @@ public class Language implements DbcEntity {
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @Lob
-    @Column(name = "Name")
-    @Db2Field(fieldIndex = 0, type = Db2Type.STRING)
-    private String name;
-
-    @ColumnDefault("0")
-    @Column(name = "Flags", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
-    private Integer flags;
-
-    @ColumnDefault("0")
-    @Column(name = "UiTextureKitID", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer uiTextureKitID;
-
-    @ColumnDefault("0")
-    @Column(name = "UiTextureKitElementCount", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
-    private Integer uiTextureKitElementCount;
-
-    @ColumnDefault("0")
-    @Column(name = "LearningCurveID", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer learningCurveID;
 
 }

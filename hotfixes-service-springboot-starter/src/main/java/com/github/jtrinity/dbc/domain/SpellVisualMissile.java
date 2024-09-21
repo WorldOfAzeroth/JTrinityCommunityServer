@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,116 +14,117 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_visual_missile")
-@Db2File(name = "SpellVisualMissile.db2", layoutHash = 0xC15741C9, indexField = 2, parentIndexField = 15)
+@Db2File(name = "SpellVisualMissile.db2", layoutHash = 0x00BA67A5, indexField = 12, parentIndexField = 15)
 public class SpellVisualMissile implements DbcEntity {
+
+    @Column(name = "FollowGroundHeight")
+    @Db2Field(fieldIndex = 0, type = Db2Type.INT, signed = true)
+    private Integer followGroundHeight;
+
+
+    @Column(name = "FollowGroundDropSpeed")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
+    private Integer followGroundDropSpeed;
+
+
+    @Column(name = "Flags")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
+    private Integer flags;
+
+
+    @Column(name = "CastOffset1")
+    @Db2Field(fieldIndex = 3, type = Db2Type.FLOAT)
+    private Float castOffset1;
+
+
+    @Column(name = "CastOffset2")
+    @Db2Field(fieldIndex = 4, type = Db2Type.FLOAT)
+    private Float castOffset2;
+
+
+    @Column(name = "CastOffset3")
+    @Db2Field(fieldIndex = 5, type = Db2Type.FLOAT)
+    private Float castOffset3;
+
+
+    @Column(name = "ImpactOffset1")
+    @Db2Field(fieldIndex = 6, type = Db2Type.FLOAT)
+    private Float impactOffset1;
+
+
+    @Column(name = "ImpactOffset2")
+    @Db2Field(fieldIndex = 7, type = Db2Type.FLOAT)
+    private Float impactOffset2;
+
+
+    @Column(name = "ImpactOffset3")
+    @Db2Field(fieldIndex = 8, type = Db2Type.FLOAT)
+    private Float impactOffset3;
+
+
+    @Column(name = "SpellVisualEffectNameID")
+    @Db2Field(fieldIndex = 9, type = Db2Type.SHORT)
+    private Short spellVisualEffectNameID;
+
+
+    @Column(name = "CastPositionerID")
+    @Db2Field(fieldIndex = 10, type = Db2Type.SHORT)
+    private Short castPositionerID;
+
+
+    @Column(name = "ImpactPositionerID")
+    @Db2Field(fieldIndex = 11, type = Db2Type.SHORT)
+    private Short impactPositionerID;
+
+
+    @Column(name = "FollowGroundApproach")
+    @Db2Field(fieldIndex = 12, type = Db2Type.SHORT)
+    private Short followGroundApproach;
+
+
+    @Column(name = "SpellMissileMotionID")
+    @Db2Field(fieldIndex = 13, type = Db2Type.SHORT)
+    private Short spellMissileMotionID;
+
+
+    @Column(name = "Attachment")
+    @Db2Field(fieldIndex = 14, type = Db2Type.BYTE, signed = true)
+    private Byte attachment;
+
+
+    @Column(name = "DestinationAttachment")
+    @Db2Field(fieldIndex = 15, type = Db2Type.BYTE, signed = true)
+    private Byte destinationAttachment;
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 6, type = Db2Type.INT)
-    private  Integer id;
+    @Db2Field(fieldIndex = 16, type = Db2Type.INT)
+    private Integer id;
+
+
+    @Column(name = "SoundEntriesID")
+    @Db2Field(fieldIndex = 17, type = Db2Type.INT)
+    private Integer soundEntriesID;
+
+
+    @Column(name = "AnimKitID")
+    @Db2Field(fieldIndex = 18, type = Db2Type.INT)
+    private Integer animKitID;
+
+
+    @Column(name = "SpellVisualMissileSetID")
+    @Db2Field(fieldIndex = 19, type = Db2Type.SHORT)
+    private Short spellVisualMissileSetID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("0")
-    @Column(name = "CastOffset1", nullable = false)
-    @Db2Field(fieldIndex = 0, type = Db2Type.FLOAT)
-    private Float castOffset1;
-
-    @ColumnDefault("0")
-    @Column(name = "CastOffset2", nullable = false)
-    @Db2Field(fieldIndex = 1, type = Db2Type.FLOAT)
-    private Float castOffset2;
-
-    @ColumnDefault("0")
-    @Column(name = "CastOffset3", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.FLOAT)
-    private Float castOffset3;
-
-    @ColumnDefault("0")
-    @Column(name = "ImpactOffset1", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.FLOAT)
-    private Float impactOffset1;
-
-    @ColumnDefault("0")
-    @Column(name = "ImpactOffset2", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.FLOAT)
-    private Float impactOffset2;
-
-    @ColumnDefault("0")
-    @Column(name = "ImpactOffset3", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.FLOAT)
-    private Float impactOffset3;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SpellVisualEffectNameID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 7, type = Db2Type.SHORT)
-    private Integer spellVisualEffectNameID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SoundEntriesID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 8, type = Db2Type.INT)
-    private Long soundEntriesID;
-
-    @ColumnDefault("0")
-    @Column(name = "Attachment", nullable = false)
-    @Db2Field(fieldIndex = 9, type = Db2Type.BYTE, signed = true)
-    private Byte attachment;
-
-    @ColumnDefault("0")
-    @Column(name = "DestinationAttachment", nullable = false)
-    @Db2Field(fieldIndex = 10, type = Db2Type.BYTE, signed = true)
-    private Byte destinationAttachment;
-
-    @ColumnDefault("'0'")
-    @Column(name = "CastPositionerID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 11, type = Db2Type.SHORT)
-    private Integer castPositionerID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ImpactPositionerID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 12, type = Db2Type.SHORT)
-    private Integer impactPositionerID;
-
-    @ColumnDefault("0")
-    @Column(name = "FollowGroundHeight", nullable = false)
-    @Db2Field(fieldIndex = 13, type = Db2Type.INT, signed = true)
-    private Integer followGroundHeight;
-
-    @ColumnDefault("'0'")
-    @Column(name = "FollowGroundDropSpeed", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 14, type = Db2Type.INT)
-    private Long followGroundDropSpeed;
-
-    @ColumnDefault("'0'")
-    @Column(name = "FollowGroundApproach", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 15, type = Db2Type.SHORT)
-    private Integer followGroundApproach;
-
-    @ColumnDefault("'0'")
-    @Column(name = "Flags", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 16, type = Db2Type.INT)
-    private Long flags;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SpellMissileMotionID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 17, type = Db2Type.SHORT)
-    private Integer spellMissileMotionID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "AnimKitID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 18, type = Db2Type.INT)
-    private Long animKitID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "SpellVisualMissileSetID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 19, type = Db2Type.INT)
-    private Long spellVisualMissileSetID;
 
 }

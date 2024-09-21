@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "phase_x_phase_group")
-@Db2File(name = "PhaseXPhaseGroup.db2", layoutHash = 0xEC8D5E98, parentIndexField = 1)
+@Db2File(name = "PhaseXPhaseGroup.db2", layoutHash = 0x66517AF6, parentIndexField = 1)
 public class PhaseXPhaseGroup implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,19 +26,20 @@ public class PhaseXPhaseGroup implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "PhaseID")
+    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
+    private Short phaseID;
+
+
+    @Column(name = "PhaseGroupID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
+    private Short phaseGroupID;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "PhaseID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
-    private Integer phaseID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "PhaseGroupID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
-    private Long phaseGroupID;
 
 }

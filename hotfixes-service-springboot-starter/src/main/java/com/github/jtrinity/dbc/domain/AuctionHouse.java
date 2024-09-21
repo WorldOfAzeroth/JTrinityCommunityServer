@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "auction_house")
-@Db2File(name = "AuctionHouse.db2", layoutHash = 0x8925F061)
+@Db2File(name = "AuctionHouse.db2", layoutHash = 0x51CFEEFF)
 public class AuctionHouse implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,29 +26,30 @@ public class AuctionHouse implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "Name")
+    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
+    private LocalizedString name;
+
+
+    @Column(name = "FactionID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
+    private Short factionID;
+
+
+    @Column(name = "DepositRate")
+    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
+    private Byte depositRate;
+
+
+    @Column(name = "ConsignmentRate")
+    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
+    private Byte consignmentRate;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @Lob
-    @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String name;
-
-    @ColumnDefault("'0'")
-    @Column(name = "FactionID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
-    private Integer factionID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "DepositRate", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
-    private Short depositRate;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ConsignmentRate", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
-    private Short consignmentRate;
 
 }

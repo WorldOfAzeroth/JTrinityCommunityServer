@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,11 +14,11 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_bag_family")
-@Db2File(name = "ItemBagFamily.db2", layoutHash = 0xB0DD8F60)
+@Db2File(name = "ItemBagFamily.db2", layoutHash = 0x96663ABF)
 public class ItemBagFamily implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
@@ -25,14 +26,15 @@ public class ItemBagFamily implements DbcEntity {
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
+
+    @Column(name = "Name")
+    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
+    private LocalizedString name;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @Lob
-    @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String name;
 
 }

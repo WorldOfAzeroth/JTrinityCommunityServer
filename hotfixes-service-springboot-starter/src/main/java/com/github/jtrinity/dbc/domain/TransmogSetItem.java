@@ -1,5 +1,6 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2File;
@@ -13,36 +14,37 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "transmog_set_item")
-@Db2File(name = "TransmogSetItem.db2", layoutHash = 0xEF36A899, indexField = 0, parentIndexField = 1)
+@Db2File(name = "TransmogSetItem.db2", layoutHash = 0x0E96B3A2, indexField = 0, parentIndexField = 1)
 public class TransmogSetItem implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
     @Db2Field(fieldIndex = 0, type = Db2Type.INT)
-    private  Integer id;
+    private Integer id;
+
+
+    @Column(name = "TransmogSetID")
+    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
+    private Integer transmogSetID;
+
+
+    @Column(name = "ItemModifiedAppearanceID")
+    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
+    private Integer itemModifiedAppearanceID;
+
+
+    @Column(name = "Flags")
+    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
+    private Integer flags;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
-    @ColumnDefault("'0'")
-    @Column(name = "TransmogSetID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
-    private Long transmogSetID;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ItemModifiedAppearanceID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
-    private Long itemModifiedAppearanceID;
-
-    @ColumnDefault("0")
-    @Column(name = "Flags", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
-    private Integer flags;
 
 }

@@ -1,10 +1,10 @@
 package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +17,17 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "map_challenge_mode")
-@Db2File(name = "MapChallengeMode.db2", layoutHash = 0xAAA9EAD7, indexField = 1, parentIndexField = 2)
+@Db2DataBind(name = "MapChallengeMode.db2", layoutHash = 0xAAA9EAD7, indexField = 1, parentIndexField = 2, fields = {
+        @Db2Field(name = "name", type = Db2Type.STRING),
+        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "mapID", type = Db2Type.SHORT),
+        @Db2Field(name = {"criteriaCount1", "criteriaCount2", "criteriaCount3"}, type = Db2Type.SHORT),
+        @Db2Field(name = "flags", type = Db2Type.BYTE)
+})
 public class MapChallengeMode implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
     private Integer id;
 
     @Id
@@ -32,42 +37,26 @@ public class MapChallengeMode implements DbcEntity {
 
     @Lob
     @Column(name = "Name")
-    @Db2Field(fieldIndex = 0, type = Db2Type.STRING)
-    private String name;
+    private LocalizedString name;
 
     @ColumnDefault("'0'")
     @Column(name = "MapID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
     private Integer mapID;
 
     @ColumnDefault("'0'")
     @Column(name = "Flags", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
     private Short flags;
-
-    @ColumnDefault("'0'")
-    @Column(name = "ExpansionLevel", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
-    private Long expansionLevel;
-
-    @ColumnDefault("0")
-    @Column(name = "RequiredWorldStateID", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
-    private Integer requiredWorldStateID;
 
     @ColumnDefault("0")
     @Column(name = "CriteriaCount1", nullable = false)
-    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT, signed = true)
     private Short criteriaCount1;
 
     @ColumnDefault("0")
     @Column(name = "CriteriaCount2", nullable = false)
-    @Db2Field(fieldIndex = 7, type = Db2Type.SHORT, signed = true)
     private Short criteriaCount2;
 
     @ColumnDefault("0")
     @Column(name = "CriteriaCount3", nullable = false)
-    @Db2Field(fieldIndex = 8, type = Db2Type.SHORT, signed = true)
     private Short criteriaCount3;
 
 }

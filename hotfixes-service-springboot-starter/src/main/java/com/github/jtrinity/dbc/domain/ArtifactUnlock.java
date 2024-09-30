@@ -1,11 +1,9 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,43 +16,38 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "artifact_unlock")
-@Db2File(name = "ArtifactUnlock.db2", layoutHash = 0x52839A77, parentIndexField = 4)
+@Db2DataBind(name = "ArtifactUnlock.db2", layoutHash = 0x52839A77, parentIndexField = 4, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "itemBonusListID", type = Db2Type.SHORT),
+        @Db2Field(name = "powerRank", type = Db2Type.BYTE),
+        @Db2Field(name = "powerID", type = Db2Type.INT),
+        @Db2Field(name = "playerConditionID", type = Db2Type.INT),
+        @Db2Field(name = "artifactID", type = Db2Type.BYTE)
+})
 public class ArtifactUnlock implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
-
     @Column(name = "ItemBonusListID")
-    @Db2Field(fieldIndex = 1, type = Db2Type.SHORT)
     private Short itemBonusListID;
 
-
     @Column(name = "PowerRank")
-    @Db2Field(fieldIndex = 2, type = Db2Type.BYTE)
     private Byte powerRank;
 
-
     @Column(name = "PowerID")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
     private Integer powerID;
 
-
     @Column(name = "PlayerConditionID")
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
     private Integer playerConditionID;
 
-
     @Column(name = "ArtifactID")
-    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE)
     private Byte artifactID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

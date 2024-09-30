@@ -1,11 +1,9 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,43 +16,38 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_cooldowns")
-@Db2File(name = "SpellCooldowns.db2", layoutHash = 0xCA8D8B3C, parentIndexField = 4)
+@Db2DataBind(name = "SpellCooldowns.db2", layoutHash = 0xCA8D8B3C, parentIndexField = 4, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "categoryRecoveryTime", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "recoveryTime", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "startRecoveryTime", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "difficultyID", type = Db2Type.BYTE),
+        @Db2Field(name = "spellID", type = Db2Type.INT, signed = true)
+})
 public class SpellCooldown implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
-
     @Column(name = "CategoryRecoveryTime")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
     private Integer categoryRecoveryTime;
 
-
     @Column(name = "RecoveryTime")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
     private Integer recoveryTime;
 
-
     @Column(name = "StartRecoveryTime")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
     private Integer startRecoveryTime;
 
-
     @Column(name = "DifficultyID")
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
     private Byte difficultyID;
 
-
     @Column(name = "SpellID")
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
     private Integer spellID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

@@ -1,11 +1,10 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,68 +17,58 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "journal_instance")
-@Db2File(name = "JournalInstance.db2", layoutHash = 0x1691CC3D, indexField = 10)
+@Db2DataBind(name = "JournalInstance.db2", layoutHash = 0x1691CC3D, indexField = 10, fields = {
+        @Db2Field(name = "name", type = Db2Type.STRING),
+        @Db2Field(name = "description", type = Db2Type.STRING),
+        @Db2Field(name = "buttonFileDataID", type = Db2Type.INT),
+        @Db2Field(name = "buttonSmallFileDataID", type = Db2Type.INT),
+        @Db2Field(name = "backgroundFileDataID", type = Db2Type.INT),
+        @Db2Field(name = "loreFileDataID", type = Db2Type.INT),
+        @Db2Field(name = "mapID", type = Db2Type.SHORT),
+        @Db2Field(name = "areaID", type = Db2Type.SHORT),
+        @Db2Field(name = "orderIndex", type = Db2Type.BYTE),
+        @Db2Field(name = "flags", type = Db2Type.BYTE),
+        @Db2Field(name = "id", type = Db2Type.INT)
+})
 public class JournalInstance implements DbcEntity {
-
     @Column(name = "Name")
-    @Db2Field(fieldIndex = 0, type = Db2Type.STRING)
     private LocalizedString name;
 
-
     @Column(name = "Description")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
     private LocalizedString description;
 
-
     @Column(name = "ButtonFileDataID")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
     private Integer buttonFileDataID;
 
-
     @Column(name = "ButtonSmallFileDataID")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
     private Integer buttonSmallFileDataID;
 
-
     @Column(name = "BackgroundFileDataID")
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
     private Integer backgroundFileDataID;
 
-
     @Column(name = "LoreFileDataID")
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT)
     private Integer loreFileDataID;
 
-
     @Column(name = "MapID")
-    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT)
     private Short mapID;
 
-
     @Column(name = "AreaID")
-    @Db2Field(fieldIndex = 7, type = Db2Type.SHORT)
     private Short areaID;
 
-
     @Column(name = "OrderIndex")
-    @Db2Field(fieldIndex = 8, type = Db2Type.BYTE)
     private Byte orderIndex;
 
-
     @Column(name = "Flags")
-    @Db2Field(fieldIndex = 9, type = Db2Type.BYTE)
     private Byte flags;
 
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 10, type = Db2Type.INT)
     private Integer id;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

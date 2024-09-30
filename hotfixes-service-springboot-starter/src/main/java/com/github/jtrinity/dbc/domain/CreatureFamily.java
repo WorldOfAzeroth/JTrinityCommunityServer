@@ -1,11 +1,10 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,68 +17,57 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "creature_family")
-@Db2File(name = "CreatureFamily.db2", layoutHash = 0xE2DC5126)
+@Db2DataBind(name = "CreatureFamily.db2", layoutHash = 0xE2DC5126, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "name", type = Db2Type.STRING),
+        @Db2Field(name = "minScale", type = Db2Type.FLOAT),
+        @Db2Field(name = "maxScale", type = Db2Type.FLOAT),
+        @Db2Field(name = "iconFileID", type = Db2Type.INT, signed = true),
+        @Db2Field(name = {"skillLine1", "skillLine2"}, type = Db2Type.SHORT, signed = true),
+        @Db2Field(name = "petFoodMask", type = Db2Type.SHORT, signed = true),
+        @Db2Field(name = "minScaleLevel", type = Db2Type.BYTE, signed = true),
+        @Db2Field(name = "maxScaleLevel", type = Db2Type.BYTE, signed = true),
+        @Db2Field(name = "petTalentType", type = Db2Type.BYTE, signed = true)
+})
 public class CreatureFamily implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
-
     @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
     private LocalizedString name;
 
-
     @Column(name = "MinScale")
-    @Db2Field(fieldIndex = 2, type = Db2Type.FLOAT)
     private Float minScale;
 
-
     @Column(name = "MaxScale")
-    @Db2Field(fieldIndex = 3, type = Db2Type.FLOAT)
     private Float maxScale;
 
-
     @Column(name = "IconFileID")
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT, signed = true)
     private Integer iconFileID;
 
-
     @Column(name = "SkillLine1")
-    @Db2Field(fieldIndex = 5, type = Db2Type.SHORT, signed = true)
     private Short skillLine1;
 
-
     @Column(name = "SkillLine2")
-    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT, signed = true)
     private Short skillLine2;
 
-
     @Column(name = "PetFoodMask")
-    @Db2Field(fieldIndex = 7, type = Db2Type.SHORT, signed = true)
     private Short petFoodMask;
 
-
     @Column(name = "MinScaleLevel")
-    @Db2Field(fieldIndex = 8, type = Db2Type.BYTE, signed = true)
     private Byte minScaleLevel;
 
-
     @Column(name = "MaxScaleLevel")
-    @Db2Field(fieldIndex = 9, type = Db2Type.BYTE, signed = true)
     private Byte maxScaleLevel;
 
-
     @Column(name = "PetTalentType")
-    @Db2Field(fieldIndex = 10, type = Db2Type.BYTE, signed = true)
     private Byte petTalentType;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

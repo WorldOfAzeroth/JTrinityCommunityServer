@@ -2,9 +2,8 @@ package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +16,20 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "vignette")
-@Db2File(name = "Vignette.db2", layoutHash = 0x329D6DFF)
+@Db2DataBind(name = "Vignette.db2", layoutHash = 0x329D6DFF, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "name", type = Db2Type.STRING),
+        @Db2Field(name = "maxHeight", type = Db2Type.FLOAT),
+        @Db2Field(name = "minHeight", type = Db2Type.FLOAT),
+        @Db2Field(name = "questFeedbackEffectID", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "flags", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "playerConditionID", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "visibleTrackingQuestID", type = Db2Type.INT, signed = true),
+})
 public class Vignette implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private  Integer id;
 
     @Id
@@ -32,47 +39,38 @@ public class Vignette implements DbcEntity {
 
     @Lob
     @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
     private String name;
 
     @ColumnDefault("'0'")
     @Column(name = "PlayerConditionID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
     private Long playerConditionID;
 
     @ColumnDefault("'0'")
     @Column(name = "VisibleTrackingQuestID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
     private Long visibleTrackingQuestID;
 
     @ColumnDefault("'0'")
     @Column(name = "QuestFeedbackEffectID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
     private Long questFeedbackEffectID;
 
     @ColumnDefault("0")
     @Column(name = "Flags", nullable = false)
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT, signed = true)
     private Integer flags;
 
     @ColumnDefault("0")
     @Column(name = "MaxHeight", nullable = false)
-    @Db2Field(fieldIndex = 6, type = Db2Type.FLOAT)
     private Float maxHeight;
 
     @ColumnDefault("0")
     @Column(name = "MinHeight", nullable = false)
-    @Db2Field(fieldIndex = 7, type = Db2Type.FLOAT)
     private Float minHeight;
 
     @ColumnDefault("0")
     @Column(name = "VignetteType", nullable = false)
-    @Db2Field(fieldIndex = 8, type = Db2Type.BYTE, signed = true)
     private Byte vignetteType;
 
     @ColumnDefault("0")
     @Column(name = "RewardQuestID", nullable = false)
-    @Db2Field(fieldIndex = 9, type = Db2Type.INT, signed = true)
     private Integer rewardQuestID;
 
 }

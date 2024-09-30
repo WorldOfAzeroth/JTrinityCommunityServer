@@ -11,8 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 @ToString(onlyExplicitlyIncluded = true)
 @IdClass(DB2LocaleId.class)
 @Entity
-@Table(name = "pvp_tier_locale")
-public class PvpTierLocale {
+@Table(name = "gameobjects_locale")
+public class GameObjectsLocale {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")

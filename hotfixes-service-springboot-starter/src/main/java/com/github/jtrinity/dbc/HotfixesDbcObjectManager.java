@@ -5,7 +5,7 @@ import com.github.jtrinity.cache.CacheProvider;
 import com.github.jtrinity.cache.DbcEntityStore;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.common.Locale;
-import com.github.jtrinity.dbc.db2.Db2FileReader;
+import com.github.jtrinity.dbc.db2.Db2EntityReader;
 import org.springframework.beans.factory.annotation.Value;
 
 
@@ -34,7 +34,7 @@ public class HotfixesDbcObjectManager implements DbcObjectManager {
     }
 
     public void loadEntityStores() {
-        loadEntityStores(entityStoreMap.keySet());
+        loadEntityStores(EnumSet.allOf(DbcObjects.class));
     }
 
     public void loadEntityStores(Set<DbcObjects> loadObjects) {
@@ -52,13 +52,13 @@ public class HotfixesDbcObjectManager implements DbcObjectManager {
         List<String> loadErrors = new LinkedList<>();
         EnumSet<Locale> availableDb2Locales = EnumSet.noneOf(Locale.class);
 
-        try (Stream<java.nio.file.Path> listStream = Files.list(Paths.get(dataFolder))) {
+        try (Stream<java.nio.file.Path> listStream = Files.list(Paths.get(dataFolder, "dbc"))) {
             listStream.filter(Files::isDirectory)
-                    .map(path -> Locale.fromName(path.getFileName().toString()))
+                    .map(path -> Locale.fromName(path.toFile().getName()))
                     .filter(Locale::isValidLocale)
                     .forEach(availableDb2Locales::add);
         } catch (IOException e) {
-            SERVER_LOADING.error("Unable to load db2 files for {} locale specified in DBC.Locale config!", Paths.get(dataFolder).getFileName(), e);
+            SERVER_LOADING.error("Unable to load db2 files for {} locale specified in DBC.Locale config!", Paths.get(dataFolder).toAbsolutePath(), e);
             return;
         }
 
@@ -77,7 +77,7 @@ public class HotfixesDbcObjectManager implements DbcObjectManager {
 
     private DbcEntityStore<?> loadDb2File(Class<? extends DbcEntity> clazz, Set<Locale> availableDb2Locales, List<String> loadErrors) {
         DbcEntityStore<? extends DbcEntity> dbcEntityStore = cacheProvider.newDbcEntityStore(clazz);
-        try(Stream<? extends DbcEntity> entities = Db2FileReader.entities(dataFolder, defaultDbcLocale, clazz)) {
+        try(Stream<? extends DbcEntity> entities = Db2EntityReader.read(dataFolder, defaultDbcLocale, clazz)) {
             entities.forEach(dbcEntityStore::append);
         };
         return dbcEntityStore;

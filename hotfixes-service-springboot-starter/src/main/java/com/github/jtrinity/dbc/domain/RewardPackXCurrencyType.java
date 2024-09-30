@@ -1,11 +1,9 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,33 +16,30 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "reward_pack_x_currency_type")
-@Db2File(name = "RewardPackXCurrencyType.db2", layoutHash = 0x217E6712, parentIndexField = 2)
+@Db2DataBind(name = "RewardPackXCurrencyType.db2", layoutHash = 0x217E6712, parentIndexField = 2, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "currencyTypeID", type = Db2Type.INT),
+        @Db2Field(name = "quantity", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "rewardPackID", type = Db2Type.INT)
+})
 public class RewardPackXCurrencyType implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
-
     @Column(name = "CurrencyTypeID")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
     private Integer currencyTypeID;
 
-
     @Column(name = "Quantity")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
     private Integer quantity;
 
-
     @Column(name = "RewardPackID")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
     private Integer rewardPackID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

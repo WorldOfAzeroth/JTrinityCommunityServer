@@ -1,10 +1,10 @@
 package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +17,20 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "battle_pet_ability")
-@Db2File(name = "BattlePetAbility.db2", layoutHash = 0xF9548A5A)
+@Db2DataBind(name = "BattlePetAbility.db2", layoutHash = 0xF9548A5A, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "name", type = Db2Type.STRING),
+        @Db2Field(name = "description", type = Db2Type.STRING),
+        @Db2Field(name = "iconFileDataID", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "petTypeEnum", type = Db2Type.BYTE, signed = true),
+        @Db2Field(name = "cooldown", type = Db2Type.INT),
+        @Db2Field(name = "battlePetVisualID", type = Db2Type.SHORT),
+        @Db2Field(name = "flags", type = Db2Type.BYTE),
+})
 public class BattlePetAbility implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
     @Id
@@ -32,37 +40,30 @@ public class BattlePetAbility implements DbcEntity {
 
     @Lob
     @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String name;
+    private LocalizedString name;
 
     @Lob
     @Column(name = "Description")
-    @Db2Field(fieldIndex = 2, type = Db2Type.STRING)
-    private String description;
+    private LocalizedString description;
 
     @ColumnDefault("0")
     @Column(name = "IconFileDataID", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
     private Integer iconFileDataID;
 
     @ColumnDefault("0")
     @Column(name = "PetTypeEnum", nullable = false)
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE, signed = true)
     private Byte petTypeEnum;
 
     @ColumnDefault("'0'")
     @Column(name = "Cooldown", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 5, type = Db2Type.INT)
     private Long cooldown;
 
     @ColumnDefault("'0'")
     @Column(name = "BattlePetVisualID", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 6, type = Db2Type.SHORT)
     private Integer battlePetVisualID;
 
     @ColumnDefault("'0'")
     @Column(name = "Flags", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 7, type = Db2Type.BYTE)
     private Short flags;
 
 }

@@ -1,10 +1,10 @@
 package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +17,19 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "cfg_categories")
-@Db2File(name = "Cfg_Categories.db2", layoutHash = 0x37159FFC)
+@Db2DataBind(name = "Cfg_Categories.db2", layoutHash = 0x37159FFC, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "name", type = Db2Type.STRING),
+        @Db2Field(name = "localeMask", type = Db2Type.SHORT),
+        @Db2Field(name = "createCharsetMask", type = Db2Type.BYTE),
+        @Db2Field(name = "existingCharsetMask", type = Db2Type.BYTE),
+        @Db2Field(name = "flags", type = Db2Type.BYTE),
+        @Db2Field(name = "order", type = Db2Type.BYTE),
+})
 public class CfgCategory implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
     @Id
@@ -32,32 +39,26 @@ public class CfgCategory implements DbcEntity {
 
     @Lob
     @Column(name = "Name")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String name;
+    private LocalizedString name;
 
     @ColumnDefault("'0'")
     @Column(name = "LocaleMask", columnDefinition = "smallint UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
     private Integer localeMask;
 
     @ColumnDefault("'0'")
     @Column(name = "CreateCharsetMask", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.BYTE)
     private Short createCharsetMask;
 
     @ColumnDefault("'0'")
     @Column(name = "ExistingCharsetMask", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
     private Short existingCharsetMask;
 
     @ColumnDefault("'0'")
     @Column(name = "Flags", columnDefinition = "tinyint UNSIGNED not null")
-    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE)
     private Short flags;
 
     @ColumnDefault("0")
     @Column(name = "`Order`", nullable = false)
-    @Db2Field(fieldIndex = 6, type = Db2Type.BYTE, signed = true)
     private Byte order;
 
 }

@@ -1,11 +1,9 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,48 +16,39 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "transport_rotation")
-@Db2File(name = "TransportRotation.db2", layoutHash = 0x72035AA9, parentIndexField = 2)
+@Db2DataBind(name = "TransportRotation.db2", layoutHash = 0x72035AA9, parentIndexField = 2, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "timeIndex", type = Db2Type.INT),
+        @Db2Field(name = {"rot1", "rot2", "rot3", "rot4"}, type = Db2Type.FLOAT),
+        @Db2Field(name = "gameObjectsID", type = Db2Type.INT, signed = true)
+})
 public class TransportRotation implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
-
     @Column(name = "TimeIndex")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
     private Integer timeIndex;
 
-
     @Column(name = "Rot1")
-    @Db2Field(fieldIndex = 2, type = Db2Type.FLOAT)
     private Float rot1;
 
-
     @Column(name = "Rot2")
-    @Db2Field(fieldIndex = 3, type = Db2Type.FLOAT)
     private Float rot2;
 
-
     @Column(name = "Rot3")
-    @Db2Field(fieldIndex = 4, type = Db2Type.FLOAT)
     private Float rot3;
 
-
     @Column(name = "Rot4")
-    @Db2Field(fieldIndex = 5, type = Db2Type.FLOAT)
     private Float rot4;
 
-
     @Column(name = "GameObjectsID")
-    @Db2Field(fieldIndex = 6, type = Db2Type.INT, signed = true)
     private Integer gameObjectsID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

@@ -38,7 +38,7 @@ public class AuthServiceIntegrationTest {
 
     @BeforeAll
     static void beforeAll() {
-        System.setProperty("spring.config.name", "bnetserver");
+        System.setProperty("spring.config.location", "classpath:bnetserver.conf,classpath:worldserver.conf");
     }
 
     @Test

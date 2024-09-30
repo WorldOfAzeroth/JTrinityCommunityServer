@@ -2,9 +2,8 @@ package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +16,17 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "map_difficulty_x_condition")
-@Db2File(name = "MapDifficultyXCondition.db2", layoutHash = 0x08E872DB, parentIndexField = 3)
+@Db2DataBind(name = "MapDifficultyXCondition.db2", layoutHash = 0x08E872DB, parentIndexField = 3, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "failureDescription", type = Db2Type.STRING),
+        @Db2Field(name = "playerConditionID", type = Db2Type.INT),
+        @Db2Field(name = "orderIndex", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "mapDifficultyId", type = Db2Type.INT),
+})
 public class MapDifficultyXCondition implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
     @Id
@@ -32,22 +36,18 @@ public class MapDifficultyXCondition implements DbcEntity {
 
     @Lob
     @Column(name = "FailureDescription")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
     private String failureDescription;
 
     @ColumnDefault("'0'")
     @Column(name = "PlayerConditionID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT)
-    private Long playerConditionID;
+    private Integer playerConditionID;
 
     @ColumnDefault("0")
     @Column(name = "OrderIndex", nullable = false)
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
     private Integer orderIndex;
 
     @ColumnDefault("'0'")
     @Column(name = "MapDifficultyID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 4, type = Db2Type.INT)
     private Long mapDifficultyID;
 
 }

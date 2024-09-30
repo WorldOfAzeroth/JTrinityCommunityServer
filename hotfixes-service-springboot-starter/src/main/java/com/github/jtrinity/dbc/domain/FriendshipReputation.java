@@ -1,11 +1,10 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,33 +17,30 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "friendship_reputation")
-@Db2File(name = "FriendshipReputation.db2", layoutHash = 0x406EE0AB, indexField = 3)
+@Db2DataBind(name = "FriendshipReputation.db2", layoutHash = 0x406EE0AB, indexField = 3, fields = {
+        @Db2Field(name = "description", type = Db2Type.STRING),
+        @Db2Field(name = "textureFileID", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "factionID", type = Db2Type.SHORT),
+        @Db2Field(name = "id", type = Db2Type.INT, signed = true)
+})
 public class FriendshipReputation implements DbcEntity {
-
     @Column(name = "Description")
-    @Db2Field(fieldIndex = 0, type = Db2Type.STRING)
     private LocalizedString description;
 
-
     @Column(name = "TextureFileID")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
     private Integer textureFileID;
 
-
     @Column(name = "FactionID")
-    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
     private Short factionID;
 
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT)
     private Integer id;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

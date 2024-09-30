@@ -1,15 +1,12 @@
 package com.github.jtrinity.dbc.db2;
 
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-@Target({FIELD, METHOD})
 @Retention(RUNTIME)
 public @interface Db2Field {
-    boolean signed() default false;
+    String[] name();
     Db2Type type();
-    int fieldIndex() default -1;
+
+    boolean signed() default false;
 }

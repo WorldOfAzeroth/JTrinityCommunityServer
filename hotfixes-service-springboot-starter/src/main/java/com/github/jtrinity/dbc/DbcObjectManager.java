@@ -870,14 +870,6 @@ public interface DbcObjectManager {
         return itemClass().get(id);
     }
 
-    default DbcEntityStore<ItemContextPickerEntry> itemContextPickerEntry() {
-        return getEntityStore(DbcObjects.ItemContextPickerEntry);
-    }
-
-    default ItemContextPickerEntry itemContextPickerEntry(Integer id) {
-        return itemContextPickerEntry().get(id);
-    }
-
     default DbcEntityStore<ItemCurrencyCost> itemCurrencyCost() {
         return getEntityStore(DbcObjects.ItemCurrencyCost);
     }
@@ -1230,11 +1222,11 @@ public interface DbcObjectManager {
         return mailTemplate().get(id);
     }
 
-    default DbcEntityStore<MapEntry> map() {
+    default DbcEntityStore<MapEntity> map() {
         return getEntityStore(DbcObjects.Map);
     }
 
-    default MapEntry map(Integer id) {
+    default MapEntity map(Integer id) {
         return map().get(id);
     }
 

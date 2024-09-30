@@ -8,9 +8,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({TYPE})
 @Retention(RUNTIME)
-public @interface Db2File {
+public @interface Db2DataBind {
     String name() default "";
     int layoutHash() default -1;
     int indexField() default -1;
     int parentIndexField() default -1;
+    Db2Field[] fields();
 }

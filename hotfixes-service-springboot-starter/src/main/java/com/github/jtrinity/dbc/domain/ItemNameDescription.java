@@ -1,10 +1,10 @@
 package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +17,15 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_name_description")
-@Db2File(name = "ItemNameDescription.db2", layoutHash = 0xB60E60BD)
+@Db2DataBind(name = "ItemNameDescription.db2", layoutHash = 0xB60E60BD, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "description", type = Db2Type.STRING),
+        @Db2Field(name = "color", type = Db2Type.INT)
+})
 public class ItemNameDescription implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
     @Id
@@ -32,12 +35,10 @@ public class ItemNameDescription implements DbcEntity {
 
     @Lob
     @Column(name = "Description")
-    @Db2Field(fieldIndex = 1, type = Db2Type.STRING)
-    private String description;
+    private LocalizedString description;
 
     @ColumnDefault("0")
     @Column(name = "Color", nullable = false)
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
     private Integer color;
 
 }

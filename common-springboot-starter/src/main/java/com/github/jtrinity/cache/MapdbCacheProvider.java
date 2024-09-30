@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class MapdbCacheProvider implements CacheProvider {
 
-    @Value("${worldserver.DataDir}/cache/metadata.db")
+    @Value("${worldserver.datadir}/cache/metadata.db")
     private String pathOfCacheFile;
 
     private final MVStore mvStore;

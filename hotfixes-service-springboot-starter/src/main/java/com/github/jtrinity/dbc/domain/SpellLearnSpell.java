@@ -1,11 +1,9 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,33 +16,30 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "spell_learn_spell")
-@Db2File(name = "SpellLearnSpell.db2", layoutHash = 0x153EBA26)
+@Db2DataBind(name = "SpellLearnSpell.db2", layoutHash = 0x153EBA26, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "learnSpellID", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "overridesSpellID", type = Db2Type.INT, signed = true)
+})
 public class SpellLearnSpell implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
-
     @Column(name = "SpellID")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT, signed = true)
     private Integer spellID;
 
-
     @Column(name = "LearnSpellID")
-    @Db2Field(fieldIndex = 2, type = Db2Type.INT, signed = true)
     private Integer learnSpellID;
 
-
     @Column(name = "OverridesSpellID")
-    @Db2Field(fieldIndex = 3, type = Db2Type.INT, signed = true)
     private Integer overridesSpellID;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

@@ -1,11 +1,9 @@
 package com.github.jtrinity.dbc.domain;
 
-import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.cache.DbcEntity;
 import com.github.jtrinity.dbc.db2.Db2Field;
-import com.github.jtrinity.dbc.db2.Db2File;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,43 +16,38 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_upgrade")
-@Db2File(name = "ItemUpgrade.db2", layoutHash = 0x8F3A4137)
+@Db2DataBind(name = "ItemUpgrade.db2", layoutHash = 0x8F3A4137, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "currencyAmount", type = Db2Type.INT),
+        @Db2Field(name = "prerequisiteID", type = Db2Type.SHORT),
+        @Db2Field(name = "currencyType", type = Db2Type.SHORT),
+        @Db2Field(name = "itemUpgradePathID", type = Db2Type.BYTE),
+        @Db2Field(name = "itemLevelIncrement", type = Db2Type.BYTE)
+})
 public class ItemUpgrade implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    @Db2Field(fieldIndex = 0, type = Db2Type.INT)
     private Integer id;
 
-
     @Column(name = "CurrencyAmount")
-    @Db2Field(fieldIndex = 1, type = Db2Type.INT)
     private Integer currencyAmount;
 
-
     @Column(name = "PrerequisiteID")
-    @Db2Field(fieldIndex = 2, type = Db2Type.SHORT)
     private Short prerequisiteID;
 
-
     @Column(name = "CurrencyType")
-    @Db2Field(fieldIndex = 3, type = Db2Type.SHORT)
     private Short currencyType;
 
-
     @Column(name = "ItemUpgradePathID")
-    @Db2Field(fieldIndex = 4, type = Db2Type.BYTE)
     private Byte itemUpgradePathID;
 
-
     @Column(name = "ItemLevelIncrement")
-    @Db2Field(fieldIndex = 5, type = Db2Type.BYTE)
     private Byte itemLevelIncrement;
 
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
 
 }

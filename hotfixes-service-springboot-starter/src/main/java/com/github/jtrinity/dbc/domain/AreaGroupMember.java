@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "area_group_member")
 @Db2DataBind(name = "AreaGroupMember.db2", layoutHash = 0x50AA43EE, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "areaID", type = Db2Type.SHORT),
         @Db2Field(name = "areaGroupID", type = Db2Type.SHORT)
 })

@@ -1,6 +1,7 @@
 package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
@@ -16,18 +17,19 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "adventure_map_poi")
-@Db2DataBind(name = "AdventureMapPOI.dbc", layoutHash = 0x347D1163, fields = {
+@Db2DataBind(name = "AdventureMapPOI.db2", layoutHash = 0x0C288A82, fields = {
         @Db2Field(name = "title", type = Db2Type.STRING),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = {"worldPositionX", "worldPositionY"}, type = Db2Type.FLOAT),
+        @Db2Field(name = "rewardItemID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "type", type = Db2Type.BYTE, signed = true),
         @Db2Field(name = "playerConditionID", type = Db2Type.INT),
         @Db2Field(name = "questID", type = Db2Type.INT),
         @Db2Field(name = "lfgDungeonID", type = Db2Type.INT),
-        @Db2Field(name = "rewardItemID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "uiTextureAtlasMemberID", type = Db2Type.INT),
         @Db2Field(name = "uiTextureKitID", type = Db2Type.INT),
-        @Db2Field(name = "mapID", type = Db2Type.INT),
+        @Db2Field(name = "worldMapAreaID", type = Db2Type.INT),
+        @Db2Field(name = "mapID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "areaTableID", type = Db2Type.INT, signed = true)
 })
 public class AdventureMapPoi implements DbcEntity {
@@ -43,11 +45,11 @@ public class AdventureMapPoi implements DbcEntity {
 
     @Lob
     @Column(name = "Title")
-    private String title;
+    private LocalizedString title;
 
     @Lob
     @Column(name = "Description")
-    private String description;
+    private LocalizedString description;
 
     @ColumnDefault("0")
     @Column(name = "WorldPositionX", nullable = false)
@@ -88,6 +90,10 @@ public class AdventureMapPoi implements DbcEntity {
     @ColumnDefault("0")
     @Column(name = "MapID", nullable = false)
     private Integer mapID;
+
+    @ColumnDefault("0")
+    @Column(name = "WorldMapAreaID", nullable = false)
+    private Integer worldMapAreaID;
 
     @ColumnDefault("'0'")
     @Column(name = "AreaTableID", columnDefinition = "int UNSIGNED not null")

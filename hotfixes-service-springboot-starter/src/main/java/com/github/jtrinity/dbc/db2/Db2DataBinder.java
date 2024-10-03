@@ -12,22 +12,21 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-class Db2DataBinder {
+class Db2DataBinder<T extends DbcEntity> {
 
-    private Db2DataBind meta;
+    private final Db2DataBind meta;
 
     private Db2Field idMeta;
 
     private Db2Field parentIdMeta;
 
-    private Db2Field[] fieldMetas;
+    private final Db2Field[] fieldMetas;
 
-    private Class<? extends DbcEntity> clazz;
+    private final Class<T> clazz;
 
-    private DbcEntity entity;
     private BeanWrapper beanWrapper;
 
-    Db2DataBinder(Class<? extends DbcEntity> clazz) {
+    Db2DataBinder(Class<T> clazz) {
         this.clazz = clazz;
         this.meta = clazz.getAnnotation(Db2DataBind.class);
         if (meta == null) {
@@ -35,9 +34,7 @@ class Db2DataBinder {
         }
         this.fieldMetas = meta.fields();
         Set<String> classFields = new LinkedHashSet<>();
-        ReflectionUtils.doWithFields(clazz, field -> {
-            classFields.add(field.getName());
-        });
+        ReflectionUtils.doWithFields(clazz, field -> classFields.add(field.getName()));
 
         for (Db2Field fieldMeta : fieldMetas) {
             for (String name : fieldMeta.name()) {
@@ -94,29 +91,30 @@ class Db2DataBinder {
         return parentIdMeta != null;
     }
 
-    public DbcEntity newInstance() {
+    T newInstance() {
+        T entity;
         try {
-            this.entity = clazz.getConstructor().newInstance();
-            this.beanWrapper = new BeanWrapperImpl(this.entity);
+            entity = clazz.getConstructor().newInstance();
+            this.beanWrapper = new BeanWrapperImpl(entity);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-        return this.entity;
+        return entity;
     }
 
-    public int arraySize(int index) {
+    int arraySize(int index) {
         return fieldAt(index).name().length;
     }
 
-    public boolean isArray(int index) {
+    boolean isArray(int index) {
         return fieldAt(index).name().length > 1;
     }
 
-    public void bind(String field, Object fieldVal) {
+    void bind(String field, Object fieldVal) {
         beanWrapper.setPropertyValue(field, fieldVal);
     }
 
-    public void bindLocalizedString(String field, Locale locale, String fieldVal) {
+    void bindLocalizedString(String field, Locale locale, String fieldVal) {
         Object propertyValue = beanWrapper.getPropertyValue(field);
         LocalizedString string = (LocalizedString) propertyValue;
         if(string != null) {
@@ -128,5 +126,8 @@ class Db2DataBinder {
         beanWrapper.setPropertyValue(field, string);
     }
 
+    Class<T> getEntityClass() {
+        return clazz;
+    }
 
 }

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "anim_kit")
 @Db2DataBind(name = "AnimKit.db2", layoutHash = 0x81D6D250, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "oneShotDuration", type = Db2Type.INT),
         @Db2Field(name = "oneShotStopAnimKitID", type = Db2Type.SHORT),
         @Db2Field(name = "lowDefAnimKitID", type = Db2Type.SHORT)

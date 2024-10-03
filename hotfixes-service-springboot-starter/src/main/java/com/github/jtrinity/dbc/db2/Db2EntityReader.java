@@ -80,7 +80,7 @@ public class Db2EntityReader {
         header.maxId = buffer.getInt();
         header.locale = buffer.getInt();
         header.copyTableSize = buffer.getInt();
-        header.flags = DB2Flags.get(buffer.getShort());
+        header.flags = buffer.getShort();
         header.indexField = buffer.getShort();
         header.totalFieldCount = buffer.getInt();
         header.packedDataOffset = buffer.getInt();
@@ -106,7 +106,7 @@ public class Db2EntityReader {
             throw new DB2FileException("Incorrect layout hash in %s, expected 0x%08X, got 0x%08X (possibly wrong client version)".formatted(db2FilePath.toAbsolutePath(), db2DataBinder.layoutHash(), header.layoutHash));
 
 
-        if ((header.flags.value & 0x1) == 0) {
+        if ((header.flags & 0x1) == 0) {
             int expectedFileSize = Header.HEADER_CAPACITY +
                     (4 * header.fieldCount) +
                     header.recordCount * header.recordSize +
@@ -127,7 +127,7 @@ public class Db2EntityReader {
             throw new DB2FileException("Too many parent lookups in %s, only one is allowed, got %d".formatted(db2FilePath.toAbsolutePath(), header.parentLookupCount));
 
 
-        if ((header.parentLookupCount > 0 && db2DataBinder.parentIndexField() == -1))
+        if ((header.parentLookupCount > 0 && !db2DataBinder.hasParentIndexField()))
             throw new DB2FileException("Unexpected parent lookup found in %s".formatted(db2FilePath.toAbsolutePath()));
 
 
@@ -154,16 +154,17 @@ public class Db2EntityReader {
             db2Fields[i] = new FieldMetaData(finalBuffer.getShort(), finalBuffer.getShort());
         });
 
-        if (!header.flags.hasFlag(DB2Flags.Sparse)) {
+        if ((header.flags & 0x1) == 0) {
 
-            data = ByteBuffer.allocate(header.recordSize * header.recordCount);
+            int recordDataSize = header.recordSize * header.recordCount;
+            byte[] dataArray = new byte[recordDataSize + 8];// pad with extra zeros so we don't crash when reading
             stringTable = ByteBuffer.allocate(header.stringTableSize);
-            fileChannel.read(data);
+            fileChannel.read(ByteBuffer.wrap(dataArray, 0, recordDataSize));
             fileChannel.read(stringTable);
-            data.order(ByteOrder.LITTLE_ENDIAN).flip();
+            data = ByteBuffer.wrap(dataArray).position(dataArray.length).order(ByteOrder.LITTLE_ENDIAN).flip();
+
             stringTable.flip();
         } else {
-
             dataPos = fileChannel.position();
             data = ByteBuffer.allocate(header.catalogDataOffset - (int) dataPos);
             fileChannel.read(data);
@@ -272,8 +273,7 @@ public class Db2EntityReader {
                     buffer.order(ByteOrder.LITTLE_ENDIAN).flip();
                     palletData[i] = new Value32[columnMeta[i].additionalDataSize / 4];
                     for (int j = 0; j < palletData[i].length; j++) {
-                        palletData[i][j] = new Value32();
-                        buffer.get(palletData[i][j].value);
+                        palletData[i][j] = Value32.from(buffer.getInt());
                     }
 
                 }
@@ -288,9 +288,7 @@ public class Db2EntityReader {
                     buffer.order(ByteOrder.LITTLE_ENDIAN).flip();
                     commonData[i] = HashMap.newHashMap(columnMeta[i].additionalDataSize / 8);
                     for (int j = 0; j < columnMeta[i].additionalDataSize / 8; j++) {
-                        Value32 value32 = new Value32();
-                        commonData[i].put(buffer.getInt(), value32);
-                        buffer.get(value32.value);
+                        commonData[i].put(buffer.getInt(), Value32.from(buffer.getInt()));
                     }
 
                 }

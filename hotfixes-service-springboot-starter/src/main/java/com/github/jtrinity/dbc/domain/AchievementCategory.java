@@ -19,7 +19,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "achievement_category")
 @Db2DataBind(name = "Achievement_Category.db2", layoutHash = 0xED226BC9, indexField = 3, parentIndexField = 2, fields = {
         @Db2Field(name = "name", type = Db2Type.STRING),
-        @Db2Field(name = "parent", type = Db2Type.SHORT),
+        @Db2Field(name = "parent", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "uiOrder", type = Db2Type.BYTE),
         @Db2Field(name = "id", type = Db2Type.INT, signed = true)
 })

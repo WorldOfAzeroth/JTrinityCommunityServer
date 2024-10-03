@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ class Header {
     int maxId;
     int locale;
     int copyTableSize;
-    DB2Flags flags;
+    short flags;
     short indexField;
     int totalFieldCount;
     int packedDataOffset;
@@ -97,36 +96,33 @@ record SparseEntry(int offset, int size) {
 
 class Value32 {
     final byte[] value = new byte[4];
+
+    static Value32 from(int result) {
+        Value32 value32 = new Value32();
+        value32.value[3] = (byte) (result & 0xff);
+        value32.value[2] = (byte) (result >>> 8 & 0xff);
+        value32.value[1] = (byte) (result >>> 16 & 0xff);
+        value32.value[0] = (byte) (result >>> 24 & 0xff);
+        return value32;
+    }
 }
 
 class Value64 {
     byte[] value = new byte[8];
-}
 
-
-enum DB2Flags {
-    None(0),
-    Sparse(0x1),
-    SecondaryKey(0x2),
-    Index(0x4),
-    Unknown1(0x8), // modern client explicitly throws an exception
-    BitPacked(0x10);
-
-    final int value;
-
-    DB2Flags(int value) {
-        this.value = value;
-    }
-
-    static DB2Flags get(int value) {
-        return Arrays.stream(values()).filter(e -> e.value == value).findFirst().orElseThrow();
-    }
-
-    boolean hasFlag(DB2Flags valueToCheck) {
-        return (this.value & valueToCheck.value) == valueToCheck.value;
+    static Value64 from(long result) {
+        Value64 value64 = new Value64();
+        value64.value[7] = (byte) (result & 0xff);
+        value64.value[6] = (byte) (result >>> 8 & 0xff);
+        value64.value[5] = (byte) (result >>> 16 & 0xff);
+        value64.value[4] = (byte) (result >>> 24 & 0xff);
+        value64.value[3] = (byte) (result >>> 32 & 0xff);
+        value64.value[2] = (byte) (result >>> 40 & 0xff);
+        value64.value[1] = (byte) (result >>> 48 & 0xff);
+        value64.value[0] = (byte) (result >>> 56 & 0xff);
+        return value64;
     }
 }
-
 
 class RowData {
     private final ByteBuffer buffer;
@@ -163,45 +159,30 @@ class RowData {
         this.readOffset = offset;
     }
 
-    long getUInt32(int numBits) {
-        long b = buffer.getInt(readOffset + (readPos >> 3)) & 0xffffffffL;
-        long result = b << (32 - numBits - (readPos & 7)) >> (32 - numBits);
+    int getUInt32(int numBits) {
+        int b = buffer.getInt(readOffset + (readPos >> 3));
+        int result = b << (32 - numBits - (readPos & 7)) >>> (32 - numBits);
         readPos += numBits;
         return result;
     }
 
     long getUInt64(int numBits) {
-        try {
-            long b = buffer.getLong(readOffset + (readPos >> 3));
-            long result = b << (64 - numBits - (readPos & 7)) >> (64 - numBits);
-            readPos += numBits;
-            return result;
-        } catch (IndexOutOfBoundsException e) {
-            throw new IndexOutOfBoundsException("index " + readOffset + (readPos >> 3) + " out of " + buffer);
-        }
-
-    }
-
-    Value32 getValue32(int numBits) {
-        long l = getUInt32(numBits);
-        Value32 value32 = new Value32();
-        value32.value[3] = (byte) (l & 0xff);
-        value32.value[2] = (byte) (l >> 8 & 0xff);
-        value32.value[1] = (byte) (l >> 16 & 0xff);
-        value32.value[0] = (byte) (l >> 24 & 0xff);
-        return value32;
+        long b = buffer.getLong(readOffset + (readPos >> 3));
+        long result = b << (64 - numBits - (readPos & 7)) >>> (64 - numBits);
+        readPos += numBits;
+        return result;
     }
 
     Value64 getValue64(int numBits) {
         long l = getUInt64(numBits);
-        return toValue64(l);
+        return Value64.from(l);
     }
 
     Value64 getValue64Signed(int numBits) {
         long result = getUInt64(numBits);
         long signedShift = 1L << (numBits - 1);
         result = (signedShift ^ result) - signedShift;
-        return toValue64(result);
+        return Value64.from(result);
     }
 
 
@@ -214,17 +195,4 @@ class RowData {
         return stream.toString(StandardCharsets.UTF_8);
     }
 
-
-    private Value64 toValue64(long result) {
-        Value64 value64 = new Value64();
-        value64.value[7] = (byte) (result & 0xff);
-        value64.value[6] = (byte) (result >> 8 & 0xff);
-        value64.value[5] = (byte) (result >> 16 & 0xff);
-        value64.value[4] = (byte) (result >> 24 & 0xff);
-        value64.value[3] = (byte) (result >> 32 & 0xff);
-        value64.value[2] = (byte) (result >> 40 & 0xff);
-        value64.value[1] = (byte) (result >> 48 & 0xff);
-        value64.value[0] = (byte) (result >> 56 & 0xff);
-        return value64;
-    }
 }

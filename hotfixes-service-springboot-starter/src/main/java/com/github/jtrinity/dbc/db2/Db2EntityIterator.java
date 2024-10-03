@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
-    private final Db2DataBinder db2DataBinder;
+    private final Db2DataBinder<T> db2DataBinder;
 
     private final Locale locale;
 
@@ -30,7 +30,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
     private Iterator<Map.Entry<Integer, T>> copyEnityiterator;
 
 
-    Db2EntityIterator(Locale locale, Db2DataBinder db2DataBinder, Db2EntityReader db2EntityReader) {
+    Db2EntityIterator(Locale locale, Db2DataBinder<T> db2DataBinder, Db2EntityReader db2EntityReader) {
         this.locale = locale;
         this.db2DataBinder = db2DataBinder;
         this.reader = db2EntityReader;
@@ -43,14 +43,13 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
             Integer refId = reader.refData != null ? reader.refData.entries.get(index) : null;
             RowData rowData = new RowData(reader.data, reader.header.indexDataSize != 0 ? reader.indexData[index] : -1, refId, index);
 
-            if (reader.header.flags.hasFlag(DB2Flags.Sparse)) {
+            if ((reader.header.flags & 0x1) == 0x1) {
                 rowData.position(position);
                 position += reader.sparseEntries.get(index).size() * 8;
             } else {
                 rowData.offset(index * reader.header.recordSize);
             }
             this.currentData = rowData;
-            index++;
             return true;
         } else if (copyEnityiterator != null) {
             return copyEnityiterator.hasNext();
@@ -62,7 +61,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     @Override
     public T next() {
-        if (index <= reader.header.recordCount) {
+        if (index++ < reader.header.recordCount) {
             return toEntity(currentData);
         } else {
             Map.Entry<Integer, T> next = copyEnityiterator.next();
@@ -75,57 +74,69 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     private T toEntity(RowData rowData) {
 
-        DbcEntity entity = db2DataBinder.newInstance();
+        T entity = db2DataBinder.newInstance();
         entity.setId(rowData.id != -1 ? rowData.id : null);
-
 
         IntStream.range(0, db2DataBinder.fieldCount()).forEach(i -> {
 
             Db2Field fieldMeta = db2DataBinder.fieldAt(i);
 
+            if(i >= reader.columnMeta.length) {
+                Db2Field parentField = db2DataBinder.fieldAt(db2DataBinder.parentIndexField());
+                db2DataBinder.bind(parentField.name()[0], rowData.refID);
+                return;
+            }
+
             if (db2DataBinder.isArray(i)) {
                 Object[] value = switch (fieldMeta.type()) {
-                    case INT -> getUInt32ValueArray(rowData, i, db2DataBinder.arraySize(i));
-                    case SHORT -> getUInt16ValueArray(rowData, i, db2DataBinder.arraySize(i));
-                    case BYTE -> getUInt8ValueArray(rowData, i, db2DataBinder.arraySize(i));
-                    case LONG -> getUInt64ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case INT -> fieldMeta.signed() ? getInt32ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt32ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case SHORT -> fieldMeta.signed()? getInt16ValueArray(rowData, i, db2DataBinder.arraySize(i)) :  getUInt16ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case BYTE -> fieldMeta.signed()? getInt8ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt8ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case LONG -> fieldMeta.signed()? getInt64ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt64ValueArray(rowData, i, db2DataBinder.arraySize(i));
                     case FLOAT -> getFloatValueArray(rowData, i, db2DataBinder.arraySize(i));
                     case STRING, STRING_NOT_LOCALIZED ->
                             throw new IllegalArgumentException("Unsupported type: " + fieldMeta.type());
                 };
-                for (String filedName : fieldMeta.name()) {
-                    db2DataBinder.bind(filedName, value);
-                }
+                IntStream.range(0, value.length).forEach(v -> db2DataBinder.bind(fieldMeta.name()[v], value[v]));
             } else {
                 String fieldName = fieldMeta.name()[0];
-                switch (fieldMeta.type()) {
-                    case STRING -> db2DataBinder.bindLocalizedString(fieldName, locale, getString(entity.getId(), rowData, i));
-                    case STRING_NOT_LOCALIZED -> db2DataBinder.bind(fieldName, getString(entity.getId(), rowData, i));
-                    case INT -> db2DataBinder.bind(fieldName, getUInt32(entity.getId(), rowData, i));
-                    case SHORT -> db2DataBinder.bind(fieldName, getUInt16(entity.getId(), rowData, i));
-                    case BYTE -> db2DataBinder.bind(fieldName, getUInt8(entity.getId(), rowData, i));
-                    case LONG -> db2DataBinder.bind(fieldName, getUInt64(entity.getId(), rowData, i));
-                    case FLOAT -> db2DataBinder.bind(fieldName, getFloat(entity.getId(), rowData, i));
+                Object fieldValue = switch (fieldMeta.type()) {
+                    case STRING, STRING_NOT_LOCALIZED -> getString(entity.getId(), rowData, i);
+                    case INT -> fieldMeta.signed() ? getInt32(entity.getId(), rowData, i) : getUInt32(entity.getId(), rowData, i);
+                    case SHORT -> fieldMeta.signed() ? getInt16(entity.getId(), rowData, i) : getUInt16(entity.getId(), rowData, i);
+                    case BYTE -> fieldMeta.signed() ? getInt8(entity.getId(), rowData, i) : getUInt8(entity.getId(), rowData, i);
+                    case LONG -> fieldMeta.signed() ? getInt64(entity.getId(), rowData, i) : getUInt64(entity.getId(), rowData, i);
+                    case FLOAT -> getFloat(entity.getId(), rowData, i);
+                };
+                if (fieldMeta.type() == Db2Type.STRING) {
+                    db2DataBinder.bindLocalizedString(fieldName, locale, fieldValue.toString());
+                } else {
+                    db2DataBinder.bind(fieldName, fieldValue);
                 }
             }
         });
 
 
-
-        @SuppressWarnings("unchecked")
-        T result = (T) entity;
         Integer id = entity.getId();
         if (reader.copyData != null) {
             if (reader.copyData.containsValue(id)) {
-                copyEntity.put(id, result);
+                copyEntity.put(id, entity);
             }
         }
-
-        return result;
+        return entity;
     }
 
+    Byte getInt8(Integer id, RowData rowData, int fieldIndex) {
+        BigInteger fieldVal = getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
+        return fieldVal.byteValue();
+    }
 
     Short getUInt8(Integer id, RowData rowData, int fieldIndex) {
+        BigInteger fieldVal = getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
+        return fieldVal.shortValue();
+    }
+
+    Short getInt16(Integer id, RowData rowData, int fieldIndex) {
         BigInteger fieldVal = getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
         return fieldVal.shortValue();
     }
@@ -137,7 +148,11 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     Integer getUInt32(Integer id, RowData rowData, int fieldIndex) {
         BigInteger fieldVal = getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
-        return fieldVal.intValue();
+        int intValue = fieldVal.intValue();
+        if (intValue < 0) {
+            throw new ValueOverflowException("Unsigned int property %s %d in %s is overflowed.".formatted(db2DataBinder.fieldAt(fieldIndex).name()[0], intValue, db2DataBinder.getEntityClass()));
+        }
+        return intValue;
     }
 
     Integer getInt32(Integer id, RowData rowData, int fieldIndex) {
@@ -145,13 +160,13 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
         return fieldVal.intValue();
     }
 
-    Long getUInt64(Integer id, RowData rowData, int fieldIndex) {
+    BigInteger getUInt64(Integer id, RowData rowData, int fieldIndex) {
+        return getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
+    }
+
+    Long getInt64(Integer id, RowData rowData, int fieldIndex) {
         BigInteger fieldVal = getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
-        long longValue = fieldVal.longValue();
-        if (longValue < 0) {
-            throw new ValueOverflowException(db2DataBinder.name() + " field index" + fieldIndex);
-        }
-        return longValue;
+        return fieldVal.longValue();
     }
 
     Float getFloat(Integer id, RowData rowData, int fieldIndex) {
@@ -160,7 +175,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
     }
 
     String getString(Integer id, RowData rowData, int fieldIndex) {
-        if (reader.header.flags.hasFlag(DB2Flags.Sparse)) {
+        if ((reader.header.flags & 0x1) == 0x1) {
             return rowData.getCString();
         } else {
             int stringOffset = getInt32(id, rowData, fieldIndex);
@@ -176,26 +191,35 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
         }
     }
 
-    Integer getIdValue(RowData rowData) {
-        if (db2DataBinder.hasIndexField())
-            return getUInt32(0, rowData, db2DataBinder.indexField());
-        return rowData.id;
+    Byte[] getInt8ValueArray(RowData rowData, int fieldIndex, int arraySize) {
+        BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
+        return Arrays.stream(fieldVals).map(Number::byteValue).toArray(Byte[]::new);
     }
-
 
     Short[] getUInt8ValueArray(RowData rowData, int fieldIndex, int arraySize) {
         BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
         return Arrays.stream(fieldVals).map(Number::shortValue).toArray(Short[]::new);
     }
 
-    Short[] getUInt16ValueArray(RowData rowData, int fieldIndex, int arraySize) {
+    Short[] getInt16ValueArray(RowData rowData, int fieldIndex, int arraySize) {
         BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
         return Arrays.stream(fieldVals).map(Number::shortValue).toArray(Short[]::new);
     }
 
-    Integer[] getUInt32ValueArray(RowData rowData, int fieldIndex, int arraySize) {
+    Integer[] getUInt16ValueArray(RowData rowData, int fieldIndex, int arraySize) {
         BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
         return Arrays.stream(fieldVals).map(Number::intValue).toArray(Integer[]::new);
+    }
+
+    Integer[] getUInt32ValueArray(RowData rowData, int fieldIndex, int arraySize) {
+        BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
+        return Arrays.stream(fieldVals).map(e -> {
+            int intValue = e.intValue();
+            if (intValue < 0) {
+                throw new ValueOverflowException("Unsigned int property %s %d in %s is overflowed.".formatted(db2DataBinder.fieldAt(fieldIndex).name(), intValue, db2DataBinder.getEntityClass()));
+            }
+            return intValue;
+        }).toArray(Integer[]::new);
     }
 
     Integer[] getInt32ValueArray(RowData rowData, int fieldIndex, int arraySize) {
@@ -203,9 +227,13 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
         return Arrays.stream(fieldVals).map(Number::intValue).toArray(Integer[]::new);
     }
 
-    Long[] getUInt64ValueArray(RowData rowData, int fieldIndex, int arraySize) {
+    Long[] getInt64ValueArray(RowData rowData, int fieldIndex, int arraySize) {
         BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
         return Arrays.stream(fieldVals).map(Number::longValue).toArray(Long[]::new);
+    }
+
+    BigInteger[] getUInt64ValueArray(RowData rowData, int fieldIndex, int arraySize) {
+        return getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
     }
 
     Float[] getFloatValueArray(RowData rowData, int fieldIndex, int arraySize) {

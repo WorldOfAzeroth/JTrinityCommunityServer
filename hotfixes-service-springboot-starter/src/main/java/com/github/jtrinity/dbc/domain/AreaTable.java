@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "area_table")
 @Db2DataBind(name = "AreaTable.db2", layoutHash = 0x0CA01129, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "zoneName", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "areaName", type = Db2Type.STRING),
         @Db2Field(name = {"flags1", "flags2"}, type = Db2Type.INT, signed = true),

@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "adventure_journal")
 @Db2DataBind(name = "AdventureJournal.db2", layoutHash = 0xB2FFA8DD, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
         @Db2Field(name = "nameLang", type = Db2Type.STRING),
         @Db2Field(name = "descriptionLang", type = Db2Type.STRING),
         @Db2Field(name = "buttonTextLang", type = Db2Type.STRING),
@@ -73,16 +72,16 @@ public class AdventureJournal implements DbcEntity {
     private Short lfgDungeonID;
 
     @Column(name = "QuestID")
-    private Short questID;
+    private Integer questID;
 
     @Column(name = "BattleMasterListID")
     private Short battleMasterListID;
 
     @Column(name = "BonusPlayerConditionID1")
-    private Short bonusPlayerConditionID1;
+    private Integer bonusPlayerConditionID1;
 
     @Column(name = "BonusPlayerConditionID2")
-    private Short bonusPlayerConditionID2;
+    private Integer bonusPlayerConditionID2;
 
     @Column(name = "CurrencyType")
     private Short currencyType;

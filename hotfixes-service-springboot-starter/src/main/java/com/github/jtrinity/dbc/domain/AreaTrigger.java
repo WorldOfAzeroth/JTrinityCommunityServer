@@ -17,9 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "area_trigger")
 @Db2DataBind(name = "AreaTrigger.db2", layoutHash = 0x378573E8, indexField = 14, parentIndexField = 6, fields = {
-        @Db2Field(name = "posX", type = Db2Type.FLOAT),
-        @Db2Field(name = "posY", type = Db2Type.FLOAT),
-        @Db2Field(name = "posZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"posX", "posY", "posZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = "radius", type = Db2Type.FLOAT),
         @Db2Field(name = "boxLength", type = Db2Type.FLOAT),
         @Db2Field(name = "boxWidth", type = Db2Type.FLOAT),

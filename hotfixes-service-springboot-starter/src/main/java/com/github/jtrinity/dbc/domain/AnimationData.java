@@ -16,9 +16,8 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "animation_data")
-@Db2DataBind(name = "AnimationData.db2", layoutHash = 0xE4D647E7, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "flags", type = Db2Type.INT),
+@Db2DataBind(name = "AnimationData.db2", layoutHash = 0x03182786, fields = {
+        @Db2Field(name = "flags", type = Db2Type.INT, signed = true),
         @Db2Field(name = "fallback", type = Db2Type.SHORT),
         @Db2Field(name = "behaviorID", type = Db2Type.SHORT),
         @Db2Field(name = "behaviorTier", type = Db2Type.BYTE)
@@ -47,11 +46,7 @@ public class AnimationData implements DbcEntity {
     private Integer behaviorID;
 
     @ColumnDefault("0")
-    @Column(name = "Flags1", nullable = false)
-    private Integer flags1;
-
-    @ColumnDefault("0")
-    @Column(name = "Flags2", nullable = false)
-    private Integer flags2;
+    @Column(name = "Flags", nullable = false)
+    private Integer flags;
 
 }

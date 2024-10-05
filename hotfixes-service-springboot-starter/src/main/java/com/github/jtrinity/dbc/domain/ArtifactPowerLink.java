@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact_power_link")
 @Db2DataBind(name = "ArtifactPowerLink.db2", layoutHash = 0xE179618C, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "powerA", type = Db2Type.SHORT),
         @Db2Field(name = "powerB", type = Db2Type.SHORT)
 })

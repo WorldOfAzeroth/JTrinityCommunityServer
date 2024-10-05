@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "char_start_outfit")
 @Db2DataBind(name = "CharStartOutfit.db2", layoutHash = 0x0EEBEE24, parentIndexField = 6, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"itemID1", "itemID2", "itemID3", "itemID4", "itemID5", "itemID6", "itemID7", "itemID8", "itemID9", "itemID10", "itemID11", "itemID12", "itemID13", "itemID14", "itemID15", "itemID16", "itemID17", "itemID18", "itemID19", "itemID20", "itemID21", "itemID22", "itemID23", "itemID24"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = "petDisplayID", type = Db2Type.INT),
         @Db2Field(name = "classID", type = Db2Type.BYTE),
@@ -117,7 +116,7 @@ public class CharStartOutfit implements DbcEntity {
     private Byte outfitID;
 
     @Column(name = "PetFamilyID")
-    private Byte petFamilyID;
+    private Short petFamilyID;
 
     @Column(name = "RaceID")
     private Byte raceID;

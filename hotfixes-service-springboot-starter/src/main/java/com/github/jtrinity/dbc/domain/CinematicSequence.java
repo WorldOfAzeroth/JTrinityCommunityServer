@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "cinematic_sequence")
 @Db2DataBind(name = "CinematicSequences.db2", layoutHash = 0x470FDA8C, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "soundID", type = Db2Type.INT),
         @Db2Field(name = {"camera1", "camera2", "camera3", "camera4", "camera5", "camera6", "camera7", "camera8"}, type = Db2Type.SHORT)
 })

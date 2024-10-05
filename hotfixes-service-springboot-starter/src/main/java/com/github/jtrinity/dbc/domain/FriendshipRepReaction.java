@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "friendship_rep_reaction")
 @Db2DataBind(name = "FriendshipRepReaction.db2", layoutHash = 0x9C412E5B, parentIndexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "reaction", type = Db2Type.STRING),
         @Db2Field(name = "reactionThreshold", type = Db2Type.SHORT),
         @Db2Field(name = "friendshipRepID", type = Db2Type.BYTE)

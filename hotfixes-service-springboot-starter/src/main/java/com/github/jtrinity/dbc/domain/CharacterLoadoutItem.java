@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "character_loadout_item")
 @Db2DataBind(name = "CharacterLoadoutItem.db2", layoutHash = 0x24843CD8, parentIndexField = 0, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
         @Db2Field(name = "itemID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "characterLoadoutID", type = Db2Type.SHORT)
 })

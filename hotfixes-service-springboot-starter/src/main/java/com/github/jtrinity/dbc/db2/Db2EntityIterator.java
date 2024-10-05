@@ -81,7 +81,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
             Db2Field fieldMeta = db2DataBinder.fieldAt(i);
 
-            if(i >= reader.columnMeta.length) {
+            if (i >= reader.columnMeta.length) {
                 Db2Field parentField = db2DataBinder.fieldAt(db2DataBinder.parentIndexField());
                 db2DataBinder.bind(parentField.name()[0], rowData.refID);
                 return;
@@ -89,23 +89,35 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
             if (db2DataBinder.isArray(i)) {
                 Object[] value = switch (fieldMeta.type()) {
-                    case INT -> fieldMeta.signed() ? getInt32ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt32ValueArray(rowData, i, db2DataBinder.arraySize(i));
-                    case SHORT -> fieldMeta.signed()? getInt16ValueArray(rowData, i, db2DataBinder.arraySize(i)) :  getUInt16ValueArray(rowData, i, db2DataBinder.arraySize(i));
-                    case BYTE -> fieldMeta.signed()? getInt8ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt8ValueArray(rowData, i, db2DataBinder.arraySize(i));
-                    case LONG -> fieldMeta.signed()? getInt64ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt64ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case INT ->
+                            fieldMeta.signed() ? getInt32ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt32ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case SHORT ->
+                            fieldMeta.signed() ? getInt16ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt16ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case BYTE ->
+                            fieldMeta.signed() ? getInt8ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt8ValueArray(rowData, i, db2DataBinder.arraySize(i));
+                    case LONG ->
+                            fieldMeta.signed() ? getInt64ValueArray(rowData, i, db2DataBinder.arraySize(i)) : getUInt64ValueArray(rowData, i, db2DataBinder.arraySize(i));
                     case FLOAT -> getFloatValueArray(rowData, i, db2DataBinder.arraySize(i));
-                    case STRING, STRING_NOT_LOCALIZED ->
-                            throw new IllegalArgumentException("Unsupported type: " + fieldMeta.type());
+                    case STRING, STRING_NOT_LOCALIZED -> getStringValueArray(rowData, i, db2DataBinder.arraySize(i));
                 };
-                IntStream.range(0, value.length).forEach(v -> db2DataBinder.bind(fieldMeta.name()[v], value[v]));
+
+                if (fieldMeta.type() == Db2Type.STRING) {
+                    IntStream.range(0, value.length).forEach(v -> db2DataBinder.bindLocalizedString(fieldMeta.name()[v], locale, value[v].toString()));
+                } else {
+                    IntStream.range(0, value.length).forEach(v -> db2DataBinder.bind(fieldMeta.name()[v], value[v]));
+                }
             } else {
                 String fieldName = fieldMeta.name()[0];
                 Object fieldValue = switch (fieldMeta.type()) {
                     case STRING, STRING_NOT_LOCALIZED -> getString(entity.getId(), rowData, i);
-                    case INT -> fieldMeta.signed() ? getInt32(entity.getId(), rowData, i) : getUInt32(entity.getId(), rowData, i);
-                    case SHORT -> fieldMeta.signed() ? getInt16(entity.getId(), rowData, i) : getUInt16(entity.getId(), rowData, i);
-                    case BYTE -> fieldMeta.signed() ? getInt8(entity.getId(), rowData, i) : getUInt8(entity.getId(), rowData, i);
-                    case LONG -> fieldMeta.signed() ? getInt64(entity.getId(), rowData, i) : getUInt64(entity.getId(), rowData, i);
+                    case INT ->
+                            fieldMeta.signed() ? getInt32(entity.getId(), rowData, i) : getUInt32(entity.getId(), rowData, i);
+                    case SHORT ->
+                            fieldMeta.signed() ? getInt16(entity.getId(), rowData, i) : getUInt16(entity.getId(), rowData, i);
+                    case BYTE ->
+                            fieldMeta.signed() ? getInt8(entity.getId(), rowData, i) : getUInt8(entity.getId(), rowData, i);
+                    case LONG ->
+                            fieldMeta.signed() ? getInt64(entity.getId(), rowData, i) : getUInt64(entity.getId(), rowData, i);
                     case FLOAT -> getFloat(entity.getId(), rowData, i);
                 };
                 if (fieldMeta.type() == Db2Type.STRING) {
@@ -179,15 +191,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
             return rowData.getCString();
         } else {
             int stringOffset = getInt32(id, rowData, fieldIndex);
-            ByteArrayOutputStream data = new ByteArrayOutputStream();
-            while (true) {
-                byte b = reader.stringTable.get(stringOffset++);
-                if (b == '\0') {
-                    break;
-                }
-                data.write(b);
-            }
-            return data.toString(StandardCharsets.UTF_8);
+            return getCStringFromStringTable(stringOffset);
         }
     }
 
@@ -241,6 +245,11 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
         return Arrays.stream(fieldVals).map(Number::floatValue).toArray(Float[]::new);
     }
 
+    String[] getStringValueArray(RowData rowData, int fieldIndex, int arraySize) {
+        BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
+        return Arrays.stream(fieldVals).map(e -> getCStringFromStringTable(e.intValue())).toArray(String[]::new);
+    }
+
     private static BigInteger getFieldValue(Integer id, RowData r, FieldMetaData fieldMeta, ColumnMetaData columnMeta, Value32[] palletData, Map<Integer, Value32> commonData) {
         switch (columnMeta.compressionType) {
             case CompressionType.None -> {
@@ -263,7 +272,12 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
             }
             case CompressionType.Pallet -> {
                 long index = r.getUInt32(columnMeta.pallet.bitWidth());
-                return new BigInteger(palletData[(int) index].value);
+                try {
+                    return new BigInteger(palletData[(int) index].value);
+                }catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
             }
             case CompressionType.PalletArray -> {
                 if (columnMeta.pallet.cardinality() != 1)
@@ -306,4 +320,15 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
         throw new IllegalStateException("Unexpected compression type " + columnMeta.compressionType);
     }
 
+    private String getCStringFromStringTable(int stringOffset) {
+        ByteArrayOutputStream data = new ByteArrayOutputStream();
+        while (true) {
+            byte b = reader.stringTable.get(stringOffset++);
+            if (b == '\0') {
+                break;
+            }
+            data.write(b);
+        }
+        return data.toString(StandardCharsets.UTF_8);
+    }
 }

@@ -306,7 +306,9 @@ public class Db2EntityReader {
                 buffer.order(ByteOrder.LITTLE_ENDIAN).flip();
 
                 for (int i = 0; i < refData.numRecords; i++) {
-                    refData.entries.put(buffer.getInt(), buffer.getInt());
+                    int id = buffer.getInt();
+                    int index = buffer.getInt();
+                    refData.entries.put(index, id);
                 }
             }
         }

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_effect")
 @Db2DataBind(name = "ItemEffect.db2", layoutHash = 0xA390FA40, parentIndexField = 8, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "coolDownMSec", type = Db2Type.INT, signed = true),
         @Db2Field(name = "categoryCoolDownMSec", type = Db2Type.INT, signed = true),

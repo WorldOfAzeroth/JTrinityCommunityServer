@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "creature_family")
 @Db2DataBind(name = "CreatureFamily.db2", layoutHash = 0xE2DC5126, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "minScale", type = Db2Type.FLOAT),
         @Db2Field(name = "maxScale", type = Db2Type.FLOAT),

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "battle_pet_breed_quality")
 @Db2DataBind(name = "BattlePetBreedQuality.db2", layoutHash = 0xBDE74E1D, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "stateMultiplier", type = Db2Type.FLOAT),
         @Db2Field(name = "qualityEnum", type = Db2Type.BYTE)
 })

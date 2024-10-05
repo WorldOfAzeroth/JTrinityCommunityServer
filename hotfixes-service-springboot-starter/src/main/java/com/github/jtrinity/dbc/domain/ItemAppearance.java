@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_appearance")
 @Db2DataBind(name = "ItemAppearance.db2", layoutHash = 0x06D35A59, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "itemDisplayInfoID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "defaultIconFileDataID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "uiOrder", type = Db2Type.INT, signed = true),

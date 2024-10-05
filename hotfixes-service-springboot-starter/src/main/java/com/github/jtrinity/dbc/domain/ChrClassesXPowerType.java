@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "chr_classes_x_power_types")
 @Db2DataBind(name = "ChrClassesXPowerTypes.db2", layoutHash = 0xAF977B23, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "powerType", type = Db2Type.BYTE),
         @Db2Field(name = "classID", type = Db2Type.BYTE)
 })

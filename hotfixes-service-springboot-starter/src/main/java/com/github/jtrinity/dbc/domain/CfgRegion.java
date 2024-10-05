@@ -16,8 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "cfg_regions")
-@Db2DataBind(name = "CfgRegions.db2", layoutHash = 0x9F4272BF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
+@Db2DataBind(name = "Cfg_Regions.db2", layoutHash = 0x9F4272BF, fields = {
         @Db2Field(name = "tag", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "raidorigin", type = Db2Type.INT),
         @Db2Field(name = "challengeOrigin", type = Db2Type.INT),

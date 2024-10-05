@@ -18,9 +18,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "broadcast_text")
 @Db2DataBind(name = "BroadcastText.db2", layoutHash = 0x51BF0C33, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "text", type = Db2Type.STRING),
-        @Db2Field(name = {"text", "text1"}, type = Db2Type.STRING),
+        @Db2Field(name = "text1", type = Db2Type.STRING),
         @Db2Field(name = {"emoteID1", "emoteID2", "emoteID3"}, type = Db2Type.SHORT),
         @Db2Field(name = {"emoteDelay1", "emoteDelay2", "emoteDelay3"}, type = Db2Type.SHORT),
         @Db2Field(name = "emotesID", type = Db2Type.SHORT),

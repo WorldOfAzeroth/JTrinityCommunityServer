@@ -17,9 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "cfg_categories")
-@Db2DataBind(name = "Cfg_Categories.db2", layoutHash = 0x37159FFC, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "name", type = Db2Type.STRING),
+@Db2DataBind(name = "Cfg_Categories.db2", layoutHash = 0x705B82C8, fields = {
         @Db2Field(name = "localeMask", type = Db2Type.SHORT),
         @Db2Field(name = "createCharsetMask", type = Db2Type.BYTE),
         @Db2Field(name = "existingCharsetMask", type = Db2Type.BYTE),

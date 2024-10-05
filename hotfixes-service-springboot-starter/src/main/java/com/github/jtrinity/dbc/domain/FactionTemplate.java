@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "faction_template")
 @Db2DataBind(name = "FactionTemplate.db2", layoutHash = 0x6F1D2135, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "faction", type = Db2Type.SHORT),
         @Db2Field(name = "flags", type = Db2Type.SHORT),
         @Db2Field(name = {"enemies1", "enemies2", "enemies3", "enemies4"}, type = Db2Type.SHORT),

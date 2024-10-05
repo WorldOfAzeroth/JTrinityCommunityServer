@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact_power_picker")
 @Db2DataBind(name = "ArtifactPowerPicker.db2", layoutHash = 0x2D6AF006, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "playerConditionID", type = Db2Type.INT)
 })
 public class ArtifactPowerPicker implements DbcEntity {

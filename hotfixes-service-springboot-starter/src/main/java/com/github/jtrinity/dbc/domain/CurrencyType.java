@@ -19,7 +19,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "currency_types")
 @Db2DataBind(name = "CurrencyTypes.db2", layoutHash = 0x6CC25CBF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = "maxQty", type = Db2Type.INT),

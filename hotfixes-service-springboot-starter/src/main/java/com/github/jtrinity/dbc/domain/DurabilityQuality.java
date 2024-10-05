@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "durability_quality")
 @Db2DataBind(name = "DurabilityQuality.db2", layoutHash = 0x6F64793D, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "data", type = Db2Type.FLOAT)
 })
 public class DurabilityQuality implements DbcEntity {

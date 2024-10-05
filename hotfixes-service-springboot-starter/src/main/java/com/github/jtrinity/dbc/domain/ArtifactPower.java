@@ -17,8 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact_power")
 @Db2DataBind(name = "ArtifactPower.db2", layoutHash = 0x45240818, indexField = 5, parentIndexField = 1, fields = {
-        @Db2Field(name = "posX", type = Db2Type.FLOAT),
-        @Db2Field(name = "posY", type = Db2Type.FLOAT),
+        @Db2Field(name = {"posX", "posY"}, type = Db2Type.FLOAT),
         @Db2Field(name = "artifactID", type = Db2Type.BYTE),
         @Db2Field(name = "flags", type = Db2Type.BYTE),
         @Db2Field(name = "maxPurchasableRank", type = Db2Type.BYTE),
@@ -34,7 +33,7 @@ public class ArtifactPower implements DbcEntity {
     private Float posY;
 
     @Column(name = "ArtifactID")
-    private Byte artifactID;
+    private Short artifactID;
 
     @Column(name = "Flags")
     private Byte flags;

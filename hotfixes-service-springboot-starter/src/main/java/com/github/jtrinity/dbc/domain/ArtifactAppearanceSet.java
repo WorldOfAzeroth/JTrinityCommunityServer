@@ -56,7 +56,7 @@ public class ArtifactAppearanceSet implements DbcEntity {
     private Integer id;
 
     @Column(name = "ArtifactID")
-    private Byte artifactID;
+    private Short artifactID;
 
     @Id
     @ColumnDefault("0")

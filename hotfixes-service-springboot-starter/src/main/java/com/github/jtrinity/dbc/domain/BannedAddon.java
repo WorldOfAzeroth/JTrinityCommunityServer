@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "banned_addons")
 @Db2DataBind(name = "BannedAddons.db2", layoutHash = 0xF779B6E5, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "version", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "flags", type = Db2Type.BYTE)

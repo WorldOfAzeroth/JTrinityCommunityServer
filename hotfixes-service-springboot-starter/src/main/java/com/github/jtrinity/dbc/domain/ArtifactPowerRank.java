@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact_power_rank")
 @Db2DataBind(name = "ArtifactPowerRank.db2", layoutHash = 0xA87EACC4, parentIndexField = 4, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "auraPointsOverride", type = Db2Type.FLOAT),
         @Db2Field(name = "itemBonusListID", type = Db2Type.SHORT),

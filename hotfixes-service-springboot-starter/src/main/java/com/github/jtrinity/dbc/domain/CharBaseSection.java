@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "char_base_section")
 @Db2DataBind(name = "CharBaseSection.db2", layoutHash = 0x4F08B5F3, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "variationEnum", type = Db2Type.BYTE),
         @Db2Field(name = "resolutionVariationEnum", type = Db2Type.BYTE),
         @Db2Field(name = "layoutResType", type = Db2Type.BYTE)

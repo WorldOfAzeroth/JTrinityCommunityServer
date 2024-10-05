@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "glyphbindablespell")
 @Db2DataBind(name = "GlyphBindableSpell.db2", layoutHash = 0xEA228DFA, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "glyphPropertiesID", type = Db2Type.SHORT, signed = true)
 })

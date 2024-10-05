@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "garr_plot")
 @Db2DataBind(name = "GarrPlot.db2", layoutHash = 0xE12049E0, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "allianceConstructObjID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "hordeConstructObjID", type = Db2Type.INT, signed = true),

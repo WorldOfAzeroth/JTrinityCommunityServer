@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "gameobject_art_kit")
 @Db2DataBind(name = "GameObjectArtKit.db2", layoutHash = 0x6F65BC41, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "attachModelFileID", type = Db2Type.INT, signed = true),
         @Db2Field(name = {"textureVariationFileID1", "textureVariationFileID2", "textureVariationFileID3"}, type = Db2Type.INT, signed = true)
 })

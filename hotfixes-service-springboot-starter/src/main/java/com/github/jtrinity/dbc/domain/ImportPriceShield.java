@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "import_price_shield")
 @Db2DataBind(name = "ImportPriceShield.db2", layoutHash = 0x6F64793D, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "data", type = Db2Type.FLOAT)
 })
 public class ImportPriceShield implements DbcEntity {

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "guild_color_background")
 @Db2DataBind(name = "GuildColorBackground.db2", layoutHash = 0xCC0CEFF1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "red", type = Db2Type.BYTE),
         @Db2Field(name = "green", type = Db2Type.BYTE),
         @Db2Field(name = "blue", type = Db2Type.BYTE)

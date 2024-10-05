@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "destructible_model_data")
 @Db2DataBind(name = "DestructibleModelData.db2", layoutHash = 0x1092C9AF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "state0Wmo", type = Db2Type.SHORT),
         @Db2Field(name = "state1Wmo", type = Db2Type.SHORT),
         @Db2Field(name = "state2Wmo", type = Db2Type.SHORT),

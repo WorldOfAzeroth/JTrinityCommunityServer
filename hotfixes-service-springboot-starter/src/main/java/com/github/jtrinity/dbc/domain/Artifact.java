@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact")
 @Db2DataBind(name = "Artifact.db2", layoutHash = 0x76CF31A8, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "uiBarOverlayColor", type = Db2Type.INT, signed = true),
         @Db2Field(name = "uiBarBackgroundColor", type = Db2Type.INT, signed = true),

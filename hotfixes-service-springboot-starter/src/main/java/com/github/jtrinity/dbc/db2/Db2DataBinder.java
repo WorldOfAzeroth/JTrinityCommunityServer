@@ -38,7 +38,7 @@ class Db2DataBinder<T extends DbcEntity> {
 
         for (Db2Field fieldMeta : fieldMetas) {
             for (String name : fieldMeta.name()) {
-                if(!classFields.contains(name)) {
+                if (!classFields.contains(name)) {
                     throw new DB2FileException(name + " is not present on class " + clazz.getName());
                 }
             }
@@ -96,7 +96,8 @@ class Db2DataBinder<T extends DbcEntity> {
         try {
             entity = clazz.getConstructor().newInstance();
             this.beanWrapper = new BeanWrapperImpl(entity);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
         return entity;
@@ -111,15 +112,19 @@ class Db2DataBinder<T extends DbcEntity> {
     }
 
     void bind(String field, Object fieldVal) {
-        beanWrapper.setPropertyValue(field, fieldVal);
+        try {
+            beanWrapper.setPropertyValue(field, fieldVal);
+        } catch (RuntimeException e) {
+            throw new ValueOverflowException("property %s in %s is overflowed.".formatted(field , getEntityClass()), e);
+        }
     }
 
     void bindLocalizedString(String field, Locale locale, String fieldVal) {
         Object propertyValue = beanWrapper.getPropertyValue(field);
         LocalizedString string = (LocalizedString) propertyValue;
-        if(string != null) {
+        if (string != null) {
             string.set(locale, fieldVal);
-        } else  {
+        } else {
             string = new LocalizedString();
             string.set(locale, fieldVal);
         }

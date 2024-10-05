@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_disenchant_loot")
 @Db2DataBind(name = "ItemDisenchantLoot.db2", layoutHash = 0xC0D926CC, parentIndexField = 6, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "minLevel", type = Db2Type.SHORT),
         @Db2Field(name = "maxLevel", type = Db2Type.SHORT),
         @Db2Field(name = "skillRequired", type = Db2Type.SHORT),

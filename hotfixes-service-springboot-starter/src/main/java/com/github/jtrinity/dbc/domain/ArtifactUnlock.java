@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact_unlock")
 @Db2DataBind(name = "ArtifactUnlock.db2", layoutHash = 0x52839A77, parentIndexField = 4, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "itemBonusListID", type = Db2Type.SHORT),
         @Db2Field(name = "powerRank", type = Db2Type.BYTE),
         @Db2Field(name = "powerID", type = Db2Type.INT),

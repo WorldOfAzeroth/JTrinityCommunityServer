@@ -16,8 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "area_trigger_action_set")
-@Db2DataBind(name = "AreaTriggerActionSet.db2", layoutHash = 0xA5807748, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+@Db2DataBind(name = "AreaTriggerActionSet.db2", layoutHash = 0x5DA480BD, fields = {
         @Db2Field(name = "flags", type = Db2Type.SHORT, signed = true)
 })
 public class AreaTriggerActionSet implements DbcEntity {

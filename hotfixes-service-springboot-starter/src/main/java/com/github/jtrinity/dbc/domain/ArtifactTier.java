@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact_tier")
 @Db2DataBind(name = "ArtifactTier.db2", layoutHash = 0x1A5A50B9, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "artifactTier", type = Db2Type.INT),
         @Db2Field(name = "maxNumTraits", type = Db2Type.INT),
         @Db2Field(name = "maxArtifactKnowledge", type = Db2Type.INT),

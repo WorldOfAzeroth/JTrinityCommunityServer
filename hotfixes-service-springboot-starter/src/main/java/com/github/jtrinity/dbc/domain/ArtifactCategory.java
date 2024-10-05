@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "artifact_category")
 @Db2DataBind(name = "ArtifactCategory.db2", layoutHash = 0x21328475, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "xpMultCurrencyID", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "xpMultCurveID", type = Db2Type.SHORT, signed = true)
 })

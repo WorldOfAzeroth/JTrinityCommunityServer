@@ -37,7 +37,7 @@ public class ItemModifiedAppearance implements DbcEntity {
     private Byte itemAppearanceModifierID;
 
     @Column(name = "ItemAppearanceID")
-    private Short itemAppearanceID;
+    private Integer itemAppearanceID;
 
     @Column(name = "OrderIndex")
     private Byte orderIndex;

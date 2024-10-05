@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_armor_total")
 @Db2DataBind(name = "ItemArmorTotal.db2", layoutHash = 0x45C396DD, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "cloth", type = Db2Type.FLOAT),
         @Db2Field(name = "leather", type = Db2Type.FLOAT),
         @Db2Field(name = "mail", type = Db2Type.FLOAT),

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "durability_costs")
 @Db2DataBind(name = "DurabilityCosts.db2", layoutHash = 0x8447966A, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"weaponSubClassCost1", "weaponSubClassCost2", "weaponSubClassCost3", "weaponSubClassCost4", "weaponSubClassCost5", "weaponSubClassCost6", "weaponSubClassCost7", "weaponSubClassCost8", "weaponSubClassCost9", "weaponSubClassCost10", "weaponSubClassCost11", "weaponSubClassCost12", "weaponSubClassCost13", "weaponSubClassCost14", "weaponSubClassCost15", "weaponSubClassCost16", "weaponSubClassCost17", "weaponSubClassCost18", "weaponSubClassCost19", "weaponSubClassCost20", "weaponSubClassCost21"}, type = Db2Type.SHORT),
         @Db2Field(name = {"armorSubClassCost1", "armorSubClassCost2", "armorSubClassCost3", "armorSubClassCost4", "armorSubClassCost5", "armorSubClassCost6", "armorSubClassCost7", "armorSubClassCost8"}, type = Db2Type.SHORT)
 })

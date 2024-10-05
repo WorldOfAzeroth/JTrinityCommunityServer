@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_upgrade")
 @Db2DataBind(name = "ItemUpgrade.db2", layoutHash = 0x8F3A4137, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "currencyAmount", type = Db2Type.INT),
         @Db2Field(name = "prerequisiteID", type = Db2Type.SHORT),
         @Db2Field(name = "currencyType", type = Db2Type.SHORT),
@@ -40,7 +39,7 @@ public class ItemUpgrade implements DbcEntity {
     private Short currencyType;
 
     @Column(name = "ItemUpgradePathID")
-    private Byte itemUpgradePathID;
+    private Short itemUpgradePathID;
 
     @Column(name = "ItemLevelIncrement")
     private Byte itemLevelIncrement;

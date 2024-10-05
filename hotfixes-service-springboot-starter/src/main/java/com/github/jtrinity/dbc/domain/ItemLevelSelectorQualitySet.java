@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_level_selector_quality_set")
 @Db2DataBind(name = "ItemLevelSelectorQualitySet.db2", layoutHash = 0x20055BA8, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "ilvlRare", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "ilvlEpic", type = Db2Type.SHORT, signed = true)
 })

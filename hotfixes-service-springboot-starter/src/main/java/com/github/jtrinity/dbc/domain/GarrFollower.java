@@ -111,10 +111,10 @@ public class GarrFollower implements DbcEntity {
     private Byte quality;
 
     @Column(name = "HordeGarrClassSpecID")
-    private Byte hordeGarrClassSpecID;
+    private Short hordeGarrClassSpecID;
 
     @Column(name = "AllianceGarrClassSpecID")
-    private Byte allianceGarrClassSpecID;
+    private Short allianceGarrClassSpecID;
 
     @Column(name = "FollowerLevel")
     private Byte followerLevel;

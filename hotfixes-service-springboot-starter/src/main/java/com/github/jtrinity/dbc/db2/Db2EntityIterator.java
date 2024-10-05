@@ -145,7 +145,8 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     Short getUInt8(Integer id, RowData rowData, int fieldIndex) {
         BigInteger fieldVal = getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
-        return fieldVal.shortValue();
+        byte b = fieldVal.byteValue();
+        return (short) ((short)b & 0xff);
     }
 
     Short getInt16(Integer id, RowData rowData, int fieldIndex) {
@@ -155,7 +156,8 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     Integer getUInt16(Integer id, RowData rowData, int fieldIndex) {
         BigInteger fieldVal = getFieldValue(id, rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], reader.commonData[fieldIndex]);
-        return fieldVal.intValue();
+        short shortValue = fieldVal.shortValue();
+        return  (shortValue & 0xffff);
     }
 
     Integer getUInt32(Integer id, RowData rowData, int fieldIndex) {
@@ -267,8 +269,8 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
             case CompressionType.Common -> {
                 Value32 val = commonData.get(id);
                 if (val != null)
-                    return new BigInteger(val.value);
-                return new BigInteger(columnMeta.common.defaultValue().value);
+                    return new BigInteger(1, val.value);
+                return new BigInteger(1, columnMeta.common.defaultValue().value);
             }
             case CompressionType.Pallet -> {
                 long index = r.getUInt32(columnMeta.pallet.bitWidth());
@@ -283,7 +285,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
                 if (columnMeta.pallet.cardinality() != 1)
                     break;
                 long palletArrayIndex = r.getUInt32(columnMeta.pallet.bitWidth());
-                return new BigInteger(palletData[(int) palletArrayIndex].value);
+                return new BigInteger(1, palletData[(int) palletArrayIndex].value);
             }
         }
         throw new IllegalStateException("Unexpected compression type " + columnMeta.compressionType);

@@ -16,13 +16,12 @@ import org.hibernate.annotations.ColumnDefault;
 @ToString
 @IdClass(DB2Id.class)
 @Entity
-@Table(name = "item_random_suffix")
-@Db2DataBind(name = "ItemRandomSuffix.db2", layoutHash = 0x95CAB825, fields = {
+@Table(name = "item_random_properties")
+@Db2DataBind(name = "ItemRandomProperties.db2", layoutHash = 0xB67375F8, fields = {
         @Db2Field(name = "name", type = Db2Type.STRING),
-        @Db2Field(name = {"enchantment1", "enchantment2", "enchantment3", "enchantment4", "enchantment5"}, type = Db2Type.SHORT),
-        @Db2Field(name = {"allocationPct1", "allocationPct2", "allocationPct3", "allocationPct4", "allocationPct5"}, type = Db2Type.SHORT)
+        @Db2Field(name = {"enchantment1", "enchantment2", "enchantment3", "enchantment4", "enchantment5"}, type = Db2Type.SHORT)
 })
-public class ItemRandomSuffix implements DbcEntity {
+public class ItemRandomProperty implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
@@ -45,21 +44,6 @@ public class ItemRandomSuffix implements DbcEntity {
 
     @Column(name = "Enchantment5")
     private Short enchantment5;
-
-    @Column(name = "AllocationPct1")
-    private Short allocationPct1;
-
-    @Column(name = "AllocationPct2")
-    private Short allocationPct2;
-
-    @Column(name = "AllocationPct3")
-    private Short allocationPct3;
-
-    @Column(name = "AllocationPct4")
-    private Short allocationPct4;
-
-    @Column(name = "AllocationPct5")
-    private Short allocationPct5;
 
     @Id
     @ColumnDefault("0")

@@ -66,7 +66,7 @@ public class Difficulty implements DbcEntity {
     private Byte oldEnumValue;
 
     @Column(name = "Flags")
-    private Byte flags;
+    private Short flags;
 
     @Column(name = "ToggleDifficultyID")
     private Byte toggleDifficultyID;

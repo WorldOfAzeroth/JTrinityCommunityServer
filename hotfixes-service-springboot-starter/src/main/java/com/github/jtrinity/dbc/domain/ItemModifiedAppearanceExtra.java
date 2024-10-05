@@ -16,13 +16,12 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "item_modified_appearance_extra")
-@Db2DataBind(name = "ItemModifiedAppearanceExtra.db2", layoutHash = 0x08968F49, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+@Db2DataBind(name = "ItemModifiedAppearanceExtra.db2", layoutHash = 0x77212236, fields = {
         @Db2Field(name = "iconFileDataID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "unequippedIconFileDataID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "sheatheType", type = Db2Type.BYTE),
-        @Db2Field(name = "displayWeaponSubclassID", type = Db2Type.BYTE),
-        @Db2Field(name = "displayInventoryType", type = Db2Type.BYTE),
+        @Db2Field(name = "displayWeaponSubclassID", type = Db2Type.BYTE, signed = true),
+        @Db2Field(name = "displayInventoryType", type = Db2Type.BYTE, signed = true),
 })
 public class ItemModifiedAppearanceExtra implements DbcEntity {
     @Id

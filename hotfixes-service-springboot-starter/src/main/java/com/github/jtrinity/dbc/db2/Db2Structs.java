@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 
 class Header {
@@ -160,17 +162,37 @@ class RowData {
     }
 
     int getUInt32(int numBits) {
-        int b = buffer.getInt(readOffset + (readPos >> 3));
+        int index = readOffset + (readPos >> 3);
+        int remaining = buffer.limit() - index;
+        int b;
+        if (remaining < 4) {
+            byte[] result = new byte[4];
+            IntStream.range(0, remaining).forEach(i -> result[remaining] = buffer.get(index + i));
+            b = ByteBuffer.wrap(result).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        } else {
+            b = buffer.getInt(index);
+        }
+
         int result = b << (32 - numBits - (readPos & 7)) >>> (32 - numBits);
         readPos += numBits;
         return result;
     }
 
     long getUInt64(int numBits) {
-        long b = buffer.getLong(readOffset + (readPos >> 3));
+        int index = readOffset + (readPos >> 3);
+        int remaining = buffer.limit() - index;
+        long b;
+        if (remaining < 8) {
+            byte[] result = new byte[8];
+            IntStream.range(0, remaining).forEach(i -> result[remaining] = buffer.get(index + i));
+            b = ByteBuffer.wrap(result).order(ByteOrder.LITTLE_ENDIAN).getLong();
+        } else {
+            b = buffer.getLong(index);
+        }
         long result = b << (64 - numBits - (readPos & 7)) >>> (64 - numBits);
         readPos += numBits;
         return result;
+
     }
 
     Value64 getValue64(int numBits) {

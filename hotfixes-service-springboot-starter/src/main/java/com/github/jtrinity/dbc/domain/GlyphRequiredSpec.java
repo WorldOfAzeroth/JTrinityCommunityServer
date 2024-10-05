@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "glyph_required_spec")
 @Db2DataBind(name = "GlyphRequiredSpec.db2", layoutHash = 0xDD6481CE, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "chrSpecializationID", type = Db2Type.SHORT),
         @Db2Field(name = "glyphPropertiesID", type = Db2Type.SHORT)
 })

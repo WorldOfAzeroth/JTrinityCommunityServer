@@ -72,7 +72,7 @@ public class CreatureDisplayInfo implements DbcEntity {
     private Integer portraitTextureFileDataID;
 
     @Column(name = "CreatureModelAlpha")
-    private Byte creatureModelAlpha;
+    private Short creatureModelAlpha;
 
     @Column(name = "SoundID")
     private Short soundID;

@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "journal_encounter")
 @Db2DataBind(name = "JournalEncounter.db2", layoutHash = 0x2935A0FD, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = {"map_1", "map_2"}, type = Db2Type.FLOAT),
@@ -26,7 +25,7 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "worldMapAreaID", type = Db2Type.SHORT),
         @Db2Field(name = "firstSectionID", type = Db2Type.SHORT),
         @Db2Field(name = "journalInstanceID", type = Db2Type.SHORT),
-        @Db2Field(name = "difficultyMask", type = Db2Type.BYTE),
+        @Db2Field(name = "difficultyMask", type = Db2Type.BYTE, signed = true),
         @Db2Field(name = "flags", type = Db2Type.BYTE),
         @Db2Field(name = "orderIndex", type = Db2Type.INT),
         @Db2Field(name = "mapDisplayConditionID", type = Db2Type.INT)

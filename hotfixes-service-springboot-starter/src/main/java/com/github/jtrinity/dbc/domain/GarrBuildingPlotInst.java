@@ -17,8 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "garr_building_plot_inst")
 @Db2DataBind(name = "GarrBuildingPlotInst.db2", layoutHash = 0xF45B6227, indexField = 4, parentIndexField = 3, fields = {
-        @Db2Field(name = "mapOffsetX", type = Db2Type.FLOAT),
-        @Db2Field(name = "mapOffsetY", type = Db2Type.FLOAT),
+        @Db2Field(name = {"mapOffsetX", "mapOffsetY"}, type = Db2Type.FLOAT),
         @Db2Field(name = "uiTextureAtlasMemberID", type = Db2Type.SHORT),
         @Db2Field(name = "garrSiteLevelPlotInstID", type = Db2Type.SHORT),
         @Db2Field(name = "garrBuildingID", type = Db2Type.BYTE),
@@ -38,7 +37,7 @@ public class GarrBuildingPlotInst implements DbcEntity {
     private Short garrSiteLevelPlotInstID;
 
     @Column(name = "GarrBuildingID")
-    private Byte garrBuildingID;
+    private Short garrBuildingID;
 
     @Id
     @ColumnDefault("'0'")

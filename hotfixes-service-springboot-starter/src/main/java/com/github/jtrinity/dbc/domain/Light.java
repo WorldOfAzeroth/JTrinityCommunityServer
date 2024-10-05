@@ -17,10 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "light")
 @Db2DataBind(name = "Light.db2", layoutHash = 0x25025A13, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
-        @Db2Field(name = "gameCoordsX", type = Db2Type.FLOAT),
-        @Db2Field(name = "gameCoordsY", type = Db2Type.FLOAT),
-        @Db2Field(name = "gameCoordsZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"gameCoordsX", "gameCoordsY", "gameCoordsZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = "gameFalloffStart", type = Db2Type.FLOAT),
         @Db2Field(name = "gameFalloffEnd", type = Db2Type.FLOAT),
         @Db2Field(name = "continentID", type = Db2Type.SHORT, signed = true),

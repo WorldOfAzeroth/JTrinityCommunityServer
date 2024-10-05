@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "guild_color_border")
 @Db2DataBind(name = "GuildColorBorder.db2", layoutHash = 0xCC0CEFF1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "red", type = Db2Type.BYTE),
         @Db2Field(name = "green", type = Db2Type.BYTE),
         @Db2Field(name = "blue", type = Db2Type.BYTE)
@@ -29,13 +28,13 @@ public class GuildColorBorder implements DbcEntity {
     private Integer id;
 
     @Column(name = "Red")
-    private Byte red;
+    private Short red;
 
     @Column(name = "Green")
-    private Byte green;
+    private Short green;
 
     @Column(name = "Blue")
-    private Byte blue;
+    private Short blue;
 
     @Id
     @ColumnDefault("0")

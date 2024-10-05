@@ -17,9 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "garr_site_level_plot_inst")
 @Db2DataBind(name = "GarrSiteLevelPlotInst.db2", layoutHash = 0xC4E74201, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
-        @Db2Field(name = "uiMarkerPosX", type = Db2Type.FLOAT),
-        @Db2Field(name = "uiMarkerPosY", type = Db2Type.FLOAT),
+        @Db2Field(name = {"uiMarkerPosX", "uiMarkerPosY"}, type = Db2Type.FLOAT),
         @Db2Field(name = "garrSiteLevelID", type = Db2Type.SHORT),
         @Db2Field(name = "garrPlotInstanceID", type = Db2Type.BYTE),
         @Db2Field(name = "uiMarkerSize", type = Db2Type.BYTE)

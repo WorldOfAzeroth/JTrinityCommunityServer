@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_bag_family")
 @Db2DataBind(name = "ItemBagFamily.db2", layoutHash = 0x96663ABF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING)
 })
 public class ItemBagFamily implements DbcEntity {

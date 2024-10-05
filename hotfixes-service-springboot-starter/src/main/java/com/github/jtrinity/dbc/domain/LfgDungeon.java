@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "lfg_dungeons")
 @Db2DataBind(name = "LFGDungeons.db2", layoutHash = 0xF02081A0, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = "flags", type = Db2Type.INT, signed = true),
@@ -96,7 +95,7 @@ public class LfgDungeon implements DbcEntity {
     private Short mentorItemLevel;
 
     @Column(name = "RequiredPlayerConditionId")
-    private Short requiredPlayerConditionId;
+    private Integer requiredPlayerConditionId;
 
     @Column(name = "MinLevel")
     private Byte minLevel;

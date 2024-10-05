@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "language_words")
 @Db2DataBind(name = "LanguageWords.db2", layoutHash = 0xC15912BD, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "word", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "languageID", type = Db2Type.BYTE)
 })
@@ -32,7 +31,7 @@ public class LanguageWord implements DbcEntity {
     private String word;
 
     @Column(name = "LanguageID")
-    private Byte languageID;
+    private Short languageID;
 
     @Id
     @ColumnDefault("0")

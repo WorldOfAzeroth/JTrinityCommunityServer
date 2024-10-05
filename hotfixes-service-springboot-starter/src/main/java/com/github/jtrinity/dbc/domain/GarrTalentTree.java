@@ -1,5 +1,9 @@
 package com.github.jtrinity.dbc.domain;
 
+import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.dbc.db2.Db2DataBind;
+import com.github.jtrinity.dbc.db2.Db2Field;
+import com.github.jtrinity.dbc.db2.Db2Type;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +16,18 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "garr_talent_tree")
-public class GarrTalentTree {
+@Db2DataBind(name = "GarrTalentTree.db2", layoutHash = 0x676CBC04, parentIndexField = 1, fields = {
+        @Db2Field(name = "uiTextureKitID", type = Db2Type.SHORT),
+        @Db2Field(name = "maxTiers", type = Db2Type.BYTE),
+        @Db2Field(name = "uiOrder", type = Db2Type.BYTE),
+        @Db2Field(name = "classID", type = Db2Type.INT),
+        @Db2Field(name = "garrTypeID", type = Db2Type.INT)
+})
+public class GarrTalentTree implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
-    private Long id;
+    private Integer id;
 
     @Id
     @ColumnDefault("0")

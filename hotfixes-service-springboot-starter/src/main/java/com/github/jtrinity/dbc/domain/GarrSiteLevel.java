@@ -17,9 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "garr_site_level")
 @Db2DataBind(name = "GarrSiteLevel.db2", layoutHash = 0xD3979C38, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
-        @Db2Field(name = "townHallUiPosX", type = Db2Type.FLOAT),
-        @Db2Field(name = "townHallUiPosY", type = Db2Type.FLOAT),
+        @Db2Field(name = {"townHallUiPosX", "townHallUiPosY"}, type = Db2Type.FLOAT),
         @Db2Field(name = "mapID", type = Db2Type.SHORT),
         @Db2Field(name = "uiTextureKitID", type = Db2Type.SHORT),
         @Db2Field(name = "upgradeMovieID", type = Db2Type.SHORT),
@@ -60,7 +58,7 @@ public class GarrSiteLevel implements DbcEntity {
     private Byte garrLevel;
 
     @Column(name = "GarrSiteID")
-    private Byte garrSiteID;
+    private Short garrSiteID;
 
     @Column(name = "MaxBuildingLevel")
     private Byte maxBuildingLevel;

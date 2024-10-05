@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "guild_perk_spells")
 @Db2DataBind(name = "GuildPerkSpells.db2", layoutHash = 0xC15D6E9F, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true)
 })
 public class GuildPerkSpell implements DbcEntity {

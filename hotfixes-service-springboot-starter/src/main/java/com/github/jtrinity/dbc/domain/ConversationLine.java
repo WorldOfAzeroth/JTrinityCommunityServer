@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "conversation_line")
 @Db2DataBind(name = "ConversationLine.db2", layoutHash = 0x032B137B, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "broadcastTextID", type = Db2Type.INT),
         @Db2Field(name = "spellVisualKitID", type = Db2Type.INT),
         @Db2Field(name = "additionalDuration", type = Db2Type.INT, signed = true),
@@ -52,10 +51,10 @@ public class ConversationLine implements DbcEntity {
     private Byte speechType;
 
     @Column(name = "StartAnimation")
-    private Byte startAnimation;
+    private Short startAnimation;
 
     @Column(name = "EndAnimation")
-    private Byte endAnimation;
+    private Short endAnimation;
 
     @Id
     @ColumnDefault("0")

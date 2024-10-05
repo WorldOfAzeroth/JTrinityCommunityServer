@@ -155,14 +155,11 @@ public class Db2EntityReader {
         });
 
         if ((header.flags & 0x1) == 0) {
-
-            int recordDataSize = header.recordSize * header.recordCount;
-            byte[] dataArray = new byte[recordDataSize + 8];// pad with extra zeros so we don't crash when reading
+            data = ByteBuffer.allocate(header.recordSize * header.recordCount);
             stringTable = ByteBuffer.allocate(header.stringTableSize);
-            fileChannel.read(ByteBuffer.wrap(dataArray, 0, recordDataSize));
+            fileChannel.read(data);
             fileChannel.read(stringTable);
-            data = ByteBuffer.wrap(dataArray).position(dataArray.length).order(ByteOrder.LITTLE_ENDIAN).flip();
-
+            data.order(ByteOrder.LITTLE_ENDIAN).flip();
             stringTable.flip();
         } else {
             dataPos = fileChannel.position();

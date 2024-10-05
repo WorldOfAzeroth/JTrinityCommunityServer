@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_currency_cost")
 @Db2DataBind(name = "ItemCurrencyCost.db2", layoutHash = 0xE2FF5688, parentIndexField = 0, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "itemID", type = Db2Type.INT, signed = true)
 })
 public class ItemCurrencyCost implements DbcEntity {

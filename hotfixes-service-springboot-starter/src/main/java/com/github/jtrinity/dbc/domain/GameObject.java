@@ -19,9 +19,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "gameobjects")
 @Db2DataBind(name = "GameObjects.db2", layoutHash = 0x597E8643, indexField = 11, parentIndexField = 5, fields = {
         @Db2Field(name = "name", type = Db2Type.STRING),
-        @Db2Field(name = "posX", type = Db2Type.FLOAT),
-        @Db2Field(name = "posY", type = Db2Type.FLOAT),
-        @Db2Field(name = "posZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"posX", "posY", "posZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = {"rot1", "rot2", "rot3", "rot4"}, type = Db2Type.FLOAT),
         @Db2Field(name = "scale", type = Db2Type.FLOAT),
         @Db2Field(name = {"propValue1", "propValue2", "propValue3", "propValue4", "propValue5", "propValue6", "propValue7", "propValue8"}, type = Db2Type.INT, signed = true),
@@ -89,7 +87,7 @@ public class GameObject implements DbcEntity {
     private Short ownerID;
 
     @Column(name = "DisplayID")
-    private Short displayID;
+    private Integer displayID;
 
     @Column(name = "PhaseID")
     private Short phaseID;

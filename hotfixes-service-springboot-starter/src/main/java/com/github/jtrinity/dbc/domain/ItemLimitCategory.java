@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_limit_category")
 @Db2DataBind(name = "ItemLimitCategory.db2", layoutHash = 0xB6BB188D, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "quantity", type = Db2Type.BYTE),
         @Db2Field(name = "flags", type = Db2Type.BYTE)

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_spec_override")
 @Db2DataBind(name = "ItemSpecOverride.db2", layoutHash = 0xE499CD2A, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "specID", type = Db2Type.SHORT),
         @Db2Field(name = "itemID", type = Db2Type.INT, signed = true)
 })

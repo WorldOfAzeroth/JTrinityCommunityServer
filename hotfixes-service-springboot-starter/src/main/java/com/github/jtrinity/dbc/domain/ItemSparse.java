@@ -18,10 +18,11 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_sparse")
 @Db2DataBind(name = "ItemSparse.db2", layoutHash = 0x4007DE16, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "allowableRace", type = Db2Type.LONG, signed = true),
         @Db2Field(name = "display", type = Db2Type.STRING),
-        @Db2Field(name = {"display", "display1", "display2", "display3"}, type = Db2Type.STRING),
+        @Db2Field(name = "display1", type = Db2Type.STRING),
+        @Db2Field(name = "display2", type = Db2Type.STRING),
+        @Db2Field(name = "display3", type = Db2Type.STRING),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = {"flags1", "flags2", "flags3", "flags4"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = "priceRandomValue", type = Db2Type.FLOAT),
@@ -272,7 +273,7 @@ public class ItemSparse implements DbcEntity {
     private Short pageID;
 
     @Column(name = "StartQuestID")
-    private Short startQuestID;
+    private Integer startQuestID;
 
     @Column(name = "LockID")
     private Short lockID;

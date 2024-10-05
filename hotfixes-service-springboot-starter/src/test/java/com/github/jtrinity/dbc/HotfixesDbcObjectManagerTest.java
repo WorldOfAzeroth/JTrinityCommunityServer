@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 @SpringBootTest(classes = HotfixesDbcObjectManagerTest.class)
 @TestPropertySource( locations = "classpath:worldserver.conf")
 @SpringBootApplication
@@ -20,6 +25,7 @@ class HotfixesDbcObjectManagerTest {
 
     @Test
     void loadEntityStores() {
+        //hotfixesDbcObjectManager.loadEntityStores(Set.of(DbcObjects.Faction, DbcObjects.CreatureDisplayInfo));
         hotfixesDbcObjectManager.loadEntityStores();
     }
 }

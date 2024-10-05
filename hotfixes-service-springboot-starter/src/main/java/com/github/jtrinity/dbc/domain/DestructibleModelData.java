@@ -47,16 +47,16 @@ public class DestructibleModelData implements DbcEntity {
     private Integer id;
 
     @Column(name = "State0Wmo")
-    private Short state0Wmo;
+    private Integer state0Wmo;
 
     @Column(name = "State1Wmo")
-    private Short state1Wmo;
+    private Integer state1Wmo;
 
     @Column(name = "State2Wmo")
-    private Short state2Wmo;
+    private Integer state2Wmo;
 
     @Column(name = "State3Wmo")
-    private Short state3Wmo;
+    private Integer state3Wmo;
 
     @Column(name = "HealEffectSpeed")
     private Short healEffectSpeed;

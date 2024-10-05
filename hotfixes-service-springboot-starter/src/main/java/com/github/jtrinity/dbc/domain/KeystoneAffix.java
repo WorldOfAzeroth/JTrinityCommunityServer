@@ -1,6 +1,7 @@
 package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
@@ -16,11 +17,10 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "keystone_affix")
-@Db2DataBind(name = "KeystoneAffix.db2", layoutHash = 0x264D2A97, indexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+@Db2DataBind(name = "KeystoneAffix.db2", layoutHash = 0x1BCB46AA, fields = {
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "description", type = Db2Type.STRING),
-        @Db2Field(name = "filedataid", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "fileDataId", type = Db2Type.INT, signed = true),
 })
 public class KeystoneAffix implements DbcEntity {
     @Id
@@ -35,14 +35,14 @@ public class KeystoneAffix implements DbcEntity {
 
     @Lob
     @Column(name = "Name")
-    private String name;
+    private LocalizedString name;
 
     @Lob
     @Column(name = "Description")
-    private String description;
+    private LocalizedString description;
 
     @ColumnDefault("0")
-    @Column(name = "FiledataID", nullable = false)
-    private Integer filedataID;
+    @Column(name = "FileDataID", nullable = false)
+    private Integer fileDataId;
 
 }

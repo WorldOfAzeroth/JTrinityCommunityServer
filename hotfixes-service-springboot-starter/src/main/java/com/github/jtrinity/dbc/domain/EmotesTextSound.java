@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "emotes_text_sound")
 @Db2DataBind(name = "EmotesTextSound.db2", layoutHash = 0x6DFAF9BC, parentIndexField = 4, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "raceID", type = Db2Type.BYTE),
         @Db2Field(name = "sexID", type = Db2Type.BYTE),
         @Db2Field(name = "classID", type = Db2Type.BYTE),

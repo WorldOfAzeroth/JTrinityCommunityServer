@@ -17,14 +17,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "game_object_display_info")
 @Db2DataBind(name = "GameObjectDisplayInfo.db2", layoutHash = 0x9F2098D1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "fileDataID", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "geoBoxMinX", type = Db2Type.FLOAT),
-        @Db2Field(name = "geoBoxMinY", type = Db2Type.FLOAT),
-        @Db2Field(name = "geoBoxMinZ", type = Db2Type.FLOAT),
-        @Db2Field(name = "geoBoxMaxX", type = Db2Type.FLOAT),
-        @Db2Field(name = "geoBoxMaxY", type = Db2Type.FLOAT),
-        @Db2Field(name = "geoBoxMaxZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"geoBoxMinX", "geoBoxMinY", "geoBoxMinZ", "geoBoxMaxX", "geoBoxMaxY", "geoBoxMaxZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = "overrideLootEffectScale", type = Db2Type.FLOAT),
         @Db2Field(name = "overrideNameScale", type = Db2Type.FLOAT),
         @Db2Field(name = "objectEffectPackageID", type = Db2Type.SHORT, signed = true)

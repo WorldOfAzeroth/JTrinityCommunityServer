@@ -16,30 +16,26 @@ import org.hibernate.annotations.ColumnDefault;
 @ToString
 @IdClass(DB2Id.class)
 @Entity
-@Table(name = "item_set_spell")
-@Db2DataBind(name = "ItemSetSpell.db2", layoutHash = 0xF65D0AF8, parentIndexField = 3, fields = {
-        @Db2Field(name = "spellID", type = Db2Type.INT),
-        @Db2Field(name = "chrSpecID", type = Db2Type.SHORT),
-        @Db2Field(name = "threshold", type = Db2Type.BYTE),
-        @Db2Field(name = "itemSetID", type = Db2Type.SHORT)
+@Table(name = "gem_properties")
+@Db2DataBind(name = "GemProperties.db2", layoutHash = 0x84558CAB, fields = {
+        @Db2Field(name = "type", type = Db2Type.INT),
+        @Db2Field(name = "enchantId", type = Db2Type.SHORT),
+        @Db2Field(name = "minItemLevel", type = Db2Type.SHORT)
 })
-public class ItemSetSpell implements DbcEntity {
+public class GemProperty implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
     private Integer id;
 
-    @Column(name = "SpellID")
-    private Integer spellID;
+    @Column(name = "Type")
+    private Integer type;
 
-    @Column(name = "ChrSpecID")
-    private Short chrSpecID;
+    @Column(name = "EnchantId")
+    private Short enchantId;
 
-    @Column(name = "Threshold")
-    private Byte threshold;
-
-    @Column(name = "ItemSetID")
-    private Short itemSetID;
+    @Column(name = "MinItemLevel")
+    private Short minItemLevel;
 
     @Id
     @ColumnDefault("0")

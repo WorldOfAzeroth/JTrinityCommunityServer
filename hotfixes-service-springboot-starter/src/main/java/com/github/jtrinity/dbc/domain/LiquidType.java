@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "liquid_type")
 @Db2DataBind(name = "LiquidType.db2", layoutHash = 0x3313BBF3, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = {"texture1", "texture2", "texture3", "texture4", "texture5", "texture6"}, type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "spellID", type = Db2Type.INT),

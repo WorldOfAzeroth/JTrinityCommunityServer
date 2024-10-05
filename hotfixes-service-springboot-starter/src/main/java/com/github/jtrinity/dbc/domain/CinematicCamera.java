@@ -17,11 +17,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "cinematic_camera")
 @Db2DataBind(name = "CinematicCamera.db2", layoutHash = 0x0062B0F4, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "soundID", type = Db2Type.INT),
-        @Db2Field(name = "originX", type = Db2Type.FLOAT),
-        @Db2Field(name = "originY", type = Db2Type.FLOAT),
-        @Db2Field(name = "originZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"originX", "originY", "originZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = "originFacing", type = Db2Type.FLOAT),
         @Db2Field(name = "fileDataID", type = Db2Type.INT)
 })

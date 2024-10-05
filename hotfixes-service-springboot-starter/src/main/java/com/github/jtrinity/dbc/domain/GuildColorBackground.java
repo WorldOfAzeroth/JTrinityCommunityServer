@@ -28,13 +28,13 @@ public class GuildColorBackground implements DbcEntity {
     private Integer id;
 
     @Column(name = "Red")
-    private Byte red;
+    private Short red;
 
     @Column(name = "Green")
-    private Byte green;
+    private Short green;
 
     @Column(name = "Blue")
-    private Byte blue;
+    private Short blue;
 
     @Id
     @ColumnDefault("0")

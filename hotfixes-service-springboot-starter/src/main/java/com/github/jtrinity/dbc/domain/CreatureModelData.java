@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "creature_model_data")
 @Db2DataBind(name = "CreatureModelData.db2", layoutHash = 0x983BD312, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "modelScale", type = Db2Type.FLOAT),
         @Db2Field(name = "footprintTextureLength", type = Db2Type.FLOAT),
         @Db2Field(name = "footprintTextureWidth", type = Db2Type.FLOAT),

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_level_selector_quality")
 @Db2DataBind(name = "ItemLevelSelectorQuality.db2", layoutHash = 0xB7174A51, parentIndexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "qualityItemBonusListID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "quality", type = Db2Type.BYTE, signed = true),
         @Db2Field(name = "parentILSQualitySetID", type = Db2Type.SHORT, signed = true)

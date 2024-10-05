@@ -13,31 +13,37 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @IdClass(DB2Id.class)
 @Entity
-@Table(name = "item_name_description")
-@Db2DataBind(name = "ItemNameDescription.db2", layoutHash = 0x16760BD4, fields = {
-        @Db2Field(name = "description", type = Db2Type.STRING),
-        @Db2Field(name = "color", type = Db2Type.INT, signed = true)
+@Table(name = "item_class")
+@Db2DataBind(name = "ItemClass.db2", layoutHash = 0xA1E4663C, fields = {
+        @Db2Field(name = "className", type = Db2Type.STRING),
+        @Db2Field(name = "priceModifier", type = Db2Type.FLOAT),
+        @Db2Field(name = "classID", type = Db2Type.BYTE, signed = true),
+        @Db2Field(name = "flags", type = Db2Type.BYTE)
 })
-public class ItemNameDescription implements DbcEntity {
+public class ItemClass implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
     private Integer id;
 
+    @Column(name = "ClassName")
+    private LocalizedString className;
+
+    @Column(name = "PriceModifier")
+    private Float priceModifier;
+
+    @Column(name = "ClassID")
+    private Byte classID;
+
+    @Column(name = "Flags")
+    private Byte flags;
+
     @Id
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
-
-    @Lob
-    @Column(name = "Description")
-    private LocalizedString description;
-
-    @ColumnDefault("0")
-    @Column(name = "Color", nullable = false)
-    private Integer color;
 
 }

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_extended_cost")
 @Db2DataBind(name = "ItemExtendedCost.db2", layoutHash = 0xC31F4DEF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"itemID1", "itemID2", "itemID3", "itemID4", "itemID5"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = {"currencyCount1", "currencyCount2", "currencyCount3", "currencyCount4", "currencyCount5"}, type = Db2Type.INT),
         @Db2Field(name = {"itemCount1", "itemCount2", "itemCount3", "itemCount4", "itemCount5"}, type = Db2Type.SHORT),

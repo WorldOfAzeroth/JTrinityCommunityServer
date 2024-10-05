@@ -17,8 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "journal_encounter_section")
-@Db2DataBind(name = "JournalEncounterSection.db2", layoutHash = 0xF617A4B5, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+@Db2DataBind(name = "JournalEncounterSection.db2", layoutHash = 0x13E56B12, fields = {
         @Db2Field(name = "title", type = Db2Type.STRING),
         @Db2Field(name = "bodyText", type = Db2Type.STRING),
         @Db2Field(name = "iconCreatureDisplayInfoID", type = Db2Type.INT, signed = true),

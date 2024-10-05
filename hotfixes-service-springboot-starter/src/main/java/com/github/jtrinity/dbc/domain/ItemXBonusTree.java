@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_x_bonus_tree")
 @Db2DataBind(name = "ItemXBonusTree.db2", layoutHash = 0x87C4B605, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "itemBonusTreeID", type = Db2Type.SHORT),
         @Db2Field(name = "itemID", type = Db2Type.INT, signed = true)
 })

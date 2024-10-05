@@ -88,6 +88,7 @@ public enum DbcObjects {
     GarrPlotInstance(GarrPlotInstance.class),
     GarrSiteLevel(GarrSiteLevel.class),
     GarrSiteLevelPlotInst(GarrSiteLevelPlotInst.class),
+    GarrTalentTree(GarrTalentTree.class),
     GemProperty(GemProperty.class),
     GlyphBindableSpell(GlyphBindableSpell.class),
     GlyphProperty(GlyphProperty.class),

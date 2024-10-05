@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
+
 @Getter
 @Setter
 @ToString
@@ -32,8 +33,8 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "paragonFactionID", type = Db2Type.SHORT),
         @Db2Field(name = {"parentFactionCap1", "parentFactionCap2"}, type = Db2Type.BYTE),
         @Db2Field(name = "expansion", type = Db2Type.BYTE),
-        @Db2Field(name = "flags", type = Db2Type.BYTE),
-        @Db2Field(name = "friendshipRepID", type = Db2Type.BYTE)
+        @Db2Field(name = "friendshipRepID", type = Db2Type.BYTE),
+        @Db2Field(name = "flags", type = Db2Type.BYTE)
 })
 public class Faction implements DbcEntity {
     @Column(name = "ReputationRaceMask1")
@@ -131,11 +132,11 @@ public class Faction implements DbcEntity {
     @Column(name = "Expansion")
     private Byte expansion;
 
-    @Column(name = "Flags")
-    private Byte flags;
-
     @Column(name = "FriendshipRepID")
     private Byte friendshipRepID;
+
+    @Column(name = "Flags")
+    private Short flags;
 
     @Id
     @ColumnDefault("0")

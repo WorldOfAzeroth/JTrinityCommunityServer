@@ -52,7 +52,7 @@ public class CurrencyType implements DbcEntity {
     private Integer flags;
 
     @Column(name = "CategoryID")
-    private Byte categoryID;
+    private Short categoryID;
 
     @Column(name = "SpellCategory")
     private Byte spellCategory;

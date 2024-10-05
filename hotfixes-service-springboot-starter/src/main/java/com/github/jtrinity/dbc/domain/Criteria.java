@@ -54,7 +54,7 @@ public class Criteria implements DbcEntity {
     private Short eligibilityWorldStateID;
 
     @Column(name = "Type")
-    private Byte type;
+    private Short type;
 
     @Column(name = "StartEvent")
     private Byte startEvent;

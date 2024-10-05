@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_limit_category_condition")
 @Db2DataBind(name = "ItemLimitCategoryCondition.db2", layoutHash = 0xDE8EAD49, parentIndexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "addQuantity", type = Db2Type.BYTE, signed = true),
         @Db2Field(name = "playerConditionID", type = Db2Type.INT),
         @Db2Field(name = "parentItemLimitCategoryID", type = Db2Type.INT, signed = true)

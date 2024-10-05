@@ -678,6 +678,14 @@ public interface DbcObjectManager {
         return garrSiteLevelPlotInst().get(id);
     }
 
+    default DbcEntityStore<GarrTalentTree> garrTalentTree() {
+        return getEntityStore(DbcObjects.GarrTalentTree);
+    }
+
+    default GarrTalentTree garrTalentTree(Integer id) {
+        return garrTalentTree().get(id);
+    }
+
     default DbcEntityStore<GemProperty> gemProperty() {
         return getEntityStore(DbcObjects.GemProperty);
     }

@@ -19,8 +19,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Db2DataBind(name = "JournalEncounterItem.db2", layoutHash = 0x39230FF9, indexField = 5, parentIndexField = 1, fields = {
         @Db2Field(name = "itemID", type = Db2Type.INT),
         @Db2Field(name = "journalEncounterID", type = Db2Type.SHORT),
-        @Db2Field(name = "difficultyMask", type = Db2Type.BYTE),
-        @Db2Field(name = "factionMask", type = Db2Type.BYTE),
+        @Db2Field(name = "difficultyMask", type = Db2Type.BYTE, signed = true),
+        @Db2Field(name = "factionMask", type = Db2Type.BYTE, signed = true),
         @Db2Field(name = "flags", type = Db2Type.BYTE),
         @Db2Field(name = "id", type = Db2Type.INT)
 })

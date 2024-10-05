@@ -32,10 +32,10 @@ public class FriendshipRepReaction implements DbcEntity {
     private LocalizedString reaction;
 
     @Column(name = "ReactionThreshold")
-    private Short reactionThreshold;
+    private Integer reactionThreshold;
 
     @Column(name = "FriendshipRepID")
-    private Byte friendshipRepID;
+    private Short friendshipRepID;
 
     @Id
     @ColumnDefault("0")

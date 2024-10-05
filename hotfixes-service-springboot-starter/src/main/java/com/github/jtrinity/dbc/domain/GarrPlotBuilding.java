@@ -30,7 +30,7 @@ public class GarrPlotBuilding implements DbcEntity {
     private Byte garrPlotID;
 
     @Column(name = "GarrBuildingID")
-    private Byte garrBuildingID;
+    private Short garrBuildingID;
 
     @Id
     @ColumnDefault("0")

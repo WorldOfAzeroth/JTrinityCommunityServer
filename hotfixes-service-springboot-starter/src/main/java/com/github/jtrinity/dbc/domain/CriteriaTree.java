@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "criteria_tree")
 @Db2DataBind(name = "CriteriaTree.db2", layoutHash = 0x0A1B99C2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = "amount", type = Db2Type.INT, signed = true),
         @Db2Field(name = "flags", type = Db2Type.SHORT, signed = true),

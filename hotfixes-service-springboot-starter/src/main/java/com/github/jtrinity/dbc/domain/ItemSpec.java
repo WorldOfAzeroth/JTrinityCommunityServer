@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "item_spec")
 @Db2DataBind(name = "ItemSpec.db2", layoutHash = 0xB17B7986, parentIndexField = 3, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "specializationID", type = Db2Type.SHORT),
         @Db2Field(name = "minLevel", type = Db2Type.BYTE),
         @Db2Field(name = "maxLevel", type = Db2Type.BYTE),

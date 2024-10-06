@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "quest_money_reward")
 @Db2DataBind(name = "QuestMoneyReward.db2", layoutHash = 0x86397302, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"difficulty1", "difficulty2", "difficulty3", "difficulty4", "difficulty5", "difficulty6", "difficulty7", "difficulty8", "difficulty9", "difficulty10"}, type = Db2Type.INT)
 })
 public class QuestMoneyReward implements DbcEntity {

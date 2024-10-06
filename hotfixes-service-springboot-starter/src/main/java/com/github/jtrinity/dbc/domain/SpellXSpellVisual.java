@@ -44,13 +44,13 @@ public class SpellXSpellVisual implements DbcEntity {
     private Float probability;
 
     @Column(name = "CasterPlayerConditionID")
-    private Short casterPlayerConditionID;
+    private Integer casterPlayerConditionID;
 
     @Column(name = "CasterUnitConditionID")
     private Short casterUnitConditionID;
 
     @Column(name = "ViewerPlayerConditionID")
-    private Short viewerPlayerConditionID;
+    private Integer viewerPlayerConditionID;
 
     @Column(name = "ViewerUnitConditionID")
     private Short viewerUnitConditionID;

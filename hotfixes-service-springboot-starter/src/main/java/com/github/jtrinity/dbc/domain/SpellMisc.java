@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_misc")
 @Db2DataBind(name = "SpellMisc.db2", layoutHash = 0xCDC114D5, parentIndexField = 10, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "castingTimeIndex", type = Db2Type.SHORT),
         @Db2Field(name = "durationIndex", type = Db2Type.SHORT),
         @Db2Field(name = "rangeIndex", type = Db2Type.SHORT),

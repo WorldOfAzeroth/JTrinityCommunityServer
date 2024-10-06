@@ -42,7 +42,7 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "variance", type = Db2Type.FLOAT),
         @Db2Field(name = "resourceCoefficient", type = Db2Type.FLOAT),
         @Db2Field(name = "groupSizeBasePointsCoefficient", type = Db2Type.FLOAT),
-        @Db2Field(name = {"effectSpellClassMask1", "effectSpellClassMask2", "effectSpellClassMask3", "effectSpellClassMask4"}, type = Db2Type.INT),
+        @Db2Field(name = {"effectSpellClassMask1", "effectSpellClassMask2", "effectSpellClassMask3", "effectSpellClassMask4"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = {"effectMiscValue1", "effectMiscValue2"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = {"effectRadiusIndex1", "effectRadiusIndex2"}, type = Db2Type.INT),
         @Db2Field(name = {"implicitTarget1", "implicitTarget2"}, type = Db2Type.INT),

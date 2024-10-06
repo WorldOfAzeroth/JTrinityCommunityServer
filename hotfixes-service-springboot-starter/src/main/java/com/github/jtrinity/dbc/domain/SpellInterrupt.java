@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_interrupts")
 @Db2DataBind(name = "SpellInterrupts.db2", layoutHash = 0x2FA8EA94, parentIndexField = 4, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "difficultyID", type = Db2Type.BYTE),
         @Db2Field(name = "interruptFlags", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = {"auraInterruptFlags1", "auraInterruptFlags2"}, type = Db2Type.INT, signed = true),

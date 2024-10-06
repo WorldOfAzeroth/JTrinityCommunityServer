@@ -17,11 +17,10 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "unit_condition")
 @Db2DataBind(name = "UnitCondition.db2", layoutHash = 0x62802D9C, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
         @Db2Field(name = {"value1", "value2", "value3", "value4", "value5", "value6", "value7", "value8"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = "flags", type = Db2Type.BYTE),
         @Db2Field(name = {"variable1", "variable2", "variable3", "variable4", "variable5", "variable6", "variable7", "variable8"}, type = Db2Type.BYTE),
-        @Db2Field(name = {"op1", "op2", "op3", "op4", "op5", "op6", "op7", "op8"}, type = Db2Type.BYTE)
+        @Db2Field(name = {"op1", "op2", "op3", "op4", "op5", "op6", "op7", "op8"}, type = Db2Type.BYTE, signed = true)
 })
 public class UnitCondition implements DbcEntity {
     @Id

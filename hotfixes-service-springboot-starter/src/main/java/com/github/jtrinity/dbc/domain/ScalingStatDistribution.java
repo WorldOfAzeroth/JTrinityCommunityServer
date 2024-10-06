@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "scaling_stat_distribution")
 @Db2DataBind(name = "ScalingStatDistribution.db2", layoutHash = 0xDED48286, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "playerLevelToItemLevelCurveID", type = Db2Type.SHORT),
         @Db2Field(name = "minLevel", type = Db2Type.INT, signed = true),
         @Db2Field(name = "maxLevel", type = Db2Type.INT, signed = true)

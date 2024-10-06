@@ -16,14 +16,14 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "path")
-@Db2DataBind(name = "Path.db2", layoutHash = 0xAB4D8ED6, fields = {
-        @Db2Field(name = "Type", type = Db2Type.BYTE),
-        @Db2Field(name = "SplineType", type = Db2Type.BYTE),
-        @Db2Field(name = "Red", type = Db2Type.BYTE),
-        @Db2Field(name = "Green", type = Db2Type.BYTE),
-        @Db2Field(name = "Blue", type = Db2Type.BYTE),
-        @Db2Field(name = "Alpha", type = Db2Type.BYTE),
-        @Db2Field(name = "Flags", type = Db2Type.BYTE)
+@Db2DataBind(name = "Path.db2", layoutHash = 0x5017579F, fields = {
+        @Db2Field(name = "type", type = Db2Type.BYTE),
+        @Db2Field(name = "splineType", type = Db2Type.BYTE),
+        @Db2Field(name = "red", type = Db2Type.BYTE),
+        @Db2Field(name = "green", type = Db2Type.BYTE),
+        @Db2Field(name = "blue", type = Db2Type.BYTE),
+        @Db2Field(name = "alpha", type = Db2Type.BYTE),
+        @Db2Field(name = "flags", type = Db2Type.BYTE)
 })
 public class Path implements DbcEntity {
     @Id

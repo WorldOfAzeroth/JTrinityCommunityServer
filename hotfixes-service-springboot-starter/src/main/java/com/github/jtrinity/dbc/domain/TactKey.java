@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "tact_key")
 @Db2DataBind(name = "TactKey.db2", layoutHash = 0xF0F98B62, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"key1", "key2", "key3", "key4", "key5", "key6", "key7", "key8", "key9", "key10", "key11", "key12", "key13", "key14", "key15", "key16"}, type = Db2Type.BYTE)
 })
 public class TactKey implements DbcEntity {
@@ -27,52 +26,52 @@ public class TactKey implements DbcEntity {
     private Integer id;
 
     @Column(name = "Key1")
-    private Byte key1;
+    private Short key1;
 
     @Column(name = "Key2")
-    private Byte key2;
+    private Short key2;
 
     @Column(name = "Key3")
-    private Byte key3;
+    private Short key3;
 
     @Column(name = "Key4")
-    private Byte key4;
+    private Short key4;
 
     @Column(name = "Key5")
-    private Byte key5;
+    private Short key5;
 
     @Column(name = "Key6")
-    private Byte key6;
+    private Short key6;
 
     @Column(name = "Key7")
-    private Byte key7;
+    private Short key7;
 
     @Column(name = "Key8")
-    private Byte key8;
+    private Short key8;
 
     @Column(name = "Key9")
-    private Byte key9;
+    private Short key9;
 
     @Column(name = "Key10")
-    private Byte key10;
+    private Short key10;
 
     @Column(name = "Key11")
-    private Byte key11;
+    private Short key11;
 
     @Column(name = "Key12")
-    private Byte key12;
+    private Short key12;
 
     @Column(name = "Key13")
-    private Byte key13;
+    private Short key13;
 
     @Column(name = "Key14")
-    private Byte key14;
+    private Short key14;
 
     @Column(name = "Key15")
-    private Byte key15;
+    private Short key15;
 
     @Column(name = "Key16")
-    private Byte key16;
+    private Short key16;
 
     @Id
     @ColumnDefault("0")

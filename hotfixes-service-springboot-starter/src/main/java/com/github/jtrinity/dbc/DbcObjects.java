@@ -157,7 +157,7 @@ public enum DbcObjects {
     Location(Location.class),
     Lock(Lock.class),
     MailTemplate(MailTemplate.class),
-    Map(MapEntity.class),
+    Map(MapEntry.class),
     MapChallengeMode(MapChallengeMode.class),
     MapDifficulty(MapDifficulty.class),
     MapDifficultyXCondition(MapDifficultyXCondition.class),

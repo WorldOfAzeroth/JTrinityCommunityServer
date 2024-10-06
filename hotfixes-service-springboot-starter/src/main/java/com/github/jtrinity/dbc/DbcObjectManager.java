@@ -1230,11 +1230,11 @@ public interface DbcObjectManager {
         return mailTemplate().get(id);
     }
 
-    default DbcEntityStore<MapEntity> map() {
+    default DbcEntityStore<MapEntry> map() {
         return getEntityStore(DbcObjects.Map);
     }
 
-    default MapEntity map(Integer id) {
+    default MapEntry map(Integer id) {
         return map().get(id);
     }
 

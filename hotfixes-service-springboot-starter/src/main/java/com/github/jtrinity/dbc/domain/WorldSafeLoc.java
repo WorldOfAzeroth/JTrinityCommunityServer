@@ -18,11 +18,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "world_safe_loc")
 @Db2DataBind(name = "WorldSafeLocs.db2", layoutHash = 0x605EA8A6, parentIndexField = 3, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "areaName", type = Db2Type.STRING),
-        @Db2Field(name = "locX", type = Db2Type.FLOAT),
-        @Db2Field(name = "locY", type = Db2Type.FLOAT),
-        @Db2Field(name = "locZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"locX", "locY", "locZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = "facing", type = Db2Type.FLOAT),
         @Db2Field(name = "mapID", type = Db2Type.SHORT)
 })

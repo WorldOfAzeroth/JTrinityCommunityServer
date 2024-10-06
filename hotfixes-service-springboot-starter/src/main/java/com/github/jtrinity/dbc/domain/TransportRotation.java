@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "transport_rotation")
 @Db2DataBind(name = "TransportRotation.db2", layoutHash = 0x72035AA9, parentIndexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "timeIndex", type = Db2Type.INT),
         @Db2Field(name = {"rot1", "rot2", "rot3", "rot4"}, type = Db2Type.FLOAT),
         @Db2Field(name = "gameObjectsID", type = Db2Type.INT, signed = true)

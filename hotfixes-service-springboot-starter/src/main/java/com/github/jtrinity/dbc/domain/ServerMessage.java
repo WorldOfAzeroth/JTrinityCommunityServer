@@ -17,7 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "server_messages")
-@Db2DataBind(name = "ServerMessages.db2", layoutHash = 0xBF527CAF, fields = {
+@Db2DataBind(name = "ServerMessages.db2", layoutHash = 0x1C7A1347, fields = {
         @Db2Field(name = "text", type = Db2Type.STRING)
 })
 public class ServerMessage implements DbcEntity {

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "summon_properties")
 @Db2DataBind(name = "SummonProperties.db2", layoutHash = 0xFB8338FC, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "flags", type = Db2Type.INT, signed = true),
         @Db2Field(name = "control", type = Db2Type.INT, signed = true),
         @Db2Field(name = "faction", type = Db2Type.INT, signed = true),

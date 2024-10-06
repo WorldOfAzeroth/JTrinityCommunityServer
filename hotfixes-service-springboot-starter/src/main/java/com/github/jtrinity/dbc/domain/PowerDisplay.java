@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "power_display")
 @Db2DataBind(name = "PowerDisplay.db2", layoutHash = 0xFD152E5B, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "globalStringBaseTag", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "actualType", type = Db2Type.BYTE),
         @Db2Field(name = "red", type = Db2Type.BYTE),
@@ -38,13 +37,13 @@ public class PowerDisplay implements DbcEntity {
     private Byte actualType;
 
     @Column(name = "Red")
-    private Byte red;
+    private Short red;
 
     @Column(name = "Green")
-    private Byte green;
+    private Short green;
 
     @Column(name = "Blue")
-    private Byte blue;
+    private Short blue;
 
     @Id
     @ColumnDefault("0")

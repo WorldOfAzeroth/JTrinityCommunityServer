@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "scene_script_global_text")
 @Db2DataBind(name = "SceneScriptGlobalText.db2", layoutHash = 0xB9F8FDF1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "script", type = Db2Type.STRING_NOT_LOCALIZED)
 })

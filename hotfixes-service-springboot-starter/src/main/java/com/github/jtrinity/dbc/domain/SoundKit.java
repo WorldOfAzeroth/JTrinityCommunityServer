@@ -53,7 +53,7 @@ public class SoundKit implements DbcEntity {
     private Short flags;
 
     @Column(name = "SoundEntriesAdvancedID")
-    private Short soundEntriesAdvancedID;
+    private Integer soundEntriesAdvancedID;
 
     @Column(name = "SoundType")
     private Byte soundType;

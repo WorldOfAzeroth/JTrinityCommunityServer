@@ -16,7 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "location")
-@Db2DataBind(name = "Location.db2", layoutHash = 0xB0561808, fields = {
+@Db2DataBind(name = "Location.db2", layoutHash = 0xBBC1BE7A, fields = {
         @Db2Field(name = {"posX", "posY", "posZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = {"rot1", "rot2", "rot3"}, type = Db2Type.FLOAT)
 })

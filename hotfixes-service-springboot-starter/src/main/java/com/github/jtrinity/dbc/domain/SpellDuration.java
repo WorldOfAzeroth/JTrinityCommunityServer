@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_duration")
 @Db2DataBind(name = "SpellDuration.db2", layoutHash = 0x0D6C9082, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "duration", type = Db2Type.INT, signed = true),
         @Db2Field(name = "maxDuration", type = Db2Type.INT, signed = true),
         @Db2Field(name = "durationPerLevel", type = Db2Type.INT)

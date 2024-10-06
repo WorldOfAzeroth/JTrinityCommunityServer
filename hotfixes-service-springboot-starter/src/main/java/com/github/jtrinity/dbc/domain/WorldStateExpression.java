@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "world_state_expression")
 @Db2DataBind(name = "WorldStateExpression.db2", layoutHash = 0xA69C9812, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "expression", type = Db2Type.STRING_NOT_LOCALIZED)
 })
 public class WorldStateExpression implements DbcEntity {

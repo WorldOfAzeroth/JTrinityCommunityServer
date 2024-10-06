@@ -18,9 +18,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "taxi_path_node")
 @Db2DataBind(name = "TaxiPathNode.db2", layoutHash = 0xD38E8C01, indexField = 4, parentIndexField = 1, fields = {
-        @Db2Field(name = "locX", type = Db2Type.FLOAT),
-        @Db2Field(name = "locY", type = Db2Type.FLOAT),
-        @Db2Field(name = "locZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"locX", "locY", "locZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = "pathID", type = Db2Type.SHORT),
         @Db2Field(name = "continentID", type = Db2Type.SHORT),
         @Db2Field(name = "nodeIndex", type = Db2Type.BYTE),
@@ -47,7 +45,7 @@ public class TaxiPathNode implements DbcEntity {
     private Short continentID;
 
     @Column(name = "NodeIndex")
-    private Byte nodeIndex;
+    private Short nodeIndex;
 
     @Id
     @ColumnDefault("'0'")
@@ -61,10 +59,10 @@ public class TaxiPathNode implements DbcEntity {
     private Integer delay;
 
     @Column(name = "ArrivalEventID")
-    private Short arrivalEventID;
+    private Integer arrivalEventID;
 
     @Column(name = "DepartureEventID")
-    private Short departureEventID;
+    private Integer departureEventID;
 
     @Id
     @ColumnDefault("0")

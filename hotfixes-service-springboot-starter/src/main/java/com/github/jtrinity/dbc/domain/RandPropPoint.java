@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "rand_prop_points")
 @Db2DataBind(name = "RandPropPoints.db2", layoutHash = 0x4E2C0BCC, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"epic1", "epic2", "epic3", "epic4", "epic5"}, type = Db2Type.INT),
         @Db2Field(name = {"superior1", "superior2", "superior3", "superior4", "superior5"}, type = Db2Type.INT),
         @Db2Field(name = {"good1", "good2", "good3", "good4", "good5"}, type = Db2Type.INT)

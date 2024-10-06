@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "world_effect")
 @Db2DataBind(name = "WorldEffect.db2", layoutHash = 0x2E9B9BFD, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "targetAsset", type = Db2Type.INT, signed = true),
         @Db2Field(name = "combatConditionID", type = Db2Type.SHORT),
         @Db2Field(name = "targetType", type = Db2Type.BYTE),

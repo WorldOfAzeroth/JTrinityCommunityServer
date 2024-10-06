@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_range")
 @Db2DataBind(name = "SpellRange.db2", layoutHash = 0xDE2E3F8E, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "displayName", type = Db2Type.STRING),
         @Db2Field(name = "displayNameShort", type = Db2Type.STRING),
         @Db2Field(name = {"rangeMin1", "rangeMin2"}, type = Db2Type.FLOAT),

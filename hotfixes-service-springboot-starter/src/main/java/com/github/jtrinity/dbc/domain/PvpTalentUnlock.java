@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "pvp_talent_unlock")
 @Db2DataBind(name = "PvpTalentUnlock.db2", layoutHash = 0x465C83BC, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "tierID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "columnIndex", type = Db2Type.INT, signed = true),
         @Db2Field(name = "honorLevel", type = Db2Type.INT, signed = true)

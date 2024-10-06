@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "paragon_reputation")
 @Db2DataBind(name = "ParagonReputation.db2", layoutHash = 0xD7712F98, parentIndexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "factionID", type = Db2Type.INT),
         @Db2Field(name = "levelThreshold", type = Db2Type.INT, signed = true),
         @Db2Field(name = "questID", type = Db2Type.INT, signed = true)

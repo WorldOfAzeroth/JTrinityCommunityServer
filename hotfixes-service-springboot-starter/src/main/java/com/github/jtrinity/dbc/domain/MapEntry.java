@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "map")
 @Db2DataBind(name = "Map.db2", layoutHash = 0xF568DF12, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "directory", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "mapName", type = Db2Type.STRING),
         @Db2Field(name = {"mapDescription0", "mapDescription1"}, type = Db2Type.STRING),
@@ -41,7 +40,7 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "maxPlayers", type = Db2Type.BYTE),
         @Db2Field(name = "timeOffset", type = Db2Type.BYTE)
 })
-public class MapEntity implements DbcEntity {
+public class MapEntry implements DbcEntity {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")

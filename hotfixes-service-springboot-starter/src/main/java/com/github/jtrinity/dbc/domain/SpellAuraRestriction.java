@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_aura_restrictions")
 @Db2DataBind(name = "SpellAuraRestrictions.db2", layoutHash = 0x7CDF3311, parentIndexField = 9, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "casterAuraSpell", type = Db2Type.INT, signed = true),
         @Db2Field(name = "targetAuraSpell", type = Db2Type.INT, signed = true),
         @Db2Field(name = "excludeCasterAuraSpell", type = Db2Type.INT, signed = true),

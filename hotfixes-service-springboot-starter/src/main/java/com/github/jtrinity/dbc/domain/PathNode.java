@@ -16,12 +16,11 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "path_node")
-@Db2DataBind(name = "PathNode.db2", layoutHash = 0x21B91AA8, indexField = 0, fields = {
+@Db2DataBind(name = "PathNode.db2", layoutHash = 0x76615830, indexField = 0, fields = {
+        @Db2Field(name = "id", type = Db2Type.INT),
+        @Db2Field(name = "locationID", type = Db2Type.INT),
         @Db2Field(name = "pathID", type = Db2Type.SHORT),
-        @Db2Field(name = "sequence", type = Db2Type.SHORT),
-        @Db2Field(name = "propertyIndex", type = Db2Type.BYTE),
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "Value", type = Db2Type.INT, signed = true)
+        @Db2Field(name = "sequence", type = Db2Type.SHORT)
 })
 public class PathNode implements DbcEntity {
     @Id

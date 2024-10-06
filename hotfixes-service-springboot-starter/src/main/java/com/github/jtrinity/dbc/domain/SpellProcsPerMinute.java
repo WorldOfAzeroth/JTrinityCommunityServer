@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_procs_per_minute")
 @Db2DataBind(name = "SpellProcsPerMinute.db2", layoutHash = 0x4BC1931B, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "baseProcRate", type = Db2Type.FLOAT),
         @Db2Field(name = "flags", type = Db2Type.BYTE)
 })

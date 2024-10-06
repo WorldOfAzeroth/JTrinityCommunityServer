@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "names_reserved")
 @Db2DataBind(name = "NamesReserved.db2", layoutHash = 0xE4923C1F, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING_NOT_LOCALIZED)
 })
 public class NamesReserved implements DbcEntity {

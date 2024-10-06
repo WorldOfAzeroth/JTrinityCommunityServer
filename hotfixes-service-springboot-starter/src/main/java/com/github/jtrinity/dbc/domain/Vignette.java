@@ -1,6 +1,7 @@
 package com.github.jtrinity.dbc.domain;
 
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.LocalizedString;
 import com.github.jtrinity.dbc.db2.Db2Field;
 import com.github.jtrinity.dbc.db2.Db2DataBind;
 import com.github.jtrinity.dbc.db2.Db2Type;
@@ -16,8 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "vignette")
-@Db2DataBind(name = "Vignette.db2", layoutHash = 0x329D6DFF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
+@Db2DataBind(name = "Vignette.db2", layoutHash = 0x52E3B381, fields = {
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "maxHeight", type = Db2Type.FLOAT),
         @Db2Field(name = "minHeight", type = Db2Type.FLOAT),
@@ -39,7 +39,7 @@ public class Vignette implements DbcEntity {
 
     @Lob
     @Column(name = "Name")
-    private String name;
+    private LocalizedString name;
 
     @ColumnDefault("'0'")
     @Column(name = "PlayerConditionID", columnDefinition = "int UNSIGNED not null")

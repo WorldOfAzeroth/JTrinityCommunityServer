@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_aura_options")
 @Db2DataBind(name = "SpellAuraOptions.db2", layoutHash = 0xE05BE94F, parentIndexField = 7, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "procCharges", type = Db2Type.INT, signed = true),
         @Db2Field(name = "procTypeMask", type = Db2Type.INT, signed = true),
         @Db2Field(name = "procCategoryRecovery", type = Db2Type.INT, signed = true),

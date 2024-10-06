@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "modifier_tree")
 @Db2DataBind(name = "ModifierTree.db2", layoutHash = 0x7718AFC2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "asset", type = Db2Type.INT, signed = true),
         @Db2Field(name = "secondaryAsset", type = Db2Type.INT, signed = true),
         @Db2Field(name = "parent", type = Db2Type.INT),
@@ -43,7 +42,7 @@ public class ModifierTree implements DbcEntity {
     private Integer parent;
 
     @Column(name = "Type")
-    private Byte type;
+    private Short type;
 
     @Column(name = "TertiaryAsset")
     private Byte tertiaryAsset;

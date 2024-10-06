@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "vehicle")
 @Db2DataBind(name = "Vehicle.db2", layoutHash = 0x1606C582, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "flags", type = Db2Type.INT, signed = true),
         @Db2Field(name = "turnSpeed", type = Db2Type.FLOAT),
         @Db2Field(name = "pitchSpeed", type = Db2Type.FLOAT),

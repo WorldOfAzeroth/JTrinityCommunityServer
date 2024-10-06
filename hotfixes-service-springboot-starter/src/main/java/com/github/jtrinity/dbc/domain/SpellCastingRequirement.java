@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_casting_requirements")
 @Db2DataBind(name = "SpellCastingRequirements.db2", layoutHash = 0xD8B56E5D, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "minFactionID", type = Db2Type.SHORT),
         @Db2Field(name = "requiredAreasID", type = Db2Type.SHORT),

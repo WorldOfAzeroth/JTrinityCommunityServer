@@ -17,7 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 @IdClass(DB2Id.class)
 @Entity
 @Table(name = "map_challenge_mode")
-@Db2DataBind(name = "MapChallengeMode.db2", layoutHash = 0xAAA9EAD7, indexField = 1, parentIndexField = 2, fields = {
+@Db2DataBind(name = "MapChallengeMode.db2", layoutHash = 0xC5261662, indexField = 1, parentIndexField = 2, fields = {
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "id", type = Db2Type.INT, signed = true),
         @Db2Field(name = "mapID", type = Db2Type.SHORT),

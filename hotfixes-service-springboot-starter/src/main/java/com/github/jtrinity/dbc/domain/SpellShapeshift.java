@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_shapeshift")
 @Db2DataBind(name = "SpellShapeshift.db2", layoutHash = 0xA461C24D, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
         @Db2Field(name = {"shapeshiftExclude1", "shapeshiftExclude2"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = {"shapeshiftMask1", "shapeshiftMask2"}, type = Db2Type.INT, signed = true),

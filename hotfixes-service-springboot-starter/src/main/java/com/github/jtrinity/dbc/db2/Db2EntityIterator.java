@@ -204,7 +204,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     Short[] getUInt8ValueArray(RowData rowData, int fieldIndex, int arraySize) {
         BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
-        return Arrays.stream(fieldVals).map(Number::shortValue).toArray(Short[]::new);
+        return Arrays.stream(fieldVals).map(e -> (short)((short)e.byteValue() & 0xff)).toArray(Short[]::new);
     }
 
     Short[] getInt16ValueArray(RowData rowData, int fieldIndex, int arraySize) {
@@ -214,7 +214,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     Integer[] getUInt16ValueArray(RowData rowData, int fieldIndex, int arraySize) {
         BigInteger[] fieldVals = getFieldValueArray(rowData, reader.db2Fields[fieldIndex], reader.columnMeta[fieldIndex], reader.palletData[fieldIndex], arraySize);
-        return Arrays.stream(fieldVals).map(Number::intValue).toArray(Integer[]::new);
+        return Arrays.stream(fieldVals).map(e->e.shortValue() & 0xffff).toArray(Integer[]::new);
     }
 
     Integer[] getUInt32ValueArray(RowData rowData, int fieldIndex, int arraySize) {
@@ -222,7 +222,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
         return Arrays.stream(fieldVals).map(e -> {
             int intValue = e.intValue();
             if (intValue < 0) {
-                throw new ValueOverflowException("Unsigned int property %s %d in %s is overflowed.".formatted(db2DataBinder.fieldAt(fieldIndex).name(), intValue, db2DataBinder.getEntityClass()));
+                throw new ValueOverflowException("Unsigned int property %s %d in %s is overflowed.".formatted(Arrays.toString(db2DataBinder.fieldAt(fieldIndex).name()), intValue, db2DataBinder.getEntityClass()));
             }
             return intValue;
         }).toArray(Integer[]::new);
@@ -274,12 +274,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
             }
             case CompressionType.Pallet -> {
                 long index = r.getUInt32(columnMeta.pallet.bitWidth());
-                try {
-                    return new BigInteger(palletData[(int) index].value);
-                }catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-
+                return new BigInteger(palletData[(int) index].value);
             }
             case CompressionType.PalletArray -> {
                 if (columnMeta.pallet.cardinality() != 1)
@@ -311,7 +306,7 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
                 int cardinality = columnMeta.pallet.cardinality();
                 long palletArrayIndex = r.getUInt32(columnMeta.pallet.bitWidth());
 
-                array = new BigInteger[arraySize];
+                array = new BigInteger[cardinality];
                 for (int i = 0; i < array.length; i++)
                     array[i] = new BigInteger(palletData[i + cardinality * (int) palletArrayIndex].value);
 

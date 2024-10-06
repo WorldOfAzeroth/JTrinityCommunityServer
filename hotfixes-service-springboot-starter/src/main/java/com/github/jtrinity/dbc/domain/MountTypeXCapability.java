@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "mount_type_x_capability")
 @Db2DataBind(name = "MountTypeXCapability.db2", layoutHash = 0xA34A8445, parentIndexField = 0, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "mountTypeID", type = Db2Type.SHORT),
         @Db2Field(name = "mountCapabilityID", type = Db2Type.SHORT),
         @Db2Field(name = "orderIndex", type = Db2Type.BYTE)

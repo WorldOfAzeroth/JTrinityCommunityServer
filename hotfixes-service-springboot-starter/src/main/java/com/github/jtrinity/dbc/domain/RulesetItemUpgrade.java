@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "ruleset_item_upgrade")
 @Db2DataBind(name = "RulesetItemUpgrade.db2", layoutHash = 0xFB641AE0, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "itemID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "itemUpgradeID", type = Db2Type.SHORT)
 })

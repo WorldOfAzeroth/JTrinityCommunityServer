@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_scaling")
 @Db2DataBind(name = "SpellScaling.db2", layoutHash = 0xF67A5719, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "scalesFromItemLevel", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "klass", type = Db2Type.INT, signed = true),

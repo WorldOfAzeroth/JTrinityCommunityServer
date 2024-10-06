@@ -72,7 +72,7 @@ public class SpellVisualMissile implements DbcEntity {
     private Short impactPositionerID;
 
     @Column(name = "FollowGroundApproach")
-    private Short followGroundApproach;
+    private Integer followGroundApproach;
 
     @Column(name = "SpellMissileMotionID")
     private Short spellMissileMotionID;

@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "skill_line")
 @Db2DataBind(name = "SkillLine.db2", layoutHash = 0x3F7E88AF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "displayName", type = Db2Type.STRING),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = "alternateVerb", type = Db2Type.STRING),
@@ -44,7 +43,7 @@ public class SkillLine implements DbcEntity {
     private LocalizedString alternateVerb;
 
     @Column(name = "Flags")
-    private Short flags;
+    private Integer flags;
 
     @Column(name = "CategoryID")
     private Byte categoryID;

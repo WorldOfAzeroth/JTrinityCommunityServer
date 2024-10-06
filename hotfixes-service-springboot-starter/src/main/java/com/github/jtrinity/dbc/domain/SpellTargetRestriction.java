@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_target_restrictions")
 @Db2DataBind(name = "SpellTargetRestrictions.db2", layoutHash = 0x7B330026, parentIndexField = 7, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "coneDegrees", type = Db2Type.FLOAT),
         @Db2Field(name = "width", type = Db2Type.FLOAT),
         @Db2Field(name = "targets", type = Db2Type.INT, signed = true),
@@ -49,7 +48,7 @@ public class SpellTargetRestriction implements DbcEntity {
     private Byte difficultyID;
 
     @Column(name = "MaxTargets")
-    private Byte maxTargets;
+    private Short maxTargets;
 
     @Column(name = "MaxTargetLevel")
     private Integer maxTargetLevel;

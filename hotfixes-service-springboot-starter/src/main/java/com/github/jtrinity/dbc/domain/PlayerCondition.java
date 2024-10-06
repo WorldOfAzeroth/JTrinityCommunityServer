@@ -30,7 +30,7 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "skillLogic", type = Db2Type.INT),
         @Db2Field(name = "languageID", type = Db2Type.BYTE),
         @Db2Field(name = "minLanguage", type = Db2Type.BYTE),
-        @Db2Field(name = "maxLanguage", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "maxLanguage", type = Db2Type.INT),
         @Db2Field(name = "maxFactionID", type = Db2Type.SHORT),
         @Db2Field(name = "maxReputation", type = Db2Type.BYTE),
         @Db2Field(name = "reputationLogic", type = Db2Type.INT),
@@ -209,7 +209,7 @@ public class PlayerCondition implements DbcEntity {
     private Integer currencyLogic;
 
     @Column(name = "QuestKillID")
-    private Short questKillID;
+    private Integer questKillID;
 
     @Column(name = "QuestKillLogic")
     private Integer questKillLogic;
@@ -329,40 +329,40 @@ public class PlayerCondition implements DbcEntity {
     private Byte minReputation3;
 
     @Column(name = "PrevQuestID1")
-    private Short prevQuestID1;
+    private Integer prevQuestID1;
 
     @Column(name = "PrevQuestID2")
-    private Short prevQuestID2;
+    private Integer prevQuestID2;
 
     @Column(name = "PrevQuestID3")
-    private Short prevQuestID3;
+    private Integer prevQuestID3;
 
     @Column(name = "PrevQuestID4")
-    private Short prevQuestID4;
+    private Integer prevQuestID4;
 
     @Column(name = "CurrQuestID1")
-    private Short currQuestID1;
+    private Integer currQuestID1;
 
     @Column(name = "CurrQuestID2")
-    private Short currQuestID2;
+    private Integer currQuestID2;
 
     @Column(name = "CurrQuestID3")
-    private Short currQuestID3;
+    private Integer currQuestID3;
 
     @Column(name = "CurrQuestID4")
-    private Short currQuestID4;
+    private Integer currQuestID4;
 
     @Column(name = "CurrentCompletedQuestID1")
-    private Short currentCompletedQuestID1;
+    private Integer currentCompletedQuestID1;
 
     @Column(name = "CurrentCompletedQuestID2")
-    private Short currentCompletedQuestID2;
+    private Integer currentCompletedQuestID2;
 
     @Column(name = "CurrentCompletedQuestID3")
-    private Short currentCompletedQuestID3;
+    private Integer currentCompletedQuestID3;
 
     @Column(name = "CurrentCompletedQuestID4")
-    private Short currentCompletedQuestID4;
+    private Integer currentCompletedQuestID4;
 
     @Column(name = "SpellID1")
     private Integer spellID1;
@@ -425,16 +425,16 @@ public class PlayerCondition implements DbcEntity {
     private Integer auraSpellID4;
 
     @Column(name = "AuraStacks1")
-    private Byte auraStacks1;
+    private Short auraStacks1;
 
     @Column(name = "AuraStacks2")
-    private Byte auraStacks2;
+    private Short auraStacks2;
 
     @Column(name = "AuraStacks3")
-    private Byte auraStacks3;
+    private Short auraStacks3;
 
     @Column(name = "AuraStacks4")
-    private Byte auraStacks4;
+    private Short auraStacks4;
 
     @Column(name = "Achievement1")
     private Short achievement1;

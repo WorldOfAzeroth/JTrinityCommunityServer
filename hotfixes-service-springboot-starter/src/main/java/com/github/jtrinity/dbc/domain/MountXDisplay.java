@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "mount_x_display")
 @Db2DataBind(name = "MountXDisplay.db2", layoutHash = 0xD59B9FE4, parentIndexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "creatureDisplayInfoID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "playerConditionID", type = Db2Type.INT),
         @Db2Field(name = "mountID", type = Db2Type.INT, signed = true)

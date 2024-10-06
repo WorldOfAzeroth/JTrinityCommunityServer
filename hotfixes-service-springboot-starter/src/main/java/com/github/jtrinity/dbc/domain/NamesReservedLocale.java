@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "names_reserved_locale")
 @Db2DataBind(name = "NamesReservedLocale.db2", layoutHash = 0xC1403093, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "localeMask", type = Db2Type.BYTE)
 })
@@ -31,7 +30,7 @@ public class NamesReservedLocale implements DbcEntity {
     private String name;
 
     @Column(name = "LocaleMask")
-    private Byte localeMask;
+    private Short localeMask;
 
     @Id
     @ColumnDefault("0")

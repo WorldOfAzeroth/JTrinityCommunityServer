@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_item_enchantment_condition")
 @Db2DataBind(name = "SpellItemEnchantmentCondition.db2", layoutHash = 0xB9C16961, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"ltOperand1", "ltOperand2", "ltOperand3", "ltOperand4", "ltOperand5"}, type = Db2Type.INT),
         @Db2Field(name = {"ltOperandType1", "ltOperandType2", "ltOperandType3", "ltOperandType4", "ltOperandType5"}, type = Db2Type.BYTE),
         @Db2Field(name = {"operator1", "operator2", "operator3", "operator4", "operator5"}, type = Db2Type.BYTE),

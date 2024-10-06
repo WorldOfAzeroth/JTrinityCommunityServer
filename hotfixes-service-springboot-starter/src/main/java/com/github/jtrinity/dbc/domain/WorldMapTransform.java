@@ -17,15 +17,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "world_map_transforms")
 @Db2DataBind(name = "WorldMapTransforms.db2", layoutHash = 0x99FB4B71, parentIndexField = 3, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
-        @Db2Field(name = "regionMinX", type = Db2Type.FLOAT),
-        @Db2Field(name = "regionMinY", type = Db2Type.FLOAT),
-        @Db2Field(name = "regionMinZ", type = Db2Type.FLOAT),
-        @Db2Field(name = "regionMaxX", type = Db2Type.FLOAT),
-        @Db2Field(name = "regionMaxY", type = Db2Type.FLOAT),
-        @Db2Field(name = "regionMaxZ", type = Db2Type.FLOAT),
-        @Db2Field(name = "regionOffsetX", type = Db2Type.FLOAT),
-        @Db2Field(name = "regionOffsetY", type = Db2Type.FLOAT),
+        @Db2Field(name = {"regionMinX", "regionMinY", "regionMinZ", "regionMaxX", "regionMaxY", "regionMaxZ"}, type = Db2Type.FLOAT),
+        @Db2Field(name = {"regionOffsetX", "regionOffsetY"}, type = Db2Type.FLOAT),
         @Db2Field(name = "regionScale", type = Db2Type.FLOAT),
         @Db2Field(name = "mapID", type = Db2Type.SHORT),
         @Db2Field(name = "areaID", type = Db2Type.SHORT),

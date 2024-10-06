@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "quest_v2")
 @Db2DataBind(name = "QuestV2.db2", layoutHash = 0x70495C9B, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "uniqueBitFlag", type = Db2Type.SHORT)
 })
 public class QuestV2 implements DbcEntity {

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_categories")
 @Db2DataBind(name = "SpellCategories.db2", layoutHash = 0x14E916CC, parentIndexField = 8, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "category", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "startRecoveryCategory", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "chargeCategory", type = Db2Type.SHORT, signed = true),

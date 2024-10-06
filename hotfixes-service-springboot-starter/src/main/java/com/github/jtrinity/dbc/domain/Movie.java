@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "movie")
 @Db2DataBind(name = "Movie.db2", layoutHash = 0xF3E9AE3B, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "audioFileDataID", type = Db2Type.INT),
         @Db2Field(name = "subtitleFileDataID", type = Db2Type.INT),
         @Db2Field(name = "volume", type = Db2Type.BYTE),
@@ -36,7 +35,7 @@ public class Movie implements DbcEntity {
     private Integer subtitleFileDataID;
 
     @Column(name = "Volume")
-    private Byte volume;
+    private Short volume;
 
     @Column(name = "KeyID")
     private Byte keyID;

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_visual")
 @Db2DataBind(name = "SpellVisual.db2", layoutHash = 0x1C1301D2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"missileCastOffset1", "missileCastOffset2", "missileCastOffset3"}, type = Db2Type.FLOAT),
         @Db2Field(name = {"missileImpactOffset1", "missileImpactOffset2", "missileImpactOffset3"}, type = Db2Type.FLOAT),
         @Db2Field(name = "flags", type = Db2Type.INT, signed = true),

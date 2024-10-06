@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "reward_pack")
 @Db2DataBind(name = "RewardPack.db2", layoutHash = 0xDB6CC0AB, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "money", type = Db2Type.INT),
         @Db2Field(name = "artifactXPMultiplier", type = Db2Type.FLOAT),
         @Db2Field(name = "artifactXPDifficulty", type = Db2Type.BYTE, signed = true),

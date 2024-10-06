@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_keybound_override")
 @Db2DataBind(name = "SpellKeyboundOverride.db2", layoutHash = 0x6ECA16FC, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
         @Db2Field(name = "function", type = Db2Type.STRING),
         @Db2Field(name = "data", type = Db2Type.INT, signed = true),
         @Db2Field(name = "type", type = Db2Type.BYTE)

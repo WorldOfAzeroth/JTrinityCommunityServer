@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "scene_script")
 @Db2DataBind(name = "SceneScript.db2", layoutHash = 0xC694B81E, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "firstSceneScriptID", type = Db2Type.SHORT),
         @Db2Field(name = "nextSceneScriptID", type = Db2Type.SHORT)
 })

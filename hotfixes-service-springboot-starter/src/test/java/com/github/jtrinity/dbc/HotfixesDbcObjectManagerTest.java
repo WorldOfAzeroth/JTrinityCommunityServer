@@ -25,7 +25,9 @@ class HotfixesDbcObjectManagerTest {
 
     @Test
     void loadEntityStores() {
-        //hotfixesDbcObjectManager.loadEntityStores(Set.of(DbcObjects.Faction, DbcObjects.CreatureDisplayInfo));
+        //hotfixesDbcObjectManager.loadEntityStores(Set.of(DbcObjects.PlayerCondition));
+
         hotfixesDbcObjectManager.loadEntityStores();
+
     }
 }

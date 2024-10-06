@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_focus_object")
 @Db2DataBind(name = "SpellFocusObject.db2", layoutHash = 0x96663ABF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING)
 })
 public class SpellFocusObject implements DbcEntity {

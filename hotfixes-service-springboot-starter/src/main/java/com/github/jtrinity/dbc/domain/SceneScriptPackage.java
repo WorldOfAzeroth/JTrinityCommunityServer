@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "scene_script_package")
 @Db2DataBind(name = "SceneScriptPackage.db2", layoutHash = 0x96663ABF, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING_NOT_LOCALIZED)
 })
 public class SceneScriptPackage implements DbcEntity {

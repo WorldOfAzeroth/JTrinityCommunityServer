@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "totem_category")
 @Db2DataBind(name = "TotemCategory.db2", layoutHash = 0x20B9177A, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "totemCategoryMask", type = Db2Type.INT, signed = true),
         @Db2Field(name = "totemCategoryType", type = Db2Type.BYTE)

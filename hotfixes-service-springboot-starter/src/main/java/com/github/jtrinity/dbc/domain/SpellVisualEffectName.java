@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_visual_effect_name")
 @Db2DataBind(name = "SpellVisualEffectName.db2", layoutHash = 0xB930A934, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "effectRadius", type = Db2Type.FLOAT),
         @Db2Field(name = "baseMissileSpeed", type = Db2Type.FLOAT),
         @Db2Field(name = "scale", type = Db2Type.FLOAT),

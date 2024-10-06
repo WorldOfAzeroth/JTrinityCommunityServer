@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "prestige_level_info")
 @Db2DataBind(name = "PrestigeLevelInfo.db2", layoutHash = 0xA7B2D559, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "badgeTextureFileDataID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "prestigeLevel", type = Db2Type.BYTE),

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "lock")
 @Db2DataBind(name = "Lock.db2", layoutHash = 0xDAC7F42F, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"index1", "index2", "index3", "index4", "index5", "index6", "index7", "index8"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = {"skill1", "skill2", "skill3", "skill4", "skill5", "skill6", "skill7", "skill8"}, type = Db2Type.SHORT),
         @Db2Field(name = {"type1", "type2", "type3", "type4", "type5", "type6", "type7", "type8"}, type = Db2Type.BYTE),

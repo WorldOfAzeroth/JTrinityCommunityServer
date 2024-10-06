@@ -19,7 +19,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "scenario_step")
 @Db2DataBind(name = "ScenarioStep.db2", layoutHash = 0x201B0EFC, parentIndexField = 2, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "description", type = Db2Type.STRING),
         @Db2Field(name = "title", type = Db2Type.STRING),
         @Db2Field(name = "scenarioID", type = Db2Type.SHORT),
@@ -49,7 +48,7 @@ public class ScenarioStep implements DbcEntity {
     private Short supersedes;
 
     @Column(name = "RewardQuestID")
-    private Short rewardQuestID;
+    private Integer rewardQuestID;
 
     @Column(name = "OrderIndex")
     private Byte orderIndex;

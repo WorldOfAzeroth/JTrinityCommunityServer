@@ -19,7 +19,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "unit_power_bar")
 @Db2DataBind(name = "UnitPowerBar.db2", layoutHash = 0x626C94CD, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
         @Db2Field(name = "cost", type = Db2Type.STRING),
         @Db2Field(name = "outOfError", type = Db2Type.STRING),

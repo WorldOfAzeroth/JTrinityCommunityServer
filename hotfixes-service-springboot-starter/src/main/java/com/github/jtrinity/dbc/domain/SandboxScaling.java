@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "sandbox_scaling")
 @Db2DataBind(name = "SandboxScaling.db2", layoutHash = 0x5200B7F5, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "minLevel", type = Db2Type.INT, signed = true),
         @Db2Field(name = "maxLevel", type = Db2Type.INT, signed = true),
         @Db2Field(name = "flags", type = Db2Type.INT, signed = true)

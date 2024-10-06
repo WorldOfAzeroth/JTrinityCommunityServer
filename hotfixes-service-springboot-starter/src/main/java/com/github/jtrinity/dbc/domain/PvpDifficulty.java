@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "pvp_difficulty")
 @Db2DataBind(name = "PVPDifficulty.db2", layoutHash = 0x970B5E15, parentIndexField = 3, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "rangeIndex", type = Db2Type.BYTE),
         @Db2Field(name = "minLevel", type = Db2Type.BYTE),
         @Db2Field(name = "maxLevel", type = Db2Type.BYTE),
@@ -33,10 +32,10 @@ public class PvpDifficulty implements DbcEntity {
     private Byte rangeIndex;
 
     @Column(name = "MinLevel")
-    private Byte minLevel;
+    private Short minLevel;
 
     @Column(name = "MaxLevel")
-    private Byte maxLevel;
+    private Short maxLevel;
 
     @Column(name = "MapID")
     private Short mapID;

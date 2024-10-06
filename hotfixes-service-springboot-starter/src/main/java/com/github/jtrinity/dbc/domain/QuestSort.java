@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "quest_sort")
 @Db2DataBind(name = "QuestSort.db2", layoutHash = 0xAD7072C6, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "sortName", type = Db2Type.STRING),
         @Db2Field(name = "uiOrderIndex", type = Db2Type.BYTE, signed = true)
 })

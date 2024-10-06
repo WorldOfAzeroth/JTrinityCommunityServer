@@ -18,13 +18,12 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "pvp_talent")
 @Db2DataBind(name = "PvpTalent.db2", layoutHash = 0x6EB51740, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "description", type = Db2Type.STRING),
-        @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "overridesSpellID", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "actionBarSpellID", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "tierID", type = Db2Type.INT, signed = true),
-        @Db2Field(name = "columnIndex", type = Db2Type.INT, signed = true),
+        @Db2Field(name = "spellID", type = Db2Type.INT),
+        @Db2Field(name = "overridesSpellID", type = Db2Type.INT),
+        @Db2Field(name = "actionBarSpellID", type = Db2Type.INT),
+        @Db2Field(name = "tierID", type = Db2Type.INT),
+        @Db2Field(name = "columnIndex", type = Db2Type.INT),
         @Db2Field(name = "flags", type = Db2Type.INT, signed = true),
         @Db2Field(name = "classID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "specID", type = Db2Type.INT, signed = true),

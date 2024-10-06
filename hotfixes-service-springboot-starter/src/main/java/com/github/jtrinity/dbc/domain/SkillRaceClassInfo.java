@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "skill_race_class_info")
 @Db2DataBind(name = "SkillRaceClassInfo.db2", layoutHash = 0x9752C2CE, parentIndexField = 1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "raceMask", type = Db2Type.LONG, signed = true),
         @Db2Field(name = "skillID", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "flags", type = Db2Type.SHORT),
@@ -39,7 +38,7 @@ public class SkillRaceClassInfo implements DbcEntity {
     private Short skillID;
 
     @Column(name = "Flags")
-    private Short flags;
+    private Integer flags;
 
     @Column(name = "SkillTierID")
     private Short skillTierID;

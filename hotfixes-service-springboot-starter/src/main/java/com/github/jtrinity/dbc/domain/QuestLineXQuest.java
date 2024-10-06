@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "quest_line_x_quest")
 @Db2DataBind(name = "QuestLineXQuest.db2", layoutHash = 0x83C5B32B, parentIndexField = 0, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT, signed = true),
         @Db2Field(name = "questLineID", type = Db2Type.SHORT),
         @Db2Field(name = "questID", type = Db2Type.SHORT),
         @Db2Field(name = "orderIndex", type = Db2Type.BYTE)

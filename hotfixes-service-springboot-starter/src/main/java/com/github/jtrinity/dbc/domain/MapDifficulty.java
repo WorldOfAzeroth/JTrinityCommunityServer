@@ -18,7 +18,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "map_difficulty")
 @Db2DataBind(name = "MapDifficulty.db2", layoutHash = 0x2B3B759E, parentIndexField = 8, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "message", type = Db2Type.STRING),
         @Db2Field(name = "difficultyID", type = Db2Type.BYTE),
         @Db2Field(name = "resetInterval", type = Db2Type.BYTE),
@@ -48,7 +47,7 @@ public class MapDifficulty implements DbcEntity {
     private Byte maxPlayers;
 
     @Column(name = "LockID")
-    private Byte lockID;
+    private Short lockID;
 
     @Column(name = "Flags")
     private Byte flags;

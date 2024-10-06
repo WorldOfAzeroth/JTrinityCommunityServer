@@ -19,7 +19,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "mail_template")
 @Db2DataBind(name = "MailTemplate.db2", layoutHash = 0x25C8D6CC, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "body", type = Db2Type.STRING)
 })
 public class MailTemplate implements DbcEntity {

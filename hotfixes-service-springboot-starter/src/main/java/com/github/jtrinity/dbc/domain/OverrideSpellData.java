@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "override_spell_data")
 @Db2DataBind(name = "OverrideSpellData.db2", layoutHash = 0x9417628C, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = {"spells1", "spells2", "spells3", "spells4", "spells5", "spells6", "spells7", "spells8", "spells9", "spells10"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = "playerActionBarFileDataID", type = Db2Type.INT, signed = true),
         @Db2Field(name = "flags", type = Db2Type.BYTE)

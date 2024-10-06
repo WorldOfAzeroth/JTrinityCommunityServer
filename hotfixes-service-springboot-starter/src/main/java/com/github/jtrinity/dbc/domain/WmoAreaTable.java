@@ -69,7 +69,7 @@ public class WmoAreaTable implements DbcEntity {
     private Byte soundProviderPrefUnderwater;
 
     @Column(name = "Flags")
-    private Byte flags;
+    private Short flags;
 
     @Id
     @ColumnDefault("'0'")

@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "power_type")
 @Db2DataBind(name = "PowerType.db2", layoutHash = 0x0C3844E1, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "nameGlobalStringTag", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "costGlobalStringTag", type = Db2Type.STRING_NOT_LOCALIZED),
         @Db2Field(name = "regenPeace", type = Db2Type.FLOAT),

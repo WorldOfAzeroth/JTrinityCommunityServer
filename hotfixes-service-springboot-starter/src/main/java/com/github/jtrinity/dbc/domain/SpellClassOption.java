@@ -17,9 +17,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_class_options")
 @Db2DataBind(name = "SpellClassOptions.db2", layoutHash = 0x80FBD67A, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "spellID", type = Db2Type.INT, signed = true),
-        @Db2Field(name = {"spellClassMask1", "spellClassMask2", "spellClassMask3", "spellClassMask4"}, type = Db2Type.INT),
+        @Db2Field(name = {"spellClassMask1", "spellClassMask2", "spellClassMask3", "spellClassMask4"}, type = Db2Type.INT, signed = true),
         @Db2Field(name = "spellClassSet", type = Db2Type.BYTE),
         @Db2Field(name = "modalNextSpell", type = Db2Type.INT)
 })

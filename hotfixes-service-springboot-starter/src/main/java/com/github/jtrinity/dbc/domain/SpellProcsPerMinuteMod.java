@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_procs_per_minute_mod")
 @Db2DataBind(name = "SpellProcsPerMinuteMod.db2", layoutHash = 0x2503C18B, parentIndexField = 3, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "coeff", type = Db2Type.FLOAT),
         @Db2Field(name = "param", type = Db2Type.SHORT, signed = true),
         @Db2Field(name = "type", type = Db2Type.BYTE),

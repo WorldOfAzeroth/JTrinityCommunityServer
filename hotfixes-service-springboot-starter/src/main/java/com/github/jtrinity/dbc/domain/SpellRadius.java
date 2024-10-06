@@ -17,7 +17,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "spell_radius")
 @Db2DataBind(name = "SpellRadius.db2", layoutHash = 0xC12E5C90, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "radius", type = Db2Type.FLOAT),
         @Db2Field(name = "radiusPerLevel", type = Db2Type.FLOAT),
         @Db2Field(name = "radiusMin", type = Db2Type.FLOAT),

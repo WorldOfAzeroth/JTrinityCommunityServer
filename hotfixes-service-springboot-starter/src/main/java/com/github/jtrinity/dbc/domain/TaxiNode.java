@@ -18,17 +18,12 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "taxi_nodes")
 @Db2DataBind(name = "TaxiNodes.db2", layoutHash = 0xB46C6A8B, fields = {
-        @Db2Field(name = "id", type = Db2Type.INT),
         @Db2Field(name = "name", type = Db2Type.STRING),
-        @Db2Field(name = "posX", type = Db2Type.FLOAT),
-        @Db2Field(name = "posY", type = Db2Type.FLOAT),
-        @Db2Field(name = "posZ", type = Db2Type.FLOAT),
+        @Db2Field(name = {"posX", "posY","posZ"}, type = Db2Type.FLOAT),
         @Db2Field(name = {"mountCreatureID1", "mountCreatureID2"}, type = Db2Type.INT, signed = true),
-        @Db2Field(name = "mapOffsetX", type = Db2Type.FLOAT),
-        @Db2Field(name = "mapOffsetY", type = Db2Type.FLOAT),
+        @Db2Field(name = {"mapOffsetX", "mapOffsetY"}, type = Db2Type.FLOAT),
         @Db2Field(name = "facing", type = Db2Type.FLOAT),
-        @Db2Field(name = "flightMapOffsetX", type = Db2Type.FLOAT),
-        @Db2Field(name = "flightMapOffsetY", type = Db2Type.FLOAT),
+        @Db2Field(name = {"flightMapOffsetX", "flightMapOffsetY"}, type = Db2Type.FLOAT),
         @Db2Field(name = "continentID", type = Db2Type.SHORT),
         @Db2Field(name = "conditionID", type = Db2Type.SHORT),
         @Db2Field(name = "characterBitNumber", type = Db2Type.SHORT),
@@ -79,7 +74,7 @@ public class TaxiNode implements DbcEntity {
     private Short continentID;
 
     @Column(name = "ConditionID")
-    private Short conditionID;
+    private Integer conditionID;
 
     @Column(name = "CharacterBitNumber")
     private Short characterBitNumber;

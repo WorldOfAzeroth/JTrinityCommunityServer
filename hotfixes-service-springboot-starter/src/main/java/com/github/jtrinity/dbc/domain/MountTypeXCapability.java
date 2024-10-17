@@ -21,7 +21,8 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "mountCapabilityID", type = Db2Type.SHORT),
         @Db2Field(name = "orderIndex", type = Db2Type.BYTE)
 })
-public class MountTypeXCapability implements DbcEntity {
+public class MountTypeXCapability implements DbcEntity, Comparable<MountTypeXCapability> {
+
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
@@ -40,5 +41,16 @@ public class MountTypeXCapability implements DbcEntity {
     @ColumnDefault("0")
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
+
+
+    @Override
+    public int compareTo(MountTypeXCapability o) {
+        int result = Short.compare(mountTypeID, o.mountTypeID);
+        if (result == 0) {
+            result = Byte.compare(orderIndex, o.orderIndex);
+        }
+        return result;
+    }
+
 
 }

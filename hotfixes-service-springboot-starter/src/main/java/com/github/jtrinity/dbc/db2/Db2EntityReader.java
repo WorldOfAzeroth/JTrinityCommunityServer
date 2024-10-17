@@ -18,12 +18,12 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Slf4j
-public class Db2EntityReader {
+public class Db2EntityReader<T extends DbcEntity> {
 
 
     private final FileChannel fileChannel;
 
-    final Db2DataBinder db2DataBinder;
+    final Db2DataBinder<T> db2DataBinder;
 
     final Header header = new Header();
     FieldMetaData[] db2Fields;
@@ -43,16 +43,16 @@ public class Db2EntityReader {
     ReferenceData refData = null;
 
 
-    private Db2EntityReader(FileChannel fileChannel, Db2DataBinder db2DataBinder) {
+    private Db2EntityReader(FileChannel fileChannel, Db2DataBinder<T> db2DataBinder) {
         this.fileChannel = fileChannel;
         this.db2DataBinder = db2DataBinder;
     }
 
     public static <T extends DbcEntity> Stream<T> read(String dataFolder, Locale locale, Class<T> clazz) {
-        final Db2DataBinder db2DataBinder = new Db2DataBinder(clazz);
+        final Db2DataBinder<T> db2DataBinder = new Db2DataBinder<>(clazz);
         Path db2FilePath = Paths.get(dataFolder, "dbc", locale.name(), db2DataBinder.name());
         try (FileChannel fileChannel = FileChannel.open(db2FilePath, StandardOpenOption.READ)) {
-            Db2EntityReader instance = new Db2EntityReader(fileChannel, db2DataBinder);
+            Db2EntityReader<T> instance = new Db2EntityReader<>(fileChannel, db2DataBinder);
             instance.read(db2FilePath);
             Db2EntityIterator<T> db2EntityIterator = new Db2EntityIterator<>(locale, db2DataBinder, instance);
             return StreamSupport.stream(Spliterators.spliteratorUnknownSize(db2EntityIterator, Spliterator.ORDERED | Spliterator.NONNULL), false);
@@ -150,9 +150,7 @@ public class Db2EntityReader {
         buffer.order(ByteOrder.LITTLE_ENDIAN).flip();
         db2Fields = new FieldMetaData[header.fieldCount];
         ByteBuffer finalBuffer = buffer;
-        IntStream.range(0, db2Fields.length).forEach(i -> {
-            db2Fields[i] = new FieldMetaData(finalBuffer.getShort(), finalBuffer.getShort());
-        });
+        IntStream.range(0, db2Fields.length).forEach(i -> db2Fields[i] = new FieldMetaData(finalBuffer.getShort(), finalBuffer.getShort()));
 
         if ((header.flags & 0x1) == 0) {
             data = ByteBuffer.allocate(header.recordSize * header.recordCount);

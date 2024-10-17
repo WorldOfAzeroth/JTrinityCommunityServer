@@ -14,6 +14,7 @@ public class FuryUtil {
 
     public static final ThreadSafeFury FURY = Fury.builder()
             .withLanguage(Language.JAVA)
+            .requireClassRegistration(true)
             .withRefTracking(false)
             .withRefCopy(false)
             .buildThreadSafeFury();

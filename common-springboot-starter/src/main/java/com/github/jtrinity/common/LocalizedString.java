@@ -1,7 +1,11 @@
 package com.github.jtrinity.common;
 
+import org.springframework.util.StringUtils;
+
 import java.io.Serializable;
 import java.util.EnumMap;
+
+import static com.github.jtrinity.shard.SharedDefine.DEFAULT_LOCALE;
 
 public class LocalizedString implements Serializable {
 
@@ -9,7 +13,11 @@ public class LocalizedString implements Serializable {
 
 
     public String get(final Locale locale) {
-        return localizedString.get(locale);
+        String result = localizedString.get(locale);
+        if (!StringUtils.hasText(result)) {
+            result = localizedString.get(DEFAULT_LOCALE);
+        }
+        return result;
     }
 
     public void set(final Locale locale, final String value) {
@@ -19,5 +27,12 @@ public class LocalizedString implements Serializable {
     @Override
     public String toString() {
         return localizedString.toString();
+    }
+
+    public static String get(LocalizedString localizedString, Locale locale) {
+        if (localizedString == null) {
+            return null;
+        }
+        return localizedString.get(locale);
     }
 }

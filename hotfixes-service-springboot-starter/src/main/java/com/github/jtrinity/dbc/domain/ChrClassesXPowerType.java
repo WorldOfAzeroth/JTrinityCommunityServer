@@ -20,7 +20,7 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "powerType", type = Db2Type.BYTE),
         @Db2Field(name = "classID", type = Db2Type.BYTE)
 })
-public class ChrClassesXPowerType implements DbcEntity {
+public class ChrClassesXPowerType implements DbcEntity, Comparable<ChrClassesXPowerType> {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
@@ -37,4 +37,12 @@ public class ChrClassesXPowerType implements DbcEntity {
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
+    @Override
+    public int compareTo(ChrClassesXPowerType o) {
+        int result = Byte.compare(this.classID, o.classID);
+        if (result == 0) {
+            result = Byte.compare(this.powerType, o.powerType);
+        }
+        return result;
+    }
 }

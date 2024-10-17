@@ -6,6 +6,7 @@ import org.h2.mvstore.Cursor;
 import org.h2.mvstore.MVMap;
 
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 class DbcEntityStoreImpl<T extends DbcEntity> implements DbcEntityStore<T>, Iterator<T> {
 
@@ -27,7 +28,8 @@ class DbcEntityStoreImpl<T extends DbcEntity> implements DbcEntityStore<T>, Iter
 
     @Override
     public T get(Integer id) {
-        return FuryUtil.deserialize(mvMap.get(id), clazz);
+        byte[] objectData = mvMap.get(id);
+        return objectData == null ? null : FuryUtil.deserialize(objectData, clazz);
     }
 
     @Override
@@ -68,4 +70,15 @@ class DbcEntityStoreImpl<T extends DbcEntity> implements DbcEntityStore<T>, Iter
     public void remove() {
         cursor.remove();
     }
+
+    @Override
+    public int size() {
+        return mvMap.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return mvMap.isEmpty();
+    }
+
 }

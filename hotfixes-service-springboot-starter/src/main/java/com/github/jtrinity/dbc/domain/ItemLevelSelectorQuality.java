@@ -21,7 +21,7 @@ import org.hibernate.annotations.ColumnDefault;
         @Db2Field(name = "quality", type = Db2Type.BYTE, signed = true),
         @Db2Field(name = "parentILSQualitySetID", type = Db2Type.SHORT, signed = true)
 })
-public class ItemLevelSelectorQuality implements DbcEntity {
+public class ItemLevelSelectorQuality implements DbcEntity, Comparable<ItemLevelSelectorQuality> {
     @Id
     @ColumnDefault("'0'")
     @Column(name = "ID", columnDefinition = "int UNSIGNED not null")
@@ -41,4 +41,8 @@ public class ItemLevelSelectorQuality implements DbcEntity {
     @Column(name = "VerifiedBuild", nullable = false)
     private Integer verifiedBuild;
 
+    @Override
+    public int compareTo(ItemLevelSelectorQuality o) {
+        return Byte.compare(this.quality, o.quality);
+    }
 }

@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @SpringBootTest(classes = AuthServiceIntegrationTest.class)
-@TestPropertySource( locations = "classpath:bnetserver.conf")
+@TestPropertySource( locations = "classpath:test-resources/data/etc/bnetserver.conf")
 @SpringBootApplication
 public class AuthServiceIntegrationTest {
 

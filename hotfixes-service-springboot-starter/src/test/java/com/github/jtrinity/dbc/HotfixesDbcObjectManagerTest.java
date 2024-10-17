@@ -7,12 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
 @SpringBootTest(classes = HotfixesDbcObjectManagerTest.class)
-@TestPropertySource( locations = "classpath:worldserver.conf")
 @SpringBootApplication
 class HotfixesDbcObjectManagerTest {
     @Autowired
@@ -20,14 +15,14 @@ class HotfixesDbcObjectManagerTest {
 
     @BeforeAll
     static void beforeAll() {
-        System.setProperty("spring.config.name", "worldserver");
+        System.setProperty("spring.config.location", "../test-resources/etc/worldserver.conf");
     }
 
     @Test
     void loadEntityStores() {
         //hotfixesDbcObjectManager.loadEntityStores(Set.of(DbcObjects.PlayerCondition));
 
-        hotfixesDbcObjectManager.loadEntityStores();
+        hotfixesDbcObjectManager.loadDbcObjects();
 
     }
 }

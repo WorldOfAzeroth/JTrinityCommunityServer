@@ -2,7 +2,15 @@ package com.github.jtrinity.dbc;
 
 import com.github.jtrinity.cache.DbcEntityStore;
 import com.github.jtrinity.cache.DbcEntity;
+import com.github.jtrinity.common.Locale;
+import com.github.jtrinity.common.Pair;
 import com.github.jtrinity.dbc.domain.*;
+import com.github.jtrinity.dbc.model.*;
+import com.github.jtrinity.shard.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface DbcObjectManager {
 
@@ -2190,7 +2198,221 @@ public interface DbcObjectManager {
         return worldStateExpression().get(id);
     }
 
-
     <T extends DbcEntity> DbcEntityStore<T> getEntityStore(DbcObjects object);
+
+
+    int getEmptyAnimStateID();
+
+    List<Short> getAreasForGroup(Short areaGroupId);
+
+    boolean isInArea(Short objectAreaId, Short areaId);
+
+    List<ArtifactPower> getArtifactPowers(Short artifactId);
+
+    Set<Short> getArtifactPowerLinks(Short artifactPowerId);
+
+    ArtifactPowerRank getArtifactPowerRank(Short artifactPowerId, Byte rank);
+
+    String getBroadcastTextValue(BroadcastText broadcastText);
+
+    String getBroadcastTextValue(BroadcastText broadcastText, Locale locale, Gender gender, boolean forceGender);
+
+    Integer getBroadcastTextDuration(Integer broadcastTextId);
+
+    Integer getBroadcastTextDuration(Integer broadcastTextId, Locale locale);
+
+    boolean hasCharacterFacialHairStyle(Byte race, Byte gender, Byte variationId);
+
+    boolean hasCharSections(byte race, byte gender, CharBaseSectionVariation variation);
+
+    CharSection getCharSection(Byte race, Byte gender, CharBaseSectionVariation variation, Byte variationIndex, Byte colorIndex);
+
+    CharStartOutfit getCharStartOutfit(byte race, byte klass, byte gender);
+
+
+    String getClassName(int klass, Locale locale);
+
+    ChrSpecialization getChrSpecializationByIndex(Classes classes, int index);
+
+    ChrSpecialization getDefaultChrSpecializationForClass(Classes classes);
+
+    Integer getPowerIndexByClass(Power power, Integer classId);
+
+    Map<Integer, List<Integer>> getRequiredCustomizationChoices(Integer chrCustomizationReqId);
+
+    String getChrRaceName(Byte race);
+
+    Integer getRedirectedContentTuningId(Integer contentTuningId, Integer redirectFlag);
+
+    boolean hasContentTuningLabel(Integer contentTuningId, Integer label);
+
+    String getCreatureFamilyPetName(Integer petfamily, Locale locale);
+
+    Pair<Float, Float> getCurveXAxisRange(Integer curveId);
+
+    float getCurveValueAt(Integer curveId, float x);
+
+    float getCurveValueAt(CurveInterpolationMode mode, List<DBCPosition2D> points, float x);
+
+    EmotesTextSound getTextSoundEmoteFor(Integer emote, Byte race, Byte gender, Byte class_);
+
+    float evaluateExpectedStat(ExpectedStatType stat, Integer level, Integer expansion, Integer contentTuningId, Classes unitClass, Integer mythicPlusMilestoneSeason);
+
+    List<Integer> getFactionTeamList(Integer faction);
+
+    Set<FriendshipRepReaction> getFriendshipRepReactions(Integer friendshipRepID);
+
+    Integer getGlobalCurveId(GlobalCurve globalCurveType);
+
+    List<Integer> getGlyphBindableSpells(Integer glyphPropertiesId);
+
+    Heirloom getHeirloomByItemId(Integer itemId);
+
+    ItemChildEquipment getItemChildEquipment(Integer itemId);
+
+    ItemClass getItemClassByOldEnum(Integer itemClass);
+
+    boolean hasItemCurrencyCost(Integer itemId);
+
+    List<ItemLimitCategoryCondition> getItemLimitCategoryConditions(Integer categoryId);
+
+    Integer getItemDisplayId(Integer itemId, Integer appearanceModId);
+
+    ItemModifiedAppearance getItemModifiedAppearance(Integer itemId, Integer appearanceModId);
+
+    ItemModifiedAppearance getDefaultItemModifiedAppearance(Integer itemId);
+
+    List<ItemSetSpell> getItemSetSpells(Integer itemSetId);
+
+    JournalTier getJournalTier(Integer index);
+
+    List<ItemSpecOverride> getItemSpecOverrides(Integer itemId);
+
+    JournalInstance getJournalInstanceByMapId(Integer mapId);
+
+    List<JournalEncounterItem> getJournalItemsByEncounter(Integer encounterId);
+
+    List<JournalEncounter> getJournalEncounterByJournalInstanceId(Integer instanceId);
+
+    LfgDungeon getLfgDungeon(Integer mapId, Difficulty difficulty);
+
+    Integer getDefaultMapLight(Integer mapId);
+
+    Integer getLiquidFlags(Integer liquidType);
+
+    MapDifficulty getDefaultMapDifficulty(Integer mapId);
+
+    MapDifficulty getDefaultMapDifficulty(Integer mapId, Difficulty difficulty);
+
+    MapDifficulty getMapDifficultyData(Integer mapId, Difficulty difficulty);
+
+    MapDifficulty getDownscaledMapDifficultyData(Integer mapId, Difficulty difficulty);
+
+    String getNameGenEntry(Byte race, Byte gender);
+
+    Map<Integer, PlayerCondition> getMapDifficultyConditions(Integer mapDifficultyId);
+
+    Mount getMount(Integer spellId);
+
+    Mount getMountById(Integer id);
+
+    Set<MountTypeXCapability> getMountCapabilities(Integer mountType);
+
+    List<MountXDisplay> getMountDisplays(Integer mountId);
+
+    String getNameGen(Byte race, Byte gender);
+
+    ResponseCode validateName(String name);
+
+    ResponseCode validateName(String name, Locale locale);
+
+    Integer getNumTalentsAtLevel(Integer level, Classes playerClass);
+
+    ParagonReputation getParagonReputation(Integer factionId);
+
+    PathDb2 getPath(Integer pathId);
+
+    List<Integer> getPhasesForGroup(Integer group);
+
+    PowerType getPowerType(Power power);
+
+    PowerType getPowerTypeByName(String name);
+
+    Byte getPvpItemLevelBonus(Integer itemId);
+
+    Byte getMaxPrestige();
+
+    PvpDifficulty getBattlegroundBracketByLevel(Integer mapId, Integer level);
+
+    PvpDifficulty getBattlegroundBracketById(Integer mapId, BattlegroundBracketId id);
+
+    Integer getRewardPackIDForPvpRewardByHonorLevelAndPrestige(byte honorLevel, byte prestige);
+
+    Integer getRequiredHonorLevelForPvpTalent(PvpTalent talentInfo);
+
+    List<PvpTalent> getPvpTalentsByPosition(Classes class_, Integer tier, Integer column);
+
+
+    List<QuestLineXQuest> getQuestsForQuestLine(Integer questLineId);
+
+    List<QuestPackageItem> getQuestPackageItems(Integer questPackageID);
+
+    List<QuestPackageItem> getQuestPackageItemsFallback(Integer questPackageID);
+
+    Integer getQuestUniqueBitFlag(Integer questId);
+
+    List<RewardPackXCurrencyType> getRewardPackCurrencyTypesByRewardID(Integer rewardPackID);
+
+    List<RewardPackXItem> getRewardPackItemsByRewardID(Integer rewardPackID);
+
+    Integer getRulesetItemUpgrade(Integer itemId);
+
+    SkillRaceClassInfo getSkillRaceClassInfo(Integer skill, Byte race, Classes class_);
+
+
+    List<SkillLine> getSkillLinesForParentSkill(Integer parentSkillId);
+
+    List<SkillLineAbility> getSkillLineAbilitiesBySkill(Integer skillId);
+
+    SkillRaceClassInfo getSkillRaceClassInfo(Integer skill, Byte race, Byte class_);
+
+    List<SkillRaceClassInfo> getSkillRaceClassInfo(Integer skill);
+
+    boolean isValidSpellFamilyName(SpellFamilyName family);
+
+    List<SpellProcsPerMinuteMod> getSpellProcPerMinuteMods(Integer spellProcPerMinuteId);
+
+    List<SpellVisualMissile> getSpellVisualMissiles(Integer spellVisualMissileSetId);
+
+    TaxiPath getTaxiPath(Integer from, Integer to);
+
+    boolean isTotemCategoryCompatibleWith(Integer itemTotemCategoryId, Integer requiredTotemCategoryId, boolean requireAllTote);
+
+    boolean IsToyItem(Integer toy);
+
+    List<TransmogSet> getTransmogSetsForItemModifiedAppearance(Integer itemModifiedAppearanceId);
+
+    List<TransmogSetItem> getTransmogSetItems(Integer transmogSetId);
+
+    boolean getUiMapPosition(float x, float y, float z, Integer mapId, Integer areaId, Integer wmoDoodadPlacementId, Integer wmoGroupId, UiMapSystem system, boolean local);
+
+    DBCPosition2D zone2MapCoordinates(Integer areaId);
+
+    DBCPosition2D map2ZoneCoordinates(Integer areaId);
+
+    boolean isUiMapPhase(Integer phaseId);
+
+    WmoAreaTable getWMOAreaTable(Integer rootId, Integer adtId, Integer groupId);
+
+    Set<Integer> getPVPStatIDsForMap(Integer mapId);
+
+    List<ItemEffect> getItemEffectsForItemId(Integer itemId);
+
+    WorldSafeLoc getWorldSafeLoc(Integer id);
+
+    void determineAlternateMapPosition(Integer mapId, float x, float y, float z);
+
+    Set<Integer> getDefaultItemBonusTree(Integer itemId, ItemContext itemContext);
+
 
 }

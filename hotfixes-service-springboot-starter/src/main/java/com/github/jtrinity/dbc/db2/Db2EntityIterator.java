@@ -21,16 +21,16 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
 
     private final Locale locale;
 
-    private final Db2EntityReader reader;
+    private final Db2EntityReader<T> reader;
 
     private int index;
     private int position = 0;
     private RowData currentData;
     private final Map<Integer, T> copyEntity = new LinkedHashMap<>();
-    private Iterator<Map.Entry<Integer, T>> copyEnityiterator;
+    private Iterator<Map.Entry<Integer, Integer>> copyEnityiterator;
 
 
-    Db2EntityIterator(Locale locale, Db2DataBinder<T> db2DataBinder, Db2EntityReader db2EntityReader) {
+    Db2EntityIterator(Locale locale, Db2DataBinder<T> db2DataBinder, Db2EntityReader<T> db2EntityReader) {
         this.locale = locale;
         this.db2DataBinder = db2DataBinder;
         this.reader = db2EntityReader;
@@ -53,10 +53,12 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
             return true;
         } else if (copyEnityiterator != null) {
             return copyEnityiterator.hasNext();
-        } else {
-            copyEnityiterator = copyEntity.entrySet().iterator();
+        } else if (reader.copyData != null) {
+            reader.copyData.entrySet().iterator();
+            copyEnityiterator = reader.copyData.entrySet().iterator();
             return copyEnityiterator.hasNext();
         }
+        return false;
     }
 
     @Override
@@ -64,8 +66,9 @@ class Db2EntityIterator<T extends DbcEntity> implements Iterator<T> {
         if (index++ < reader.header.recordCount) {
             return toEntity(currentData);
         } else {
-            Map.Entry<Integer, T> next = copyEnityiterator.next();
-            T copied = FuryUtil.copy(next.getValue());
+            Map.Entry<Integer, Integer> next = copyEnityiterator.next();
+            T source = copyEntity.get(next.getValue());
+            T copied = FuryUtil.copy(source);
             copied.setId(next.getKey());
             return copied;
         }
